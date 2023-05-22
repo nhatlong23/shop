@@ -10,7 +10,7 @@ use Carbon\Carbon;
 use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Product;
-
+use Illuminate\Support\Facades\Auth;
 
 session_start();
 
@@ -18,7 +18,7 @@ class CategoryProduct extends Controller
 {
     public function AuthLogin()
     {
-        $admin_id = Session::get('admin_id');
+        $admin_id = Auth::id();
         if ($admin_id) {
             return Redirect::to('dashboard');
         } else {
@@ -29,14 +29,16 @@ class CategoryProduct extends Controller
     public function add_category_product()
     {
         $this->AuthLogin();
-        return view('admin.category.add_category_product');
+        $subcategory = Category::where('category_parent', 0)->orderBy('category_id', 'desc')->get();
+        return view('admin.category.add_category_product', compact('subcategory'));
     }
 
     public function all_category_product()
     {
         $this->AuthLogin();
         $all_category_product = Category::all();
-        return view('admin.category.all_category_product', compact('all_category_product'));
+        $paren = Category::where('category_parent', 0)->orderBy('category_id', 'DESC')->get();
+        return view('admin.category.all_category_product', compact('all_category_product', 'paren'));
     }
 
     public function save_category_product(Request $request)
@@ -45,29 +47,32 @@ class CategoryProduct extends Controller
         // $data = $request->all();
         $data = $request->validate(
             [
-                'category_product_name' => 'required|unique:tbl_category|max:100',
-                'category_slug' => 'required|unique:tbl_category|max:100',
-                'category_product_desc' => 'required|max:255',
-                'category_product_status' => 'required',
+                'category_name' => 'required|unique:tbl_category_product|max:100',
+                'slug' => 'required|unique:tbl_category_product|max:100',
+                'category_desc' => 'required|max:255',
+                'category_parent' => 'required',
+                'category_status' => 'required',
             ],
             [
-                'category_product_name.required' => 'Tên danh mục không được để trống',
-                'category_product_name.unique' => 'Tên danh mục đã có, vui lòng nhập tên khác',
-                'category_product_name.max' => 'Tên danh mục không được vượt quá 100 ký tự',
-                'category_slug.required' => 'Slug danh mục không được để trống',
-                'category_slug.unique' => 'Slug danh mục đã có, vui lòng nhập slug khác',
-                'category_slug.max' => 'Slug danh mục không được vượt quá 100 ký tự',
-                'category_product_desc.required' => 'Mô tả danh mục không được để trống',
-                'category_product_desc.max' => 'Mô tả danh mục không được vượt quá 100 ký tự',
-                'category_product_status.required' => 'Trạng thái danh mục không được để trống',
+                'category_name.required' => 'Tên danh mục không được để trống',
+                'category_name.unique' => 'Tên danh mục đã có, vui lòng nhập tên khác',
+                'category_name.max' => 'Tên danh mục không được vượt quá 100 ký tự',
+                'slug.required' => 'Slug danh mục không được để trống',
+                'slug.unique' => 'Slug danh mục đã có, vui lòng nhập slug khác',
+                'slug.max' => 'Slug danh mục không được vượt quá 100 ký tự',
+                'category_desc.required' => 'Mô tả danh mục không được để trống',
+                'category_desc.max' => 'Mô tả danh mục không được vượt quá 100 ký tự',
+                'category_parent.required' => 'Danh mục cha không được để trống',
+                'category_status.required' => 'Trạng thái danh mục không được để trống',
             ]
         );
 
         $category = new Category();
-        $category->category_name = $data['category_product_name'];
-        $category->slug = $data['category_slug'];
-        $category->category_desc = $data['category_product_desc'];
-        $category->category_status = $data['category_product_status'];
+        $category->category_name = $data['category_name'];
+        $category->slug = $data['slug'];
+        $category->category_desc = $data['category_desc'];
+        $category->category_parent = $data['category_parent'];
+        $category->category_status = $data['category_status'];
         $category->created_at = Carbon::now('Asia/Ho_Chi_Minh');
         $category->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
         $category->save();
@@ -100,8 +105,9 @@ class CategoryProduct extends Controller
     public function edit_category_product($category_product_id)
     {
         $this->AuthLogin();
+        $subcategory = Category::orderBy('category_id', 'desc')->get();
         $edit_category_product = Category::where('category_id', $category_product_id)->get();
-        return view('admin.category.edit_category_product', compact('edit_category_product'));
+        return view('admin.category.edit_category_product', compact('edit_category_product','subcategory'));
     }
 
     public function update_category_product(Request $request, $category_product_id)
@@ -110,31 +116,36 @@ class CategoryProduct extends Controller
         // $data = $request->all();
         $data = $request->validate(
             [
-                'category_product_name' => 'required|unique:tbl_category|max:100',
-                'category_slug' => 'required|unique:tbl_category|max:100',
-                'category_product_desc' => 'required|max:255',
-                'category_product_status' => 'required',
+                'category_name' => 'required|unique:tbl_category_product|max:100',
+                'slug' => 'required|unique:tbl_category_product|max:100',
+                'category_desc' => 'required|max:255',
+                'category_parent' => 'required',
+                'category_status' => 'required',
             ],
             [
-                'category_product_name.required' => 'Tên danh mục không được để trống',
-                'category_product_name.unique' => 'Tên danh mục đã có, vui lòng nhập tên khác',
-                'category_product_name.max' => 'Tên danh mục không được vượt quá 100 ký tự',
-                'category_slug.required' => 'Slug danh mục không được để trống',
-                'category_slug.unique' => 'Slug danh mục đã có, vui lòng nhập slug khác',
-                'category_slug.max' => 'Slug danh mục không được vượt quá 100 ký tự',
-                'category_product_desc.required' => 'Mô tả danh mục không được để trống',
-                'category_product_desc.max' => 'Mô tả danh mục không được vượt quá 100 ký tự',
-                'category_product_status.required' => 'Trạng thái danh mục không được để trống',
+                'category_name.required' => 'Tên danh mục không được để trống',
+                'category_name.unique' => 'Tên danh mục đã có, vui lòng nhập tên khác',
+                'category_name.max' => 'Tên danh mục không được vượt quá 100 ký tự',
+                'slug.required' => 'Slug danh mục không được để trống',
+                'slug.unique' => 'Slug danh mục đã có, vui lòng nhập slug khác',
+                'slug.max' => 'Slug danh mục không được vượt quá 100 ký tự',
+                'category_desc.required' => 'Mô tả danh mục không được để trống',
+                'category_desc.max' => 'Mô tả danh mục không được vượt quá 100 ký tự',
+                'category_parent.required' => 'Danh mục cha không được để trống',
+                'category_status.required' => 'Trạng thái danh mục không được để trống',
             ]
         );
+        
         $category = Category::find($category_product_id);
-        $category->category_name = $data['category_product_name'];
-        $category->slug = $data['category_slug'];
-        $category->category_desc = $data['category_product_desc'];
-        $category->category_status = $data['category_product_status'];
+        $category->category_name = $data['category_name'];
+        $category->slug = $data['slug'];
+        $category->category_desc = $data['category_desc'];
+        $category->category_parent = $data['category_parent'];
+        $category->category_status = $data['category_status'];
         $category->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
         $category->save();
         Session::put('message', 'Cập nhật danh mục sản phẩm thành công');
+        
         return redirect::to('all-category-product');
     }
 
@@ -147,12 +158,11 @@ class CategoryProduct extends Controller
         return back();
     }
 
-    public function export_csv(){
-
+    public function export_csv()
+    {
     }
 
-    public function import_csv(){
-        
+    public function import_csv()
+    {
     }
-    
 }
