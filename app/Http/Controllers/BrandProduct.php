@@ -10,12 +10,13 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class BrandProduct extends Controller
 {
     public function AuthLogin()
     {
-        $admin_id = Session::get('admin_id');
+        $admin_id = Auth::id();
         if ($admin_id) {
             return Redirect::to('dashboard');
         } else {
