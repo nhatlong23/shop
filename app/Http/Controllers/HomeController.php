@@ -26,14 +26,14 @@ class HomeController extends Controller
     public function search(Request $request)
     {
         if (($_POST['keywords_submit'])) {
-            $cate_product = Category::where('category_status', '1')->orderby('category_id', 'desc')->get();
-            $brand_product = Brand::where('brand_status', '1')->orderby('brand_id', 'desc')->get();
+            $category = Category::where('category_status', '1')->orderby('category_id', 'desc')->get();
+            $brand = Brand::where('brand_status', '1')->orderby('brand_id', 'desc')->get();
             $keywords = $request->keywords_submit;
             $search_product = Product::where('product_name', 'like', '%' . $keywords . '%')->get();
         } else {
             return redirect()->back();
         }
-        return view('pages.product.search', compact('cate_product', 'brand_product', 'search_product'));
+        return view('pages.detail.search', compact('search_product', 'category', 'brand'));
     }
 
     public function show_category_home($slug)

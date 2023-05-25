@@ -5,8 +5,8 @@
         {{-- <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordian" href="#sportswear">
-                        <span class="badge pull-right"><i class="fa fa-plus"></i></span>
+                    <a href="#" >
+                        <span data-toggle="collapse" href="#sportswear" data-parent="#accordian" class="badge pull-right"><i class="fa fa-plus"></i></span>
                         Sportswear
                     </a>
                 </h4>
@@ -28,8 +28,9 @@
                 @if ($cate->category_parent == 0)
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordian" href="#{{ $cate->slug }}">
-                                <span class="badge pull-right"><i class="fa fa-plus"></i></span>
+                            <a href="{{ URL::to('category-product/' . $cate->slug) }}">
+                                <span data-toggle="collapse" data-parent="#accordian" href="#{{ $cate->slug }}"
+                                    class="badge pull-right"><i class="fa fa-plus"></i></span>
                                 {{ $cate->category_name }}
                             </a>
                         </h4>
@@ -39,7 +40,8 @@
                             <ul>
                                 @foreach ($category as $key => $subcate)
                                     @if ($subcate->category_parent == $cate->category_id)
-                                        <li><a href="{{ URL::to('category-product/' . $cate->slug) }}">{{ $subcate->category_name }} </a></li>
+                                        <li><a href="{{ URL::to('category-product/' . $subcate->slug) }}">{{ $subcate->category_name }}
+                                            </a></li>
                                     @endif
                                 @endforeach
                             </ul>

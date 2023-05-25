@@ -161,10 +161,6 @@
                                                     @endphp
                                                 </span>
                                             </li>
-                                            {{-- @php
-                                                $total_coupon = ($total * $cou['coupon_number']) / 100;
-                                                $sub_total_coupon = $total - $total_coupon;
-                                            @endphp --}}
                                         @elseif($cou['coupon_condition'] == 2)
                                             <li>Mã giảm: <span>-{{ number_format($cou['coupon_number'], 0, ',', '.') }} VND
                                                 </span></li>
@@ -188,22 +184,21 @@
                                         @if (session::get('cart'))
                                             @php
                                                 if (Session::get('fee') && !Session::get('coupon')) {
-
-                                                    $total_all = $total - Session::get('fee');
+                                                    $total_all = $total + Session::get('fee');
                                                     echo number_format($total_all, 0, ',', '.') . ' VND';
-
                                                 } elseif (Session::get('fee') && Session::get('coupon')) {
-
-                                                    $sub_total_coupon = $total - $total_coupon;
-                                                    $total_all_coupon = $sub_total_coupon - Session::get('fee');
-                                                    echo number_format($total_all_coupon, 0, ',', '.') . ' VND';
-
+                                                    if ($cou['coupon_condition'] == 1) {
+                                                        $total_coupon = ($total * $cou['coupon_number']) / 100;
+                                                        $total_all_coupon = ($total - $total_coupon) + Session::get('fee');
+                                                        echo number_format($total_all_coupon, 0, ',', '.') . ' VND';
+                                                    } elseif ($cou['coupon_condition'] == 2) {
+                                                        $total_coupon = $total - $cou['coupon_number'];
+                                                        $total_all_coupon = $total_coupon + Session::get('fee');
+                                                        echo number_format($total_all_coupon, 0, ',', '.') . ' VND';
+                                                    }
                                                 } elseif (!Session::get('fee') && Session::get('coupon')) {
-
                                                     echo number_format($sub_total_coupon, 0, ',', '.') . ' VND';
-
                                                 } elseif (!Session::get('fee') && !Session::get('coupon')) {
-                                                    
                                                     echo number_format($total, 0, ',', '.') . ' VND';
                                                 }
                                             @endphp
