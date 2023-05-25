@@ -206,19 +206,19 @@
                                         <li><a href="shop.html">Products</a></li>
                                         <li><a href="product-details.html">Product Details</a></li>
                                         <li><a href="checkout.html">Checkout</a></li>
-                                        <li><a href="{{ URL::to('show-cart') }}">Cart</a></li>
+                                        <li><a href="{{ URL::to('cart') }}">Cart</a></li>
                                         <li><a href="login.html">Login</a></li>
                                     </ul>
                                 </li>
                                 <li><a href="404.html">Tin Tức</a></li>
-                                <li><a href="{{ URL::to('show-cart') }}">Giỏ Hàng</a></li>
+                                <li><a href="{{ URL::to('cart') }}">Giỏ Hàng</a></li>
                                 <li><a href="contact-us.html">Liên Hệ</a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <form method="POST" action="{{ URL::to('/search') }}">
-                            {{ csrf_field() }}
+                            @csrf
                             <div class="search_box pull-right">
                                 <input type="text" name="keywords_submit" placeholder="Search"
                                     autocomplete="off" />
@@ -516,6 +516,7 @@
                                     'Đơn hàng của bạn đã được gửi thành công.',
                                     'success'
                                 )
+                                window.location.href = "{{ ('/success-order') }}";
                             }
                         });
                     } else if (

@@ -182,17 +182,25 @@
                                 $subtotal = $details->product_price * $details->product_sales_quantity;
                                 $total += $subtotal;
                             @endphp
-                            <tr class="color_qty_{{$details->product_id}}" >
+                            <tr class="color_qty_{{ $details->product_id }}">
                                 <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label>
                                 </td>
                                 <td>{{ $details->product_name }}</td>
                                 <td>
-                                    <input type="number" class="order_qty_{{$details->product_id}}" min="1" {{$order_status==2 ? 'disabled' : ''}} value="{{ $details->product_sales_quantity }}" name="product_sales_quantity">
-                                    <input type="hidden" name="order_qty_storage" class="order_qty_storage_{{$details->product_id}}" value="{{$details->product->product_quantity}}">
-                                    <input type="hidden" name="order_code" class="order_code" value="{{$details->order_code}}">
-                                    <input type="hidden" name="order_product_id" class="order_product_id" value="{{$details->product_id}}">
-                                    @if($order_status != 2)
-                                    <button class="btn btn-default update_quantity_order" data-product_id={{$details->product_id}} name="update_quantity_order">Cập Nhật</button>
+                                    <input type="number" class="order_qty_{{ $details->product_id }}" min="1"
+                                        {{ $order_status == 2 ? 'disabled' : '' }}
+                                        value="{{ $details->product_sales_quantity }}" name="product_sales_quantity">
+                                    <input type="hidden" name="order_qty_storage"
+                                        class="order_qty_storage_{{ $details->product_id }}"
+                                        value="{{ $details->product->product_quantity }}">
+                                    <input type="hidden" name="order_code" class="order_code"
+                                        value="{{ $details->order_code }}">
+                                    <input type="hidden" name="order_product_id" class="order_product_id"
+                                        value="{{ $details->product_id }}">
+                                    @if ($order_status != 2)
+                                        <button class="btn btn-default update_quantity_order"
+                                            data-product_id={{ $details->product_id }} name="update_quantity_order">Cập
+                                            Nhật</button>
                                     @endif
                                 </td>
                                 <td>
@@ -225,54 +233,66 @@
                                 @if ($coupon_condition == 1)
                                     @php
                                         $total_after_coupon = ($total * $coupon_number) / 100;
-                                        echo 'Tổng giảm:' . number_format($total_after_coupon, 0, ',', '.') . ' ' . 'VNĐ' . '<br>';
-                                        $total_coupon = $total - $total_after_coupon - $details->product_feeship;
+                                        echo 'Tổng giảm:' . number_format($total_after_coupon, 0, ',', '.') . ' ' . 'VNĐ' . ' (' . $coupon_number . '%' . ')' . '<br>';
+                                        $total_coupon = $total - $total_after_coupon + $details->product_feeship;
                                     @endphp
                                 @else
                                     @php
                                         echo 'Tổng giảm:' . number_format($coupon_number, 0, ',', '.') . ' ' . 'VNĐ' . '<br>';
-                                        $total_coupon = $total - $coupon_number - $details->product_feeship;
+                                        $total_coupon = $total - $coupon_number + $details->product_feeship;
                                     @endphp
                                 @endif
                                 Phí Ship: {{ number_format($details->product_feeship, 0, ',', '.') . ' ' . 'VNĐ' }} <br>
-                                Thanh toán:{{ number_format($total_coupon, 0, ',', '.') . ' ' . 'VNĐ' }}
+                                Tổng tiền: {{ number_format($total_coupon, 0, ',', '.') . ' ' . 'VNĐ' }}
                             </td>
                         </tr>
                         <tr>
                             <td colspan="6">
-                                    @foreach ($order as $key => $or)
-                                        @if ($or->order_status == 1)
+                                @foreach ($order as $key => $or)
+                                    @if ($or->order_status == 1)
                                         <form>
                                             @csrf
                                             <select class="form-control order_details">
-                                                <option value="">----------------Chọn hình thức đơn hàng--------------</option>
-                                                <option id="{{$or->order_id}}" selected value="1">Đơn hàng đang chờ xử lý</option>
-                                                <option id="{{$or->order_id}}" value="2">Đã xử lý-Đã giao hàng</option>
-                                                <option id="{{$or->order_id}}" value="3">Hủy đơn hàng- Tạm giữ</option>
+                                                <option value="">----------------Chọn hình thức đơn hàng--------------
+                                                </option>
+                                                <option id="{{ $or->order_id }}" selected value="1">Đơn hàng đang chờ
+                                                    xử lý</option>
+                                                <option id="{{ $or->order_id }}" value="2">Đã xử lý-Đã giao hàng
+                                                </option>
+                                                <option id="{{ $or->order_id }}" value="3">Hủy đơn hàng- Tạm giữ
+                                                </option>
                                             </select>
                                         </form>
-                                        @elseif($or->order_status == 2)
+                                    @elseif($or->order_status == 2)
                                         <form>
                                             @csrf
                                             <select class="form-control order_details">
-                                                <option value="">----------------Chọn hình thức đơn hàng--------------</option>
-                                                <option id="{{$or->order_id}}"  value="1">Đơn hàng đang chờ xử lý</option>
-                                                <option id="{{$or->order_id}}" selected value="2">Đã xử lý-Đã giao hàng</option>
-                                                <option id="{{$or->order_id}}" value="3">Hủy đơn hàng- Tạm giữ</option>
+                                                <option value="">----------------Chọn hình thức đơn
+                                                    hàng--------------</option>
+                                                <option id="{{ $or->order_id }}" value="1">Đơn hàng đang chờ xử lý
+                                                </option>
+                                                <option id="{{ $or->order_id }}" selected value="2">Đã xử lý-Đã giao
+                                                    hàng</option>
+                                                <option id="{{ $or->order_id }}" value="3">Hủy đơn hàng- Tạm giữ
+                                                </option>
                                             </select>
                                         </form>
-                                        @else
+                                    @else
                                         <form>
                                             @csrf
                                             <select class="form-control order_details">
-                                                <option value="">----------------Chọn hình thức đơn hàng--------------</option>
-                                                <option id="{{$or->order_id}}" selected value="1">Đơn hàng đang chờ xử lý</option>
-                                                <option id="{{$or->order_id}}" value="2">Đã xử lý-Đã giao hàng</option>
-                                                <option id="{{$or->order_id}}" selected value="3">Hủy đơn hàng- Tạm giữ</option>
+                                                <option value="">----------------Chọn hình thức đơn
+                                                    hàng--------------</option>
+                                                <option id="{{ $or->order_id }}" selected value="1">Đơn hàng đang
+                                                    chờ xử lý</option>
+                                                <option id="{{ $or->order_id }}" value="2">Đã xử lý-Đã giao hàng
+                                                </option>
+                                                <option id="{{ $or->order_id }}" selected value="3">Hủy đơn hàng-
+                                                    Tạm giữ</option>
                                             </select>
                                         </form>
-                                        @endif
-                                    @endforeach
+                                    @endif
+                                @endforeach
                             </td>
                         </tr>
                     </tbody>

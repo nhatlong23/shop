@@ -19,8 +19,8 @@
                                 <div class="item {{ $i == 1 ? 'active' : '' }}">
                                     <div class="col-sm-12">
                                         <img alt="{{ $slider->slider_desc }}"
-                                            src="uploads/slider/{{ $slider->slider_image }}" height="100"
-                                            width="800x" class="img img-responsive" />
+                                            src="uploads/slider/{{ $slider->slider_image }}" 
+                                            class="img img-responsive" />
                                     </div>
                                 </div>
                             @endforeach

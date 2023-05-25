@@ -75,10 +75,12 @@
                         <span>
                             <span>{{ number_format($value->product_price) . ' ' . 'VND' }}</span>
                             <label>Quantity:</label>
-                            <input name="qty" type="number" min="1" class="cart_product_qty_{{$value->product_id}}"  value="1" />
-							<input name="productid_hidden" type="hidden"  value="{{$value->product_id}}" />
+                            <input name="qty" type="number" min="1"
+                                class="cart_product_qty_{{ $value->product_id }}" value="1" />
+                            <input name="productid_hidden" type="hidden" value="{{ $value->product_id }}" />
                         </span>
-                        <input type="button" value="Thêm giỏ hàng" class="btn btn-primary btn-sm add-to-cart" data-id_product="{{$value->product_id}}" name="add-to-cart">
+                        <input type="button" value="Thêm giỏ hàng" class="btn btn-primary btn-sm add-to-cart"
+                            data-id_product="{{ $value->product_id }}" name="add-to-cart">
                     </form>
                     <p><b>Availability:</b> In Stock</p>
                     <p><b>Condition:</b> New</p>
@@ -159,21 +161,36 @@
     <div class="recommended_items">
         <!--recommended_items-->
         <h2 class="title text-center">Sản phẩm liên quan</h2>
-
         <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
                 <div class="item active">
                     @foreach ($related as $key => $lienquan)
+                        @csrf
                         <div class="col-sm-4">
                             <div class="product-image-wrapper">
                                 <div class="single-products">
                                     <div class="productinfo text-center">
-                                        <img src="{{ URL::to('public/uploads/product/' . $lienquan->product_image) }}"
+                                        <img src="{{ URL::to('uploads/product/' . $lienquan->product_image) }}"
                                             alt="" />
                                         <h2>{{ number_format($lienquan->product_price) . ' ' . 'VND' }}</h2>
                                         <p>{{ $lienquan->product_name }}</p>
-                                        <button type="button" class="btn btn-default add-to-cart"><i
-                                                class="fa fa-shopping-cart"></i>Add to cart</button>
+
+                                        <input type="hidden" value="{{ $lienquan->product_id }}"
+                                            class="cart_product_id_{{ $lienquan->product_id }}">
+                                        <input type="hidden" value="{{ $lienquan->product_name }}"
+                                            class="cart_product_name_{{ $lienquan->product_id }}">
+                                        <input type="hidden" value="{{ $lienquan->product_image }}"
+                                            class="cart_product_image_{{ $lienquan->product_id }}">
+                                        <input type="hidden" value="{{ $lienquan->product_price }}"
+                                            class="cart_product_price_{{ $lienquan->product_id }}">
+                                        <input type="hidden" value="{{ $lienquan->product_quantity }}"
+                                            class="cart_product_quantity_{{ $lienquan->product_id }}">
+                                        <input type="hidden" value="1"
+                                            class="cart_product_qty_{{ $lienquan->product_id }}">
+
+                                        <input type="button" value="Thêm giỏ hàng"
+                                            class="btn btn-primary btn-sm add-to-cart"
+                                            data-id_product="{{ $lienquan->product_id }}" name="add-to-cart">
                                     </div>
                                 </div>
                             </div>

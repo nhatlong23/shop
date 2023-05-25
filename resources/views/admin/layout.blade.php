@@ -314,25 +314,16 @@
                         </li>
                         <li class="sub-menu">
                             <a href="javascript:;">
-                                <i class="fa fa-laptop"></i>
-                                <span>Vận chuyển</span>
+                                <i class="fa fa-truck"></i>
+                                <span>Phí vận chuyển</span>
                             </a>
                             <ul class="sub">
-                                <li><a href="{{ URL::to('/delivery') }}">Quản lí vận chuyển</a></li>
+                                <li><a href="{{ URL::to('/delivery') }}">Quản lí phí vận chuyển</a></li>
                             </ul>
                         </li>
                         <li class="sub-menu">
                             <a href="javascript:;">
-                                <i class="fa fa-info"></i>
-                                <span>Thông tin wedsite</span>
-                            </a>
-                            <ul class="sub">
-                                <li><a href="{{ URL::to('/all-info') }}">Liệt kê thông tin wedsite</a></li>
-                            </ul>
-                        </li>
-                        <li class="sub-menu">
-                            <a href="javascript:;">
-                                <i class="fa fa-info"></i>
+                                <i class="fa fa-font-awesome"></i>
                                 <span>Slider banner</span>
                             </a>
                             <ul class="sub">
@@ -343,7 +334,7 @@
                         @hasrole(['Admin', 'Author'])
                             <li class="sub-menu">
                                 <a href="javascript:;">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-users"></i>
                                     <span>Users</span>
                                 </a>
                                 <ul class="sub">
@@ -356,11 +347,21 @@
 
                         @impersonate()
                             <li class="sub-menu">
-                                <span >
+                                <span>
                                     <a href="{{ url::to('/impersonate-leave') }}">Hủy Phiên đăng nhập</a>
                                 </span>
                             </li>
                         @endimpersonate
+
+                        <li class="sub-menu">
+                            <a href="javascript:;">
+                                <i class="fa fa-info"></i>
+                                <span>Thông tin wedsite</span>
+                            </a>
+                            <ul class="sub">
+                                <li><a href="{{ URL::to('/all-info') }}">Liệt kê thông tin wedsite</a></li>
+                            </ul>
+                        </li>
                         <li>
                             <a href="login.html">
                                 <i class="fa fa-user"></i>

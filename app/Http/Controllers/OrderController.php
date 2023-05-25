@@ -228,9 +228,9 @@ class OrderController extends Controller
     }
     if ($coupon_condition == 1) {
       $total_after_coupon = ($total * $coupon_number) / 100;
-      $total_coupon = $total - $total_after_coupon - $product->product_feeship;
+      $total_coupon = $total - $total_after_coupon + $product->product_feeship;
     } else {
-      $total_coupon = $total - $coupon_number - $product->product_feeship;
+      $total_coupon = $total - $coupon_number + $product->product_feeship;
     }
     $output .= '
           </tbody>
