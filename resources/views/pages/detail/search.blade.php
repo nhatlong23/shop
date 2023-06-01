@@ -12,7 +12,7 @@
     <div class="col-sm-9 padding-right">
         <div class="features_items">
             <!--features_items-->
-            <h2 class="title text-center">Kết quả tìm kiếm</h2>
+            <h2 class="title text-center">Kết quả tìm kiếm: {{ $keywords }}</h2>
             @foreach ($search_product as $key => $product)
                 <a href="{{ URL::to('detail-product/' . $product->product_id) }}">
                     <div class="col-sm-4">

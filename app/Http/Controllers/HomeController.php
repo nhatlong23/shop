@@ -10,17 +10,23 @@ use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Slider;
+use App\Models\Info;
 use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {
     public function index()
     {
+        $info = Info::find(1);
+        $meta_title = $info->info_title;
+        $meta_description = $info->info_desc;
+        $meta_image = '';
+        $meta_url = url()->current();
         $category = Category::where('category_status', '1')->orderby('category_id', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderby('brand_id', 'desc')->get();
         $slider = Slider::orderBy('slider_id', 'DESC')->where('slider_status', '1')->take(4)->get();
         $all_product = Product::where('product_status', '1')->orderby('product_id', 'desc')->limit(8)->get();
-        return view('pages.home', compact('category', 'brand', 'slider', 'all_product'));
+        return view('pages.home', compact('category', 'brand', 'slider', 'all_product', 'info', 'meta_title', 'meta_description', 'meta_image', 'meta_url'));
     }
 
     public function search(Request $request)
@@ -28,16 +34,29 @@ class HomeController extends Controller
         if (($_POST['keywords_submit'])) {
             $category = Category::where('category_status', '1')->orderby('category_id', 'desc')->get();
             $brand = Brand::where('brand_status', '1')->orderby('brand_id', 'desc')->get();
+
             $keywords = $request->keywords_submit;
+            $info = Info::find(1);
+            $meta_title = $keywords;
+            $meta_description = $keywords;
+            $meta_image = '';
+            $meta_url = url()->current();
             $search_product = Product::where('product_name', 'like', '%' . $keywords . '%')->get();
+            return view('pages.detail.search', compact('search_product', 'category', 'brand', 'meta_title', 'meta_description', 'meta_image', 'meta_url', 'info', 'keywords'));
         } else {
             return redirect()->back();
         }
-        return view('pages.detail.search', compact('search_product', 'category', 'brand'));
     }
 
     public function show_category_home($slug)
     {
+        $info = Info::find(1);
+        $cate_slug = Category::where('slug', $slug)->first();
+        $meta_title = $cate_slug->category_name;
+        $meta_description = $cate_slug->category_desc;
+        $meta_image = '';
+        $meta_url = url()->current();
+
         $category = Category::where('category_status', '1')->orderby('category_id', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderby('brand_id', 'desc')->get();
         $category_name = Category::where('category_status', '1')->where('slug', $slug)->limit(1)->get();
@@ -45,11 +64,18 @@ class HomeController extends Controller
             ->join('tbl_category_product', 'tbl_product.category_id', '=', 'tbl_category_product.category_id')
             ->where('tbl_category_product.slug', $slug)->get();
 
-        return view('pages.category.show_category', compact('category', 'brand', 'category_by_slug', 'category_name'));
+        return view('pages.category.show_category', compact('category', 'brand', 'category_by_slug', 'category_name', 'meta_title', 'meta_description', 'meta_image', 'meta_url', 'info'));
     }
 
     public function show_brand_home($slug)
     {
+        $info = Info::find(1);
+        $brand_slug = Brand::where('slug', $slug)->first();
+        $meta_title = $brand_slug->brand_name;
+        $meta_description = $brand_slug->brand_desc;
+        $meta_image = '';
+        $meta_url = url()->current();
+
         $category = Category::where('category_status', '1')->orderby('category_id', 'desc')->get();
         $brand = Brand::where('brand_status', '1')->orderby('brand_id', 'desc')->get();
         $brand_name = Brand::where('brand_status', '1')->where('slug', $slug)->limit(1)->get();
@@ -57,12 +83,19 @@ class HomeController extends Controller
             ->join('tbl_brand_product', 'tbl_product.brand_id', '=', 'tbl_brand_product.brand_id')
             ->where('tbl_brand_product.slug', $slug)->get();
 
-        return view('pages.brand.show_brand', compact('category', 'brand', 'brand_by_slug', 'brand_name'));
+        return view('pages.brand.show_brand', compact('category', 'brand', 'brand_by_slug', 'brand_name', 'meta_title', 'meta_description', 'meta_image', 'meta_url', 'info'));
     }
 
 
     public function details_product($slug)
     {
+        $info = Info::find(1);
+        $product = Product::where('slug', $slug)->first();
+        $meta_title = $product->product_title;
+        $meta_description = $product->product_desc;
+        $meta_image = '';
+        $meta_url = url()->current();
+
         $cate_product = DB::table('tbl_category_product')->where('category_status', '1')->orderby('category_id', 'desc')->get();
         $brand_product = DB::table('tbl_brand_product')->where('brand_status', '1')->orderby('brand_id', 'desc')->get();
         $details_product = DB::table('tbl_product')
@@ -76,9 +109,12 @@ class HomeController extends Controller
             ->join('tbl_category_product', 'tbl_category_product.category_id', '=', 'tbl_product.category_id')
             ->join('tbl_brand_product', 'tbl_brand_product.brand_id', '=', 'tbl_product.brand_id')
             ->where('tbl_category_product.category_id', $category_id)->whereNotIn('tbl_product.slug', [$slug])->get();
+
         return view('pages.detail.show_details')->with('category', $cate_product)
             ->with('brand', $brand_product)->with('product_details', $details_product)
-            ->with('related', $related_product);
+            ->with('related', $related_product)->with('info', $info)
+            ->with('meta_title', $meta_title)->with('meta_description', $meta_description)
+            ->with('meta_image', $meta_image)->with('meta_url', $meta_url);
     }
 
     public function send_mail()

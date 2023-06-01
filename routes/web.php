@@ -132,8 +132,7 @@ Route::post('/update-order-status', [OrderController::class, 'update_order_statu
 Route::post('/update-quantity-order', [OrderController::class, 'update_quantity_order']);
 
 //backend info
-Route::get('/all-info', [InfoController::class, 'all_info']);
-Route::post('/update-info/{info_id}', [InfoController::class, 'update_info']);
+Route::resource('info', InfoController::class);
 
 //backend slider
 Route::get('/all-slider', [SliderController::class, 'all_slider']);

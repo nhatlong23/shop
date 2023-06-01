@@ -359,7 +359,7 @@
                                 <span>Thông tin wedsite</span>
                             </a>
                             <ul class="sub">
-                                <li><a href="{{ URL::to('/all-info') }}">Liệt kê thông tin wedsite</a></li>
+                                <li><a href="{{ route('info.create') }}">Liệt kê thông tin wedsite</a></li>
                             </ul>
                         </li>
                         <li>

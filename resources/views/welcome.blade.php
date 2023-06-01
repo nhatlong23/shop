@@ -9,42 +9,37 @@
     <meta content="VN" name="geo.region" />
     <meta name="DC.language" scheme="utf-8" content="vi" />
     <meta name="language" content="Việt Nam">
-
-    {{-- <link rel="shortcut icon" href="{{asset('uploads/logo/'.$info->logo)}}" type="image/x-icon" /> --}}
     <meta name="revisit-after" content="1 days" />
     <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
-    {{-- <title>{{$meta_title}}</title> --}}
-    {{-- <meta name="description" content="{{$meta_description}}" /> --}}
-    <link rel="canonical" href="{{ Request::url() }}">
+    <title>{{$meta_title}}</title>
+    <meta name="description" content="{{$meta_description}}" />
+    <link rel="canonical" href="{{ $meta_url }}">
     <link rel="next" href="" />
     <meta property="og:locale" content="vi_VN" />
-    {{-- <meta property="og:title" content="{{$meta_title}}" /> --}}
-    {{-- <meta property="og:description" content="{{$meta_description}}" /> --}}
-    <meta property="og:url" content="{{ Request::url() }}" />
-    {{-- <meta property="og:site_name" content="{{$meta_title}}" /> --}}
-
-    {{-- <meta property="og:image" content="{{$meta_image}}" /> --}}
-    <meta property="og:image:width" content="300" />
-    <meta property="og:image:height" content="55" />
-
-    {{-- twitter meta tag --}}
-    <meta name="twitter:card" content="summary_large_image" />
-    {{-- <meta name="twitter:site" content="{{Request::url()}}" />
-    <meta name="twitter:title" content="{{$meta_title}}" />
-    <meta name="twitter:description" content="{{$meta_description}}" />
-    <meta name="twitter:image" content="{{$meta_image}}" /> --}}
-
-    {{-- facebook meta tag html --}}
-    {{-- <meta property="og:url" content="{{Request::url()}}" />
     <meta property="og:title" content="{{$meta_title}}" />
     <meta property="og:description" content="{{$meta_description}}" />
-    <meta property="og:image" content="{{$meta_image}}" /> --}}
-
+    <meta property="og:url" content="{{ $meta_url }}" />
+    <meta property="og:site_name" content="{{$meta_title}}" />
+    <meta property="og:image" content="{{$meta_image}}" />
+    <meta property="og:image:width" content="300" />
+    <meta property="og:image:height" content="55" />
+    {{-- twitter meta tag --}}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="{{$meta_url}}" />
+    <meta name="twitter:title" content="{{$meta_title}}" />
+    <meta name="twitter:description" content="{{$meta_description}}" />
+    <meta name="twitter:image" content="{{$meta_image}}" />
+    {{-- facebook meta tag html --}}
+    <meta property="og:url" content="{{$meta_url}}" />
+    <meta property="og:title" content="{{$meta_title}}" />
+    <meta property="og:description" content="{{$meta_description}}" />
+    <meta property="og:image" content="{{$meta_image}}" />
     {{-- google meta tag html --}}
-    {{-- <meta itemprop="name" content="{{$meta_title}}" />
-    <meta itemprop="description" content="{{$meta_description}}" /> --}}
+    <meta itemprop="name" content="{{$meta_title}}" />
+    <meta itemprop="description" content="{{$meta_description}}" />
 
-    <title>Home | E-Shopper</title>
+    <link rel="shortcut icon" href="{{asset('uploads/logo/'.$info->info_logo)}}" type="image/x-icon" />
+    <title>{{$meta_title}}</title>
     <link href="{{ asset('frontend/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('frontend/css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('frontend/css/prettyPhoto.css') }}" rel="stylesheet">
