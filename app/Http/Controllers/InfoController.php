@@ -87,11 +87,15 @@ class InfoController extends Controller
             [
                 'info_title' => 'required|max:255',
                 'info_desc' => 'required|max:255',
+                'info_phone' => 'required|max:20',
+                'info_email' => 'required|max:50',
                 'info_logo' => 'mimes:jpg,png,jpeg,gif,svg|max:2048|dimensions:min_width=100,min_height=100,max_width=2000,max_height=2000',
             ],
             [
                 'info_title.required' => 'Tiêu đề không được để trống',
                 'info_desc.required' => 'Mô tả không được để trống',
+                'info_phone.required' => 'Số điện thoại không được để trống',
+                'info_email.required' => 'Email không được để trống',
                 'info_logo.mimes' => 'Ảnh không đúng định dạng',
                 'info_logo.max' => 'Ảnh không được quá 2MB',
                 'info_logo.dimensions' => 'Ảnh không được nhỏ hơn 100x100px và lớn hơn 2000x2000px',
@@ -100,6 +104,8 @@ class InfoController extends Controller
         $info = Info::find($info_id);
         $info->info_title = $data['info_title'];
         $info->info_desc = $data['info_desc'];
+        $info->info_phone = $data['info_phone'];
+        $info->info_email = $data['info_email'];
         $get_image = $request->file('info_logo');
 
 
