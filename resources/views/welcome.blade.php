@@ -11,35 +11,35 @@
     <meta name="language" content="Việt Nam">
     <meta name="revisit-after" content="1 days" />
     <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
-    <title>{{$meta_title}}</title>
-    <meta name="description" content="{{$meta_description}}" />
+    <title>{{ $meta_title }}</title>
+    <meta name="description" content="{{ $meta_description }}" />
     <link rel="canonical" href="{{ $meta_url }}">
     <link rel="next" href="" />
     <meta property="og:locale" content="vi_VN" />
-    <meta property="og:title" content="{{$meta_title}}" />
-    <meta property="og:description" content="{{$meta_description}}" />
+    <meta property="og:title" content="{{ $meta_title }}" />
+    <meta property="og:description" content="{{ $meta_description }}" />
     <meta property="og:url" content="{{ $meta_url }}" />
-    <meta property="og:site_name" content="{{$meta_title}}" />
-    <meta property="og:image" content="{{$meta_image}}" />
+    <meta property="og:site_name" content="{{ $meta_title }}" />
+    <meta property="og:image" content="{{ $meta_image }}" />
     <meta property="og:image:width" content="300" />
     <meta property="og:image:height" content="55" />
     {{-- twitter meta tag --}}
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="{{$meta_url}}" />
-    <meta name="twitter:title" content="{{$meta_title}}" />
-    <meta name="twitter:description" content="{{$meta_description}}" />
-    <meta name="twitter:image" content="{{$meta_image}}" />
+    <meta name="twitter:site" content="{{ $meta_url }}" />
+    <meta name="twitter:title" content="{{ $meta_title }}" />
+    <meta name="twitter:description" content="{{ $meta_description }}" />
+    <meta name="twitter:image" content="{{ $meta_image }}" />
     {{-- facebook meta tag html --}}
-    <meta property="og:url" content="{{$meta_url}}" />
-    <meta property="og:title" content="{{$meta_title}}" />
-    <meta property="og:description" content="{{$meta_description}}" />
-    <meta property="og:image" content="{{$meta_image}}" />
+    <meta property="og:url" content="{{ $meta_url }}" />
+    <meta property="og:title" content="{{ $meta_title }}" />
+    <meta property="og:description" content="{{ $meta_description }}" />
+    <meta property="og:image" content="{{ $meta_image }}" />
     {{-- google meta tag html --}}
-    <meta itemprop="name" content="{{$meta_title}}" />
-    <meta itemprop="description" content="{{$meta_description}}" />
+    <meta itemprop="name" content="{{ $meta_title }}" />
+    <meta itemprop="description" content="{{ $meta_description }}" />
 
-    <link rel="shortcut icon" href="{{asset('uploads/logo/'.$info->info_logo)}}" type="image/x-icon" />
-    <title>{{$meta_title}}</title>
+    <link rel="shortcut icon" href="{{ asset('uploads/logo/' . $info->info_logo) }}" type="image/x-icon" />
+    <title>{{ $meta_title }}</title>
     <link href="{{ asset('frontend/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('frontend/css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('frontend/css/prettyPhoto.css') }}" rel="stylesheet">
@@ -47,6 +47,9 @@
     <link href="{{ asset('frontend/css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('frontend/css/main.css') }}" rel="stylesheet">
     <link href="{{ asset('frontend/css/responsive.css') }}" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="{{ asset('frontend/css/lightslider.css') }}" />
+    <link type="text/css" rel="stylesheet" href="{{ asset('frontend/css/lightslider.min.css') }}" />
+    <link type="text/css" rel="stylesheet" href="{{ asset('frontend/css/lightgallery.min.css') }}" />
     <link rel="stylesheet" type="text/css"
         href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css">
 
@@ -409,8 +412,30 @@
     <script src="{{ asset('frontend/js/jquery.prettyPhoto.js') }}"></script>
     <script src="{{ asset('frontend/js/main.js') }}"></script>
     <script src="{{ asset('frontend/js/sweetalert2.all.min.js') }}"></script>
+    <script src="{{ asset('frontend/js/lightslider.js') }}"></script>
+    <script src="{{ asset('frontend/js/lightgallery-all.min.js') }}"></script>
+    <script src="{{ asset('frontend/js/lightslider.min.js') }}"></script>
     {{-- <script src="{{ asset('backend/js/jquery-3.6.0.min.js') }}"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#imageGallery').lightSlider({
+                gallery: true,
+                item: 1,
+                loop: true,
+                thumbItem: 9,
+                slideMargin: 0,
+                enableDrag: false,
+                currentPagerPosition: 'left',
+                onSliderLoad: function(el) {
+                    el.lightGallery({
+                        selector: '#imageGallery .lslide'
+                    });
+                }
+            });
+        });
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -424,7 +449,8 @@
                 var cart_product_quantity = $('.cart_product_quantity_' + id).val();
                 var _token = $('input[name="_token"]').val();
                 if (parseInt(cart_product_qty) > parseInt(cart_product_quantity)) {
-                    alert('Số lượng sản phẩm không đủ' + cart_product_quantity);
+                    alert('Sản phẩm' + ' ' + cart_product_name + ' ' + 'chỉ còn' + ' ' +
+                        cart_product_quantity + ' ' + 'sản phẩm');
                 } else {
                     $.ajax({
                         url: '/add-cart-ajax',
@@ -511,7 +537,7 @@
                                     'Đơn hàng của bạn đã được gửi thành công.',
                                     'success'
                                 )
-                                window.location.href = "{{ ('/success-order') }}";
+                                window.location.href = "{{ '/success-order' }}";
                             }
                         });
                     } else if (

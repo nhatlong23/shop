@@ -11,6 +11,7 @@ use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Slider;
 use App\Models\Info;
+use App\Models\Gallery;
 use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
@@ -91,30 +92,39 @@ class HomeController extends Controller
     {
         $info = Info::find(1);
         $product = Product::where('slug', $slug)->first();
-        $meta_title = $product->product_title;
+        $meta_title = $product->product_name;
         $meta_description = $product->product_desc;
         $meta_image = '';
         $meta_url = url()->current();
 
-        $cate_product = DB::table('tbl_category_product')->where('category_status', '1')->orderby('category_id', 'desc')->get();
-        $brand_product = DB::table('tbl_brand_product')->where('brand_status', '1')->orderby('brand_id', 'desc')->get();
-        $details_product = DB::table('tbl_product')
+        $category = Category::where('category_status', '1')->orderby('category_id', 'desc')->get();
+        $brand = Brand::where('brand_status', '1')->orderby('brand_id', 'desc')->get();
+
+        $product_details = DB::table('tbl_product')
             ->join('tbl_category_product', 'tbl_category_product.category_id', '=', 'tbl_product.category_id')
             ->join('tbl_brand_product', 'tbl_brand_product.brand_id', '=', 'tbl_product.brand_id')
             ->where('tbl_product.slug', $slug)->get();
-        foreach ($details_product as $key => $value) {
+        
+        foreach ($product_details as $key => $value) {
             $category_id = $value->category_id;
+            $product_id = $value->product_id;
+
+            $info = Info::find(1);
+            $product = Product::where('slug', $slug)->first();
+            $meta_title = $product->product_title;
+            $meta_description = $product->product_desc;
+            $meta_image = '';
+            $meta_url = url()->current();
         }
-        $related_product = DB::table('tbl_product')
+        //gallery
+        $gallery = Gallery::where('product_id', $product_id)->get();
+        
+        $related = DB::table('tbl_product')
             ->join('tbl_category_product', 'tbl_category_product.category_id', '=', 'tbl_product.category_id')
             ->join('tbl_brand_product', 'tbl_brand_product.brand_id', '=', 'tbl_product.brand_id')
             ->where('tbl_category_product.category_id', $category_id)->whereNotIn('tbl_product.slug', [$slug])->get();
 
-        return view('pages.detail.show_details')->with('category', $cate_product)
-            ->with('brand', $brand_product)->with('product_details', $details_product)
-            ->with('related', $related_product)->with('info', $info)
-            ->with('meta_title', $meta_title)->with('meta_description', $meta_description)
-            ->with('meta_image', $meta_image)->with('meta_url', $meta_url);
+        return view('pages.detail.show_details', compact('category', 'brand', 'product_details', 'related', 'gallery', 'info', 'meta_title', 'meta_description', 'meta_image', 'meta_url'));
     }
 
     public function send_mail()

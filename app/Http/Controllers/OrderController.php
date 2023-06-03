@@ -44,7 +44,7 @@ class OrderController extends Controller
       $coupon_condition = 2;
       $coupon_number = 0;
     }
-    return view('admin.order.view_order', compact('order_details', 'customer', 'shipping', 'order_details', 'coupon_condition', 'coupon_number', 'order','order_status'));
+    return view('admin.order.view_order', compact('order_details', 'customer', 'shipping', 'order_details', 'coupon_condition', 'coupon_number', 'order', 'order_status'));
   }
 
   public function print_order($checkout_code)
@@ -298,7 +298,7 @@ class OrderController extends Controller
           }
         }
       }
-    }elseif($order->order_status != 2 && $order->order_status != 3){
+    } elseif ($order->order_status != 2 && $order->order_status != 3) {
       foreach ($data['order_product_id'] as $key => $product_id) {
         $product = Product::find($product_id);
         $product_quantity = $product->product_quantity;
@@ -315,9 +315,10 @@ class OrderController extends Controller
     }
   }
 
-  public function update_quantity_order(Request $request){
+  public function update_quantity_order(Request $request)
+  {
     $data = $request->all();
-    $order_details = OrderDetails::where('product_id',$data['order_product_id'])->where('order_code',$data['order_code'])->first();
+    $order_details = OrderDetails::where('product_id', $data['order_product_id'])->where('order_code', $data['order_code'])->first();
     $order_details->product_sales_quantity = $data['order_qty'];
     $order_details->save();
   }

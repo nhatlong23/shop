@@ -531,6 +531,117 @@
         });
     </script>
     <!-- //calendar -->
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            load_gallery();
+
+            function load_gallery() {
+                var product_id = $('.product_id').val();
+                var _token = $('input[name="_token"]').val();
+
+                $.ajax({
+                    url: '/load-gallery',
+                    method: 'POST',
+                    data: {
+                        product_id: product_id,
+                        _token: _token
+                    },
+                    success: function(data) {
+                        $('#gallery_load').html(data);
+                    }
+                });
+            }
+
+            $('#file').change(function() {
+                var error = '';
+                var files = $('#file')[0].files;
+
+                if (files.length > 5) {
+                    error += '<p>Bạn chỉ được chọn tối đa 5 ảnh</p>';
+                } else if (files.length == 0) {
+                    error += '<p>Bạn chưa chọn ảnh</p>';
+                } else if (files.size > 2000000) {
+                    error += '<p>Ảnh bạn chọn không được quá 2MB</p>';
+                }
+                if (error == '') {} else {
+                    $('#file').val('');
+                    $('#error_gallery').html('<span class="text-danger">' + error + '</span>');
+                }
+            });
+
+            $(document).on('blur', '.edit_gallery_name', function() {
+                var gallery_id = $(this).data('gallery_id');
+                var gallery_name = $(this).text();
+                var _token = $('input[name="_token"]').val();
+
+                $.ajax({
+                    url: '/update-gallery-name',
+                    method: 'POST',
+                    data: {
+                        gallery_name: gallery_name,
+                        gallery_id: gallery_id,
+                        _token: _token
+                    },
+                    success: function(data) {
+                        load_gallery();
+                        $('#error_gallery').html(
+                            '<span class="text-danger"> Cập nhật hình ảnh thành công</span>'
+                        );
+                    }
+                });
+            });
+
+
+            $(document).on('click', '.delete_gallery', function() {
+                var gallery_id = $(this).data('gallery_id');
+                var _token = $('input[name="_token"]').val();
+                if (confirm('Bạn có chắc muốn xóa hình ảnh này không ?')) {
+                    $.ajax({
+                        url: '/delete-gallery',
+                        method: 'POST',
+                        data: {
+                            gallery_id: gallery_id,
+                            _token: _token
+                        },
+                        success: function(data) {
+                            load_gallery();
+                            $('#error_gallery').html(
+                                '<span class="text-danger"> Xóa hình ảnh thành công</span>');
+                        }
+                    });
+                }
+            });
+
+            $(document).on('change', '.file_image', function() {
+                var gallery_id = $(this).data('gallery_id');
+                var _token = $('input[name="_token"]').val();
+                var image = document.getElementById('file-' + gallery_id).files[0];
+
+                var form_data = new FormData();
+                form_data.append('file', document.getElementById('file-' + gallery_id).files[0]);
+                form_data.append('gallery_id', gallery_id);
+                form_data.append('_token', _token);
+                $.ajax({
+                    url: '/update-gallery-image',
+                    method: 'POST',
+                    data: form_data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function(data) {
+                        load_gallery();
+                        $('#error_gallery').html(
+                            '<span class="text-danger"> Cập nhật hình ảnh thành công</span>'
+                        );
+                    }
+                });
+            });
+
+
+        });
+    </script>
+
     <script type="text/javascript">
         $('.update_quantity_order').click(function() {
             var order_product_id = $(this).data('product_id');

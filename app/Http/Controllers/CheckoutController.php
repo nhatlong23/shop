@@ -14,6 +14,7 @@ use App\Models\OrderDetails;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
+use App\Models\Info;
 use App\Models\Brand;
 use App\Models\Customer;
 
@@ -31,9 +32,15 @@ class CheckoutController extends Controller
 
     public function login_checkout()
     {
+        $info = Info::find(1);
+        $meta_title = $info->info_title;
+        $meta_description = $info->info_desc;
+        $meta_image = '';
+        $meta_url = url()->current();
+
         $cate_product = Category::where('category_status', '0')->orderby('category_id', 'desc')->get();
         $brand_product = Brand::where('brand_status', '0')->orderby('brand_id', 'desc')->get();
-        return view('pages.checkout.login_checkout', compact('cate_product', 'brand_product'));
+        return view('pages.checkout.login_checkout', compact('cate_product', 'brand_product', 'meta_title', 'meta_description', 'meta_image', 'meta_url', 'info'));
     }
 
     public function add_customer(Request $request)
@@ -77,69 +84,75 @@ class CheckoutController extends Controller
 
     public function checkout()
     {
+        $info = Info::find(1);
+        $meta_title = $info->info_title;
+        $meta_description = $info->info_desc;
+        $meta_image = '';
+        $meta_url = url()->current();
+
         $cate_product = Category::where('category_status', '0')->orderby('category_id', 'desc')->get();
         $brand_product = Brand::where('brand_status', '0')->orderby('brand_id', 'desc')->get();
 
-        return view('pages.checkout.show_checkout', compact('cate_product', 'brand_product'));
+        return view('pages.checkout.show_checkout', compact('cate_product', 'brand_product', 'meta_title', 'meta_description', 'meta_image', 'meta_url', 'info'));
     }
 
-    public function save_checkout_customer(Request $request)
-    {
-        $data = array();
-        $data['shipping_name'] = $request->shipping_name;
-        $data['shipping_phone'] = $request->shipping_phone;
-        $data['shipping_email'] = $request->shipping_email;
-        $data['shipping_notes'] = $request->shipping_notes;
-        $data['shipping_address'] = $request->shipping_address;
-        $shipping_id = DB::table('tbl_shipping')->insertGetId($data);
-        Session::put('shipping_id', $shipping_id);
-        return Redirect::to('/payment');
-    }
+    // public function save_checkout_customer(Request $request)
+    // {
+    //     $data = array();
+    //     $data['shipping_name'] = $request->shipping_name;
+    //     $data['shipping_phone'] = $request->shipping_phone;
+    //     $data['shipping_email'] = $request->shipping_email;
+    //     $data['shipping_notes'] = $request->shipping_notes;
+    //     $data['shipping_address'] = $request->shipping_address;
+    //     $shipping_id = DB::table('tbl_shipping')->insertGetId($data);
+    //     Session::put('shipping_id', $shipping_id);
+    //     return Redirect::to('/payment');
+    // }
 
-    public function payment()
-    {
-        $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
-        $brand_product = DB::table('tbl_brand_product')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
-        return view('pages.checkout.payment')->with('category', $cate_product)->with('brand', $brand_product);
-    }
+    // public function payment()
+    // {
+    //     $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
+    //     $brand_product = DB::table('tbl_brand_product')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
+    //     return view('pages.checkout.payment')->with('category', $cate_product)->with('brand', $brand_product);
+    // }
 
-    public function order_place(Request $request)
-    {
-        // insert payment method
-        $data = array();
-        $data['payment_method'] = $request->payment_option;
-        $data['payment_status'] = 'Đang chờ xử lý';
-        $payment_id = DB::table('tbl_payment')->insertGetId($data);
+    // public function order_place(Request $request)
+    // {
+    //     // insert payment method
+    //     $data = array();
+    //     $data['payment_method'] = $request->payment_option;
+    //     $data['payment_status'] = 'Đang chờ xử lý';
+    //     $payment_id = DB::table('tbl_payment')->insertGetId($data);
 
-        //insert order
-        $order_data = array();
-        $order_data['customer_id'] = Session::get('customer_id');
-        $order_data['shipping_id'] = Session::get('shipping_id');
-        $order_data['payment_id'] = $payment_id;
-        $order_data['order_total'] = Cart::total();
-        $order_data['order_status'] = 'Đang chờ xử lý';
-        $order_id = DB::table('tbl_order')->insertGetId($order_data);
+    //     //insert order
+    //     $order_data = array();
+    //     $order_data['customer_id'] = Session::get('customer_id');
+    //     $order_data['shipping_id'] = Session::get('shipping_id');
+    //     $order_data['payment_id'] = $payment_id;
+    //     $order_data['order_total'] = Cart::total();
+    //     $order_data['order_status'] = 'Đang chờ xử lý';
+    //     $order_id = DB::table('tbl_order')->insertGetId($order_data);
 
-        //insert order details
-        $content = Cart::content();
-        foreach ($content as $v_content) {
-            $order_d_data['order_id'] = $order_id;
-            $order_d_data['product_id'] = $v_content->id;
-            $order_d_data['product_name'] = $v_content->name;
-            $order_d_data['product_price'] = $v_content->price;
-            $order_d_data['product_sales_quantity'] = $v_content->qty;
-            DB::table('tbl_order_details')->insert($order_d_data);
-        }
-        if ($data['payment_method'] == 1) {
-            echo 'Thanh toán bằng thẻ ATM';
-        } else if ($data['payment_method'] == 2) {
-            Cart::destroy();
-            return view('pages.checkout.handcash');
-        } else {
-            echo 'Thanh toán bằng thẻ ghi nợ';
-        }
-        return Redirect::to('/payment');
-    }
+    //     //insert order details
+    //     $content = Cart::content();
+    //     foreach ($content as $v_content) {
+    //         $order_d_data['order_id'] = $order_id;
+    //         $order_d_data['product_id'] = $v_content->id;
+    //         $order_d_data['product_name'] = $v_content->name;
+    //         $order_d_data['product_price'] = $v_content->price;
+    //         $order_d_data['product_sales_quantity'] = $v_content->qty;
+    //         DB::table('tbl_order_details')->insert($order_d_data);
+    //     }
+    //     if ($data['payment_method'] == 1) {
+    //         echo 'Thanh toán bằng thẻ ATM';
+    //     } else if ($data['payment_method'] == 2) {
+    //         Cart::destroy();
+    //         return view('pages.checkout.handcash');
+    //     } else {
+    //         echo 'Thanh toán bằng thẻ ghi nợ';
+    //     }
+    //     return Redirect::to('/payment');
+    // }
 
     public function logout_checkout()
     {
@@ -207,7 +220,13 @@ class CheckoutController extends Controller
         Session::forget('coupon');
     }
     public function success_order(){
-        return view('pages.checkout.success');
+        $info = Info::find(1);
+        $meta_title = $info->info_title;
+        $meta_description = $info->info_desc;
+        $meta_image = '';
+        $meta_url = url()->current();
+
+        return view('pages.checkout.success', compact('meta_title', 'meta_description', 'meta_image', 'meta_url', 'info'));
     }
 
     //order Admin
