@@ -13,6 +13,8 @@ class Info extends Model
         'info_title',
         'info_desc',
         'info_logo',
+        'info_phone',
+        'info_email',
     ];
     protected $primaryKey = 'info_id';
     protected $table = 'tbl_info';

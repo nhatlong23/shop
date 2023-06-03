@@ -27,6 +27,16 @@
                                     placeholder="Tiêu đề wedsite" required autocomplete="off">
                             </div>
                             <div class="form-group">
+                                <label for="">Số điện thoại wedsite</label>
+                                <input type="text" name="info_phone" class="form-control" value="{{ $info->info_phone }}"
+                                    placeholder="Số điện thoại wedsite" required autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Email wedsite</label>
+                                <input type="email" name="info_email" class="form-control" value="{{ $info->info_email }}"
+                                    placeholder="Email wedsite" required autocomplete="off">
+                            </div>
+                            <div class="form-group">
                                 <label for="exampleInputEmail1">Mô tả website</label>
                                 <input type="text" data-validation="number" name="info_desc" class="form-control"
                                     value="{{ $info->info_desc }}" placeholder="Mô tả website" required autocomplete="off">
