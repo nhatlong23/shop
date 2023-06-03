@@ -13,6 +13,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\GalleryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -133,6 +134,14 @@ Route::post('/update-quantity-order', [OrderController::class, 'update_quantity_
 
 //backend info
 Route::resource('info', InfoController::class);
+
+//backend gallery-product-image
+Route::resource('gallery', GalleryController::class);
+Route::post('/load-gallery', [GalleryController::class, 'load_gallery']);
+Route::post('/update-gallery-name', [GalleryController::class, 'update_gallery_name']);
+Route::post('/delete-gallery', [GalleryController::class, 'delete_gallery']);
+Route::post('/update-gallery-image', [GalleryController::class, 'update_gallery_image']);
+
 
 //backend slider
 Route::get('/all-slider', [SliderController::class, 'all_slider']);

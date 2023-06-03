@@ -9,12 +9,24 @@ use App\Models\Province;
 use App\Models\Wards;
 use App\Models\Feeship;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Auth;
 
 
 class DeliveryController extends Controller
 {
+    public function AuthLogin()
+    {
+        $admin_id = Auth::id();
+        if ($admin_id) {
+            return Redirect::to('dashboard');
+        } else {
+            return Redirect::to('admin')->send();
+        }
+    }
     public function delivery(Request $request)
     {
+        $this->AuthLogin();
         $city = City::orderBy('matp', 'ASC')->get();
         return view('admin.delivery.add_delivery', compact('city'));
     }
@@ -56,6 +68,7 @@ class DeliveryController extends Controller
 
     public function insert_delivery(Request $request)
     {
+        $this->AuthLogin();
         $data = $request->all();
         // $data = $request->validate(
         //     [
@@ -108,6 +121,7 @@ class DeliveryController extends Controller
 
     public function update_feeship(Request $request)
     {
+        $this->AuthLogin();
         $data = $request->all();
         $feeship = Feeship::find($data['feeship_id']);
         $fee_value = rtrim($data['fee_value'], '.');
@@ -144,23 +158,23 @@ class DeliveryController extends Controller
         $data = $request->all();
         if ($data['matp']) {
             $feeship = Feeship::where('fee_matp', $data['matp'])->where('fee_maqh', $data['maqh'])->where('fee_xaid', $data['xaid'])->get();
-            if($feeship){
+            if ($feeship) {
                 $count_feeship = $feeship->count();
-                if($count_feeship>0){
+                if ($count_feeship > 0) {
                     foreach ($feeship as $key => $fee) {
                         Session::put('fee', $fee->feeship);
                         Session::save();
                     }
-                }else{
+                } else {
                     Session::put('fee', 15000);
-                        Session::save();
+                    Session::save();
                 }
             }
-            
         }
     }
 
-    public function unset_fee(){
+    public function unset_fee()
+    {
         Session::forget('fee');
         Session::put('message', 'Xóa phí vận chuyển thành công');
         Session::save();

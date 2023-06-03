@@ -47,6 +47,7 @@
                             <th>Giá</th>
                             <th>Title</th>
                             <th>Hình Ảnh</th>
+                            <th>Gallery</th>
                             <th>Số lượng</th>
                             <th>Danh Mục</th>
                             <th>Thương hiệu</th>
@@ -63,15 +64,18 @@
                                 <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label>
                                 </td>
                                 <td>{{ $product->product_name }}</td>
-                                <td>{{ substr($product->slug,0,5 ) }}</td>
+                                <td>{{ substr($product->slug, 0, 5) }}</td>
                                 <td>{{ $product->product_price }}</td>
                                 <td>{{ $product->product_title }}</td>
                                 <td> <img src="uploads/product/{{ $product->product_image }}" height="100" width="100">
                                 </td>
+                                <td>
+                                    <a href="{{ route('gallery.show', $product->product_id) }}">Thêm thư viện ảnh</a>
+                                </td>
                                 <td>{{ $product->product_quantity }}</td>
                                 <td>{{ $product->category->category_name }}</td>
                                 <td>{{ $product->brand->brand_name }}</td>
-                                <td>{{ date('d-m-Y', strtotime($product->created_at)); }}</td>
+                                <td>{{ date('d-m-Y', strtotime($product->created_at)) }}</td>
                                 <td>{{ $product->updated_at }}</td>
                                 <td>
                                     <?php

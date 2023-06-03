@@ -4,9 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Info;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Auth;
 
 class InfoController extends Controller
 {
+    public function AuthLogin()
+    {
+        $admin_id = Auth::id();
+        if ($admin_id) {
+            return Redirect::to('dashboard');
+        } else {
+            return Redirect::to('admin')->send();
+        }
+    }
     /**
      * Display a listing of the resource.
      *
@@ -24,6 +35,7 @@ class InfoController extends Controller
      */
     public function create()
     {
+        $this->AuthLogin();
         $info = Info::find(1);
         return view('admin.info.from', compact('info'));
     }
@@ -70,6 +82,7 @@ class InfoController extends Controller
      */
     public function update(Request $request, $info_id)
     {
+        $this->AuthLogin();
         $data = $request->validate(
             [
                 'info_title' => 'required|max:255',

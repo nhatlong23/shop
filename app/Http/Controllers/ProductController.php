@@ -11,7 +11,10 @@ use Carbon\Carbon;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
+use App\Models\Gallery;
+use File;
 use Illuminate\Support\Facades\Auth;
+
 
 session_start();
 
@@ -56,7 +59,7 @@ class ProductController extends Controller
                 'product_price' => 'required|numeric',
                 'product_quantity' => 'required|numeric',
                 'product_title' => 'required|max:255',
-                'product_desc' => 'required|max:255',
+                'product_desc' => 'required',
                 'product_content' => 'required',
                 'product_image' => 'required',
                 'product_cate' => 'required',
@@ -77,7 +80,6 @@ class ProductController extends Controller
                 'product_title.required' => 'Tiêu đề sản phẩm không được để trống',
                 'product_title.max' => 'Tiêu đề sản phẩm không được vượt quá 255 ký tự',
                 'product_desc.required' => 'Mô tả sản phẩm không được để trống',
-                'product_desc.max' => 'Mô tả sản phẩm không được vượt quá 255 ký tự',
                 'product_content.required' => 'Nội dung sản phẩm không được để trống',
                 'product_image.required' => 'Hình ảnh sản phẩm không được để trống',
                 'product_cate.required' => 'Danh mục sản phẩm không được để trống',
@@ -100,14 +102,27 @@ class ProductController extends Controller
         $product->updated_at = Carbon::now();
 
         $get_image = $request->file('product_image');
+        $part = 'uploads/product/';
+        $part_gallery = 'uploads/gallery/';
         if ($get_image) {
             $get_name_image = $get_image->getClientOriginalName();
             $name_image = current(explode('.', $get_name_image));
             $new_image = $name_image . rand(0, 99) . '.' . $get_image->getClientOriginalExtension();
-            $get_image->move('uploads/product', $new_image);
+            $get_image->move($part, $new_image);
             $product->product_image = $new_image;
+            try {
+                File::copy($part . $new_image, $part_gallery . $new_image);
+            } catch (\Exception $e) {
+                echo 'Có lỗi xảy ra khi sao chép tệp: ', $e->getMessage();
+            }
         }
         $product->save();
+        $gallery = new Gallery();
+        $gallery->name = $new_image;
+        $gallery->images = $new_image;
+        $gallery->product_id = $product->product_id;
+        $gallery->save();
+
         Session::put('message', 'Thêm sản phẩm thành công');
         return Redirect::to('all-product');
     }

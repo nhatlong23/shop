@@ -7,51 +7,20 @@
     @foreach ($product_details as $key => $value)
         <div class="product-details">
             <!--product-details-->
+            <style>
+                li.active {
+                    border: 2px solid #FE980F;
+                }
+            </style>
             <div class="col-sm-5">
-                <div class="view-product">
-                    <img src="{{ URL::to('uploads/product/' . $value->product_image) }}" alt="" />
-                    <h3>ZOOM</h3>
-                </div>
-                <div id="similar-product" class="carousel slide" data-ride="carousel">
-
-                    <!-- Wrapper for slides -->
-                    <div class="carousel-inner">
-                        <div class="item active">
-                            <a href=""><img src="{{ asset('frontend/images/product-details/similar1.jpg') }}"
-                                    alt=""></a>
-                            <a href=""><img src="{{ asset('frontend/images/product-details/similar1.jpg') }}"
-                                    alt=""></a>
-                            <a href=""><img src="{{ asset('frontend/images/product-details/similar1.jpg') }}"
-                                    alt=""></a>
-                        </div>
-                        <div class="item">
-                            <a href=""><img src="{{ asset('frontend/images/product-details/similar1.jpg') }}"
-                                    alt=""></a>
-                            <a href=""><img src="{{ asset('frontend/images/product-details/similar1.jpg') }}"
-                                    alt=""></a>
-                            <a href=""><img src="{{ asset('frontend/images/product-details/similar1.jpg') }}"
-                                    alt=""></a>
-                        </div>
-                        <div class="item">
-                            <a href=""><img src="{{ asset('frontend/images/product-details/similar1.jpg') }}"
-                                    alt=""></a>
-                            <a href=""><img src="{{ asset('frontend/images/product-details/similar1.jpg') }}"
-                                    alt=""></a>
-                            <a href=""><img src="{{ asset('frontend/images/product-details/similar1.jpg') }}"
-                                    alt=""></a>
-                        </div>
-
-                    </div>
-
-                    <!-- Controls -->
-                    <a class="left item-control" href="#similar-product" data-slide="prev">
-                        <i class="fa fa-angle-left"></i>
-                    </a>
-                    <a class="right item-control" href="#similar-product" data-slide="next">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
-                </div>
-
+                <ul id="imageGallery">
+                    @foreach ($gallery as $key => $gallery)
+                        <li data-thumb="{{ asset('uploads/gallery/' . $gallery->images) }}"
+                            data-src="{{ asset('uploads/gallery/' . $gallery->images) }}">
+                            <img alt="{{$gallery->name}}" width="100%" src="{{ asset('uploads/gallery/' . $gallery->images) }}" />
+                        </li>
+                    @endforeach
+                </ul>
             </div>
             <div class="col-sm-7">
                 <div class="product-information">
@@ -82,10 +51,16 @@
                         <input type="button" value="Thêm giỏ hàng" class="btn btn-primary btn-sm add-to-cart"
                             data-id_product="{{ $value->product_id }}" name="add-to-cart">
                     </form>
-                    <p><b>Availability:</b> In Stock</p>
-                    <p><b>Condition:</b> New</p>
-                    <p><b>Brand: </b>{{ $value->brand_name }}</p>
-                    <p><b>Category: </b>{{ $value->category_name }}</p>
+                    <p><b>Số lượng Kho: </b>{{ $value->product_quantity }} Sản Phẩm</p>
+                    <p><b>Tình Trạng: </b>
+                        @if ($value->product_quantity > 1)
+                            Còn hàng
+                        @else
+                            Tạm hết hàng
+                        @endif
+                    </p>
+                    <p><b>Thương Hiệu: </b>{{ $value->brand_name }}</p>
+                    <p><b>Danh mục: </b>{{ $value->category_name }}</p>
                     <a href=""><img src="images/product-details/share.png" class="share img-responsive"
                             alt="" /></a>
                 </div>
