@@ -50,8 +50,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Title sản phẩm</label>
-                                <input type="text" name="product_title" class="form-control" id="exampleInputEmail1"
-                                    value="{{ $edit_product->product_title }}">
+                                <textarea id="editor_title" style="resize: none" rows="8" class="form-control" name="product_title">{{ $edit_product->product_title }}</textarea>
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Hình ảnh sản phẩm</label>
@@ -61,11 +60,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Mô tả sản phẩm</label>
-                                <textarea style="resize: none" rows="8" class="form-control" name="product_desc">{{ $edit_product->product_desc }}</textarea>
+                                <textarea id="editor_desc" style="resize: none" rows="8" class="form-control" name="product_desc">{{ $edit_product->product_desc }}</textarea>
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Nội dung sản phẩm</label>
-                                <textarea style="resize: none" rows="8" class="form-control" name="product_content">{{ $edit_product->product_content }} </textarea>
+                                <textarea id="editor_content" style="resize: none" rows="8" class="form-control" name="product_content">{{ $edit_product->product_content }} </textarea>
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Danh mục sản phẩm</label>

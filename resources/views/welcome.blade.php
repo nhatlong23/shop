@@ -11,7 +11,6 @@
     <meta name="language" content="Việt Nam">
     <meta name="revisit-after" content="1 days" />
     <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
-    <title>{{ $meta_title }}</title>
     <meta name="description" content="{{ $meta_description }}" />
     <link rel="canonical" href="{{ $meta_url }}">
     <link rel="next" href="" />

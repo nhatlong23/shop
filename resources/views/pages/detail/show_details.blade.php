@@ -11,8 +11,19 @@
                 li.active {
                     border: 2px solid #FE980F;
                 }
+                .wrapper{
+                    overflow: hidden;
+                }
+                .wrapper ul li img{
+                    width: 100%;
+                    height: 100%;   
+                    transition: scale 400ms;
+                }
+                .wrapper:hover ul li img{
+                    scale: 120%;
+                }
             </style>
-            <div class="col-sm-5">
+            <div class="col-sm-5 wrapper">
                 <ul id="imageGallery">
                     @foreach ($gallery as $key => $gallery)
                         <li data-thumb="{{ asset('uploads/gallery/' . $gallery->images) }}"
