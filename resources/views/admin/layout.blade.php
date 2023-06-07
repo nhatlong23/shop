@@ -801,19 +801,14 @@
             });
         });
     </script>
-    {{-- <script>
+    <script>
         ClassicEditor
-            .create(document.querySelector('#editor'))
-            .catch(error => {
-                console.error(error);
-            });
-
+            .create(document.querySelector('#editor_desc'))
         ClassicEditor
-            .create(document.querySelector('#editor1'))
-            .catch(error => {
-                console.error(error);
-            });
-    </script> --}}
+            .create(document.querySelector('#editor_content'))
+        ClassicEditor
+            .create(document.querySelector('#editor_title'))
+    </script>
 
     <script type="text/javascript">
         function ChangeToSlug() {

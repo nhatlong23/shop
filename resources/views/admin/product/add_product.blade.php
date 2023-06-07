@@ -59,7 +59,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Mô tả</label>
-                                <textarea id="" style="resize: none" rows="8" class="form-control" name="product_desc"
+                                <textarea id="editor" style="resize: none" rows="8" class="form-control" name="product_desc"
                                     placeholder="Mô tả sản phẩm" required autocomplete="off"> </textarea>
                             </div>
                             <div class="form-group">

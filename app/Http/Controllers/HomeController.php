@@ -111,7 +111,7 @@ class HomeController extends Controller
 
             $info = Info::find(1);
             $product = Product::where('slug', $slug)->first();
-            $meta_title = $product->product_title;
+            $meta_title = $product->product_name;
             $meta_description = $product->product_desc;
             $meta_image = '';
             $meta_url = url()->current();
