@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     public function all_user(Request $request)
     {
-        $admin = Admin::with('roles')->orderBy('admin_id', 'ASC')->paginate(5);
+        $admin = Admin::with('roles')->orderBy('admin_id', 'ASC')->get();
         return view('admin.user.all_user', compact('admin'));
     }
 

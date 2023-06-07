@@ -17,6 +17,8 @@
     <link href="{{ asset('backend/css/font-awesome.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('backend/css/morris.css') }}" type="text/css" />
     <link rel="stylesheet" href="{{ asset('backend/css/monthly.css') }}">
+    <link href="{{ asset('backend/DataTables/datatables.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('backend/DataTables/datatables.css') }}" rel="stylesheet" />
     <script src="{{ asset('backend/js/jquery2.0.3.min.js') }}"></script>
     <script src="{{ asset('backend/js/raphael-min.js') }}"></script>
     <script src="{{ asset('backend/js/morris.js') }}"></script>
@@ -398,6 +400,8 @@
     <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/flot-chart/excanvas.min.js"></script><![endif]-->
     <script src="{{ asset('backend/js/jquery.scrollTo.js') }}"></script>
     <script src="{{ asset('backend/ckeditor5/ckeditor.js') }}"></script>
+    <script src="{{ asset('backend/DataTables/datatables.min.js') }}"></script>
+    <script src="{{ asset('backend/DataTables/datatables.js') }}"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <!-- morris JavaScript -->
     <script>
@@ -531,6 +535,14 @@
         });
     </script>
     <!-- //calendar -->
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#myTable').DataTable({
+                "debug": true
+            });
+        });
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function() {
