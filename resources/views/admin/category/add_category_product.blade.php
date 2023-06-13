@@ -54,8 +54,8 @@
                             <div class="form-group">
                                 <label for="exampleInputFile">Hiển thị</label>
                                 <select name="category_status" class="form-control input-sm m-bot15">
-                                    <option value="0">Ẩn</option>
                                     <option value="1">Hiển thị</option>
+                                    <option value="0">Ẩn</option>
                                 </select>
                             </div>
                             <button type="submit" name="add_category_product" class="btn btn-info">Thêm</button>

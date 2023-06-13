@@ -17,14 +17,13 @@
     <link href="{{ asset('backend/css/font-awesome.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('backend/css/morris.css') }}" type="text/css" />
     <link rel="stylesheet" href="{{ asset('backend/css/monthly.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/css/bootstrap-tagsinput.css') }}">
     <link href="{{ asset('backend/DataTables/datatables.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('backend/DataTables/datatables.css') }}" rel="stylesheet" />
     <script src="{{ asset('backend/js/jquery2.0.3.min.js') }}"></script>
     <script src="{{ asset('backend/js/raphael-min.js') }}"></script>
     <script src="{{ asset('backend/js/morris.js') }}"></script>
     <script src="{{ asset('backend/js/jquery-3.6.0.min.js') }}"></script>
-
-
 </head>
 
 <body>
@@ -402,6 +401,8 @@
     <script src="{{ asset('backend/ckeditor5/ckeditor.js') }}"></script>
     <script src="{{ asset('backend/DataTables/datatables.min.js') }}"></script>
     <script src="{{ asset('backend/DataTables/datatables.js') }}"></script>
+    <script src="{{ asset('backend/js/bootstrap-tagsinput.min.js') }}"></script>
+    <script src="{{ asset('backend/js/bootstrap-tagsinput.js') }}"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <!-- morris JavaScript -->
     <script>

@@ -12,8 +12,8 @@
     <div class="col-sm-9 padding-right">
         <div class="features_items">
             <!--features_items-->
-            <h2 class="title text-center">Kết quả tìm kiếm: {{ $search }}</h2>
-            @foreach ($search_product as $key => $product)
+            <h2 class="title text-center">Từ khóa tìm kiếm: {{ $tag }}</h2>
+            @foreach ($product_tag as $key => $product)
                 <a href="{{ URL::to('detail-product/' . $product->slug) }}">
                     <div class="col-sm-4">
                         <div class="product-image-wrapper">

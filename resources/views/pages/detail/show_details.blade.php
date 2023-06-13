@@ -1,8 +1,8 @@
 @extends('welcome')
 @section('content')
-    <div class="col-sm-3">
+    {{-- <div class="col-sm-3">
         @include('pages.include.sidebar')
-    </div>
+    </div> --}}
     <!--/sidebar-->
     @foreach ($product_details as $key => $value)
         <div class="product-details">
@@ -11,24 +11,95 @@
                 li.active {
                     border: 2px solid #FE980F;
                 }
-                .wrapper{
+
+                .wrapper {
                     overflow: hidden;
                 }
-                .wrapper ul li img{
+
+                .wrapper ul li img {
                     width: 100%;
-                    height: 100%;   
+                    height: 100%;
                     transition: scale 400ms;
                 }
-                .wrapper:hover ul li img{
+
+                .wrapper:hover ul li img {
                     scale: 120%;
                 }
+
+                .tags {
+                    list-style: none;
+                    margin: 0;
+                    overflow: hidden;
+                    padding: 0;
+                }
+
+                .tags li {
+                    float: left;
+                }
+
+                .tag {
+                    background: #eee;
+                    border-radius: 3px 0 0 3px;
+                    color: #999;
+                    display: inline-block;
+                    height: 26px;
+                    line-height: 26px;
+                    padding: 0 20px 0 23px;
+                    position: relative;
+                    margin: 0 10px 10px 0;
+                    text-decoration: none;
+                    -webkit-transition: color 0.2s;
+                }
+
+                .tag::before {
+                    background: #fff;
+                    border-radius: 10px;
+                    box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
+                    content: '';
+                    height: 6px;
+                    left: 10px;
+                    position: absolute;
+                    width: 6px;
+                    top: 10px;
+                }
+
+                .tag::after {
+                    background: #fff;
+                    border-bottom: 13px solid transparent;
+                    border-left: 10px solid #eee;
+                    border-top: 13px solid transparent;
+                    content: '';
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                }
+
+                .tag:hover {
+                    background-color: crimson;
+                    color: white;
+                }
+
+                .tag:hover::after {
+                    border-left-color: crimson;
+                }
             </style>
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ asset('home') }}">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a
+                                href="{{ asset('category-product/' . $category_slug) }}">{{ $product_category }}</a></li>
+                        <li class="breadcrumb-item " aria-current="page">{{ $meta_title }}</li>
+                    </ol>
+                </nav>
+            </div>
             <div class="col-sm-5 wrapper">
                 <ul id="imageGallery">
                     @foreach ($gallery as $key => $gallery)
                         <li data-thumb="{{ asset('uploads/gallery/' . $gallery->images) }}"
                             data-src="{{ asset('uploads/gallery/' . $gallery->images) }}">
-                            <img alt="{{$gallery->name}}" width="100%" src="{{ asset('uploads/gallery/' . $gallery->images) }}" />
+                            <img alt="{{ $gallery->name }}" width="100%"
+                                src="{{ asset('uploads/gallery/' . $gallery->images) }}" />
                         </li>
                     @endforeach
                 </ul>
@@ -40,7 +111,7 @@
                     <h2>{{ $value->product_name }}</h2>
                     <p>Title: {{ $value->product_title }}</p>
                     <img src="{{ asset('frontend/images/product-details/rating.png') }}" alt="" />
-                    <form action="{{ URL::to('save-cart') }}" method="post">
+                    <form>
                         @csrf
                         <input type="hidden" value="{{ $value->product_id }}"
                             class="cart_product_id_{{ $value->product_id }}">
@@ -72,8 +143,23 @@
                     </p>
                     <p><b>Thương Hiệu: </b>{{ $value->brand_name }}</p>
                     <p><b>Danh mục: </b>{{ $value->category_name }}</p>
-                    <a href=""><img src="images/product-details/share.png" class="share img-responsive"
-                            alt="" /></a>
+                    <fieldset>
+                        <legend>Tags</legend>
+                        <p>
+                            <i class="fa fa-tag"></i>
+                            @php
+                                $tags = $value->product_tag;
+                                $tags = explode(',', $tags);
+                            @endphp
+                            @foreach ($tags as $tag)
+                                @if ($tag != null)
+                                    <a href="{{ asset('tag/' . Str::slug($tag)) }}" class="tag">{{ $tag }}</a>
+                                @endif
+                            @endforeach
+                        </p>
+                    </fieldset>
+                    <a href=""><img src="{{ asset('frontend/images/product-details/share.png') }}"
+                            class="share img-responsive" alt="" /></a>
                 </div>
                 <!--/product-information-->
             </div>
@@ -87,7 +173,7 @@
                 <li class="active"><a href="#details" data-toggle="tab">Mô tả</a></li>
                 <li><a href="#companyprofile" data-toggle="tab">Chi tiết sản phẩm</a></li>
                 <li><a href="#tag" data-toggle="tab">Tag</a></li>
-                <li><a href="#reviews" data-toggle="tab">Reviews (5)</a></li>
+                <li><a href="#reviews" data-toggle="tab">Đánh giá (5)</a></li>
             </ul>
         </div>
         <div class="tab-content">
@@ -151,32 +237,35 @@
             <div class="carousel-inner">
                 <div class="item active">
                     @foreach ($related as $key => $lienquan)
-                        @csrf
                         <div class="col-sm-4">
                             <div class="product-image-wrapper">
                                 <div class="single-products">
                                     <div class="productinfo text-center">
-                                        <img src="{{ URL::to('uploads/product/' . $lienquan->product_image) }}"
-                                            alt="" />
-                                        <h2>{{ number_format($lienquan->product_price) . ' ' . 'VND' }}</h2>
-                                        <p>{{ $lienquan->product_name }}</p>
+                                        <form>
+                                            @csrf
+                                            <a href="{{ asset('detail-product/' . $lienquan->slug) }}">
+                                                <img src="{{ asset('uploads/product/' . $lienquan->product_image) }}"
+                                                    alt="" />
+                                                <h2>{{ number_format($lienquan->product_price) . ' ' . 'VND' }}</h2>
+                                                <p>{{ $lienquan->product_name }}</p>
+                                            </a>
+                                            <input type="hidden" value="{{ $lienquan->product_id }}"
+                                                class="cart_product_id_{{ $lienquan->product_id }}">
+                                            <input type="hidden" value="{{ $lienquan->product_name }}"
+                                                class="cart_product_name_{{ $lienquan->product_id }}">
+                                            <input type="hidden" value="{{ $lienquan->product_image }}"
+                                                class="cart_product_image_{{ $lienquan->product_id }}">
+                                            <input type="hidden" value="{{ $lienquan->product_price }}"
+                                                class="cart_product_price_{{ $lienquan->product_id }}">
+                                            <input type="hidden" value="{{ $lienquan->product_quantity }}"
+                                                class="cart_product_quantity_{{ $lienquan->product_id }}">
+                                            <input type="hidden" value="1"
+                                                class="cart_product_qty_{{ $lienquan->product_id }}">
 
-                                        <input type="hidden" value="{{ $lienquan->product_id }}"
-                                            class="cart_product_id_{{ $lienquan->product_id }}">
-                                        <input type="hidden" value="{{ $lienquan->product_name }}"
-                                            class="cart_product_name_{{ $lienquan->product_id }}">
-                                        <input type="hidden" value="{{ $lienquan->product_image }}"
-                                            class="cart_product_image_{{ $lienquan->product_id }}">
-                                        <input type="hidden" value="{{ $lienquan->product_price }}"
-                                            class="cart_product_price_{{ $lienquan->product_id }}">
-                                        <input type="hidden" value="{{ $lienquan->product_quantity }}"
-                                            class="cart_product_quantity_{{ $lienquan->product_id }}">
-                                        <input type="hidden" value="1"
-                                            class="cart_product_qty_{{ $lienquan->product_id }}">
-
-                                        <input type="button" value="Thêm giỏ hàng"
-                                            class="btn btn-primary btn-sm add-to-cart"
-                                            data-id_product="{{ $lienquan->product_id }}" name="add-to-cart">
+                                            <input type="button" value="Thêm giỏ hàng"
+                                                class="btn btn-primary btn-sm add-to-cart"
+                                                data-id_product="{{ $lienquan->product_id }}" name="add-to-cart">
+                                        </form>
                                     </div>
                                 </div>
                             </div>

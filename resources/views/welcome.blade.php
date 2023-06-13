@@ -74,8 +74,8 @@
                     <div class="col-sm-6">
                         <div class="contactinfo">
                             <ul class="nav nav-pills">
-                                <li><a href="#"><i class="fa fa-phone"></i> {{$info->info_phone}}</a></li>
-                                <li><a href="#"><i class="fa fa-envelope"></i> {{$info->info_email}}</a></li>
+                                <li><a href="#"><i class="fa fa-phone"></i> {{ $info->info_phone }}</a></li>
+                                <li><a href="#"><i class="fa fa-envelope"></i> {{ $info->info_email }}</a></li>
                             </ul>
                         </div>
                     </div>
@@ -101,7 +101,7 @@
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="logo pull-left">
-                            <a href="{{ URL::to('home') }}"><img src="{{ asset('frontend/images/home/logo.png') }}"
+                            <a href="{{ asset('home') }}"><img src="{{ asset('frontend/images/home/logo.png') }}"
                                     alt="" /></a>
                         </div>
                         <div class="btn-group pull-right">
@@ -139,35 +139,35 @@
                                 $shipping_id = Session::get('shipping_id');
 								if($customer_id != NULL && $shipping_id == NULL) {
 								?>
-                                <li><a href="{{ URL::to('checkout') }}"><i class="fa fa-crosshairs"></i> Thanh
+                                <li><a href="{{ asset('checkout') }}"><i class="fa fa-crosshairs"></i> Thanh
                                         Toán</a></li>
                                 <?php
 								} elseif($customer_id != NULL && $shipping_id != NULL) {
 								?>
-                                <li><a href="{{ URL::to('payment') }}"><i class="fa fa-crosshairs"></i> Thanh
+                                <li><a href="{{ asset('payment') }}"><i class="fa fa-crosshairs"></i> Thanh
                                         Toán</a>
                                 </li>
                                 <?php
 								}else{
 								?>
-                                <li><a href="{{ URL::to('login-checkout') }}"><i class="fa fa-crosshairs"></i> Thanh
+                                <li><a href="{{ asset('login-checkout') }}"><i class="fa fa-crosshairs"></i> Thanh
                                         Toán</a></li>
                                 <?php
                                 }
                                 ?>
                                 <li><a href="#"><i class="fa fa-star"></i> Yêu Thích</a></li>
-                                <li><a href="{{ URL::to('cart/') }}"><i class="fa fa-shopping-cart"></i> Giỏ
+                                <li><a href="{{ asset('cart/') }}"><i class="fa fa-shopping-cart"></i> Giỏ
                                         Hàng</a></li>
                                 <?php
 								$customer_id = Session::get('customer_id');
 								if ($customer_id != NULL) {
 								?>
-                                <li><a href="{{ URL::to('logout-checkout/') }}"><i class="fa fa-lock"></i> Đăng
+                                <li><a href="{{ asset('logout-checkout/') }}"><i class="fa fa-lock"></i> Đăng
                                         xuất</a></li>
                                 <?php
 								} else {
 								?>
-                                <li><a href="{{ URL::to('login-checkout/') }}"><i class="fa fa-lock"></i> Đăng
+                                <li><a href="{{ asset('login-checkout/') }}"><i class="fa fa-lock"></i> Đăng
                                         Nhập</a></li>
                                 <?php
 								}
@@ -197,31 +197,30 @@
                         </div>
                         <div class="mainmenu pull-left">
                             <ul class="nav navbar-nav collapse navbar-collapse">
-                                <li><a href="{{ URL::to('home') }}" class="active">Trang Chủ</a></li>
+                                <li><a href="{{ asset('home') }}" class="active">Trang Chủ</a></li>
                                 <li class="dropdown"><a href="#">Sản Phẩm<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
                                         <li><a href="shop.html">Products</a></li>
                                         <li><a href="product-details.html">Product Details</a></li>
                                         <li><a href="checkout.html">Checkout</a></li>
-                                        <li><a href="{{ URL::to('cart') }}">Cart</a></li>
+                                        <li><a href="{{ asset('cart') }}">Cart</a></li>
                                         <li><a href="login.html">Login</a></li>
                                     </ul>
                                 </li>
                                 <li><a href="404.html">Tin Tức</a></li>
-                                <li><a href="{{ URL::to('cart') }}">Giỏ Hàng</a></li>
+                                <li><a href="{{ asset('cart') }}">Giỏ Hàng</a></li>
                                 <li><a href="contact-us.html">Liên Hệ</a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-sm-4">
-                        <form method="POST" action="{{ URL::to('/search') }}">
-                            @csrf
+                        <form method="GET" action="{{ asset('/search') }}">
                             <div class="search_box pull-right">
-                                <input type="text" name="keywords_submit" placeholder="Search"
-                                    autocomplete="off" />
-                                <input type="submit" name="search_items" class="btn btn-default btn-sm"
-                                    value="search">
+                                <input type="text" name="search" id="timkiem" placeholder="Search"
+                                    autocomplete="off" maxlength="20" />
+                                <button class="btn btn-default btn-sm">Tìm kiếm</button>
                             </div>
+                            <ul class="dropdown-menu" id="result" style="display: none;"></ul>
                         </form>
                     </div>
                 </div>
@@ -418,6 +417,65 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
 
     <script type="text/javascript">
+        $('.quickview').click(function() {
+            var product_id = $(this).data('id_product');
+            var _token = $('input[name="_token"]').val();
+            $.ajax({
+                url: '/quickview',
+                method: 'POST',
+                dataType: 'JSON',
+                data: {
+                    _token: _token,
+                    product_id: product_id
+                },
+                success: function(data) {
+                    $('#product_quickview_title').html(data.product_name);
+                    $('#product_quickview_id').html(data.product_id);
+                    $('#product_quickview_price').html(data.product_price);
+                    $('#product_quickview_image').html(data.product_image);
+                    $('#product_quickview_gallery').html(data.product_gallery);
+                    $('#product_quickview_desc').html(data.product_desc);
+                    $('#product_quickview_content').html(data.product_content);
+                    $('#product_quickview_button').html(data.product_button);
+                    $('#product_quickview_qty').html(data.product_qty);
+                    $('#product_quickview_value').html(data.product_quickview_value);
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#timkiem').keyup(function() {
+                $('#result').html('');
+                var search = $('#timkiem').val();
+                if (search != '') {
+                    $('#result').css('display', 'none');
+                    var expression = new RegExp(search, "i");
+                    $.getJSON('json/product.json', function(data) {
+                        $.each(data, function(key, value) {
+                            if (value.product_name.search(expression) != -1) {
+                                $('#result').css('display', 'inherit');
+                                $('#result').append(
+                                    '<li class="list-group-item" style="cursor: pointer"> <img class="img-thumbnail" height="40" width="40" src="uploads/product/' +
+                                    value.product_image + '">' + value.product_name +
+                                    ' </li>');
+                            }
+                        });
+                    });
+                } else {
+                    $('#result').css('display', 'none');
+                }
+            })
+            $('#result').on('click', 'li', function() {
+                var click_text = $(this).text().split('|');
+                $('#timkiem').val($.trim(click_text[0]));
+                $('#result').html('');
+                $('#result').css('display', 'none');
+            });
+        })
+    </script>
+
+    <script type="text/javascript">
         $(document).ready(function() {
             $('#imageGallery').lightSlider({
                 gallery: true,
@@ -480,6 +538,51 @@
                     });
                 }
             });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).on('click', '.add-to-cart-quickview', function() {
+            var id = $(this).data('id_product');
+            var cart_product_id = $('.cart_product_id_' + id).val();
+            var cart_product_name = $('.cart_product_name_' + id).val();
+            var cart_product_image = $('.cart_product_image_' + id).val();
+            var cart_product_price = $('.cart_product_price_' + id).val();
+            var cart_product_qty = $('.cart_product_qty_' + id).val();
+            var cart_product_quantity = $('.cart_product_quantity_' + id).val();
+            var _token = $('input[name="_token"]').val();
+            if (parseInt(cart_product_qty) > parseInt(cart_product_quantity)) {
+                alert('Sản phẩm' + ' ' + cart_product_name + ' ' + 'chỉ còn' + ' ' +
+                    cart_product_quantity + ' ' + 'sản phẩm');
+            } else {
+                $.ajax({
+                    url: '/add-cart-ajax',
+                    method: 'POST',
+                    data: {
+                        _token: _token,
+                        cart_product_id: cart_product_id,
+                        cart_product_name: cart_product_name,
+                        cart_product_image: cart_product_image,
+                        cart_product_price: cart_product_price,
+                        cart_product_qty: cart_product_qty,
+                        cart_product_quantity: cart_product_quantity
+                    },
+                    beforeSend: function() {
+                        $('#beforesend_quickview').html(
+                            "<p class='text text-primary'>Đang thêm sản phẩm đã thêm vào giỏ hàng</p>"
+                            );
+                    },
+                    success: function(data) {
+                        $('#beforesend_quickview').html(
+                            "<p class='text text-primary'>Sản phẩm đã thêm vào giỏ hàng</p>");
+                        $('#buy_quickview').attr('disabled', true);
+                    }
+                });
+            }
+        })
+
+        $(document).on('click', '.redirect-cart', function() {
+            window.location.href = "{{ asset('cart') }}";
         });
     </script>
 
