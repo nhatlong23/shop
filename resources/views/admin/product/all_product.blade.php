@@ -23,6 +23,7 @@
                             </th>
                             <th>Tên Sản Phẩm</th>
                             <th>Slug</th>
+                            <th>Tag</th>
                             <th>Giá</th>
                             <th>Title</th>
                             <th>Hình Ảnh</th>
@@ -44,6 +45,7 @@
                                 </td>
                                 <td>{{ $product->product_name }}</td>
                                 <td>{{ substr($product->slug, 0, 5) }}</td>
+                                <td>{{ substr($product->product_tag, 0, 5) }}</td>
                                 <td>{{ $product->product_price }}</td>
                                 <td>{{ $product->product_title }}</td>
                                 <td> <img src="uploads/product/{{ $product->product_image }}" height="100" width="100">

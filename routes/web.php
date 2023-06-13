@@ -30,7 +30,9 @@ use Illuminate\Support\Facades\Route;
 //frontend
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/home',[HomeController::class, 'index']);
-Route::post('/search', [HomeController::class, 'search']);
+Route::get('/search', [HomeController::class, 'search']);
+Route::get('/tag/{tag}', [HomeController::class, 'tag']);
+Route::post('/quickview', [HomeController::class, 'quickview']);
 
 Route::get('/category-product/{slug}', [HomeController::class, 'show_category_home']);
 Route::get('/brand-product/{slug}', [HomeController::class, 'show_brand_home']);

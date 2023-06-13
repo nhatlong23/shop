@@ -12,7 +12,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Gallery;
-use File;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -44,7 +44,13 @@ class ProductController extends Controller
         // $all_product = Product::with('category', 'brand')->orderby('product_id', 'desc')->get();
         // $category = Category::pluck ('category_name', 'category_id');
         // $brand = Brand::pluck ('brand_name', 'brand_id');
-        $all_product = Product::with('category', 'brand')->orderby('product_id', 'desc')->paginate(5);
+        $all_product = Product::with('category', 'brand')->orderby('product_id', 'desc')->get();
+        
+        $path = public_path() . "/json/";
+        if (!is_dir($path)) {
+            mkdir($path, 0777, true);
+        }
+        File::put($path . 'product.json', json_encode($all_product));
         return view('admin.product.all_product', compact('all_product'));
     }
 
@@ -59,6 +65,7 @@ class ProductController extends Controller
                 'product_price' => 'required|numeric',
                 'product_quantity' => 'required|numeric',
                 'product_title' => 'required|max:255',
+                'product_tag' => 'required',
                 'product_desc' => 'required',
                 'product_content' => 'required',
                 'product_image' => 'required',
@@ -75,6 +82,7 @@ class ProductController extends Controller
                 'slug.max' => 'Slug sản phẩm không được vượt quá 100 ký tự',
                 'product_price.required' => 'Giá sản phẩm không được để trống',
                 'product_price.numeric' => 'Vui lòng nhập số!',
+                'product_tag.required' => 'Tag sản phẩm không được để trống',
                 'product_quantity.required' => 'Số lượng sản phẩm không được để trống',
                 'product_quantity.numeric' => 'Vui lòng nhập số!',
                 'product_title.required' => 'Tiêu đề sản phẩm không được để trống',
@@ -91,6 +99,7 @@ class ProductController extends Controller
         $product->product_name = $data['product_name'];
         $product->product_price = $data['product_price'];
         $product->product_title = $data['product_title'];
+        $product->product_tag = $data['product_tag'];
         $product->product_desc = $data['product_desc'];
         $product->product_quantity = $data['product_quantity'];
         $product->product_content = $data['product_content'];
@@ -170,6 +179,7 @@ class ProductController extends Controller
                 'product_desc' => 'required',
                 'product_content' => 'required',
                 // 'product_image' => 'required',
+                'product_tag' => 'required',
                 'product_cate' => 'required',
                 'product_brand' => 'required',
                 'product_status' => 'required',
@@ -183,6 +193,7 @@ class ProductController extends Controller
                 'slug.max' => 'Slug sản phẩm không được vượt quá 255 ký tự',
                 'product_price.required' => 'Giá sản phẩm không được để trống',
                 'product_price.numeric' => 'Vui lòng nhập số!',
+                'product_tag.required' => 'Tag sản phẩm không được để trống',
                 // 'product_quantity.required' => 'Số lượng sản phẩm không được để trống',
                 'product_quantity.numeric' => 'Vui lòng nhập số!',
                 'product_title.required' => 'Tiêu đề sản phẩm không được để trống',
@@ -200,6 +211,7 @@ class ProductController extends Controller
         $product->product_price = $data['product_price'];
         $product->product_quantity = $data['product_quantity'];
         $product->product_title = $data['product_title'];
+        $product->product_tag = $data['product_tag'];
         $product->product_desc = $data['product_desc'];
         $product->product_content = $data['product_content'];
         $product->slug = $data['slug'];

@@ -4,12 +4,57 @@
     <div class="col-sm-3">
         @include('pages.include.sidebar')
     </div>
+    <style type="text/css">
+        .quickview {
+            background: #F5F5ED;
+            border: 0 none;
+            border radius: 0;
+            color: #696763;
+            font-family: 'Roboto', sans-serif;
+            font-size: 15px;
+            margin-bottom: 25px;
+        }
+
+        .quickview:hover {
+            background: #FE980F;
+            color: #fff;
+        }
+
+        .quickview:focus {
+            background: #FE980F;
+            color: #fff;
+        }
+
+        @media screen and (min-width: 780px) {
+            .modal-dialog {
+                width: 700px;
+            }
+
+            .modal-sm {
+                width: 350px;
+            }
+        }
+
+        @media screen and (min-width: 992px) {
+            .modal-dialog {
+                width: 900px;
+            }
+
+            .modal-sm {
+                width: 450px;
+            }
+
+            .modal-lg {
+                width: 1000px;
+            }
+        }
+    </style>
     <!--/sidebar-->
     <div class="col-sm-9 padding-right">
         <div class="features_items">
             <!--features_items-->
             <h2 class="title text-center">Sản phẩm mới nhất</h2>
-            @foreach ($all_product as $key => $product)
+            @foreach ($newProducts as $key => $product)
                 <div class="col-sm-4">
                     <div class="product-image-wrapper">
                         <div class="single-products">
@@ -28,17 +73,17 @@
                                         class="cart_product_qty_{{ $product->product_id }}">
                                     <input type="hidden" value="{{ $product->product_quantity }}"
                                         class="cart_product_quantity_{{ $product->product_id }}">
-                                    <a href="{{ URL::to('detail-product/' . $product->slug) }}">
-                                        <img src="{{ URL::to('uploads/product/' . $product->product_image) }}"
+                                    <a href="{{ asset('detail-product/' . $product->slug) }}">
+                                        <img src="{{ asset('uploads/product/' . $product->product_image) }}"
                                             alt="" />
                                         <h2>{{ number_format($product->product_price) . ' ' . 'VND' }}</h2>
                                         <p>{{ $product->product_name }}</p>
-                                        {{-- <a href="#" class="btn btn-default add-to-cart"><i
-                                            class="fa fa-shopping-cart"></i>Add
-                                        to cart</a> --}}
                                     </a>
                                     <button type="button" class="btn btn-default add-to-cart" name="add-to-cart"
                                         data-id_product="{{ $product->product_id }}">Thêm giỏ hàng</button>
+                                    <input type="button" data-toggle="modal" data-target="#quickview" value="Xem Nhanh"
+                                        class="btn btn-default quickview" data-id_product="{{ $product->product_id }}"
+                                        name="add-to-cart">
                                 </form>
                             </div>
                         </div>
@@ -54,6 +99,76 @@
         </div>
         <!--features_items-->
 
+        <!-- Modal -->
+        <div class="modal fade" id="quickview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title product_quickview_title" id="quickview">
+                            <span id="product_quickview_title"></span>
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+
+                            <div class="col-md-5">
+                                <span id="product_quickview_image"></span>
+                                {{-- <span id="product_quickview_gallery"></span> --}}
+                            </div>
+                            <form>
+                                @csrf
+                                <div id="product_quickview_value"></div>
+                                <div class="col-md-7">
+                                    <style type="text/css">
+                                        h5.modal-title.product_quickview_title {
+                                            text-align: center;
+                                            font-size: 25px;
+                                            color: brown;
+                                        }
+
+                                        p.quickview {
+                                            font-size: 14px;
+                                            color: brown;
+                                        }
+
+                                        span#product_quickview_content img {
+                                            width: 100%;
+                                        }
+                                    </style>
+                                    <h2 class="quickview">
+                                        <span id="product_quickview_title"></span>
+                                    </h2>
+                                    <p>Mã ID: <span id="product_quickview_id"></span></p>
+                                    <p style="color: #FE980F; font-size: 20px; font-weight: bold;">Giá sản phẩm: <span
+                                            id="product_quickview_price"></span></p>
+                                    <span>
+                                        <label for="">Số lượng:</label>
+                                        <div id="product_quickview_qty" ></div>
+                                    </span>
+                                    <br>
+                                    <h4 style="color: #brown; font-size: 20px; font-weight: bold;">Mô tả sản phẩm:</h4>
+                                    <p> <span id="product_quickview_desc"></span></p>
+
+                                    <div id="product_quickview_button"></div>
+                                    <div id="beforesend_quickview"></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-secondary">
+                            <a href="{{ asset('detail-product/' . $product->slug) }}"> Đi đến sản phẩm chi tiết</a>
+                        </button>
+                        <button type="button" class="btn btn-default redirect-cart">Đi đến giỏ hàng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="category-tab">
             <!--category-tab-->
             <div class="col-sm-12">
@@ -153,7 +268,6 @@
             </div>
         </div>
         <!--/category-tab-->
-
         <div class="recommended_items">
             <!--recommended_items-->
             <h2 class="title text-center">recommended items</h2>
@@ -257,6 +371,5 @@
             </div>
         </div>
         <!--/recommended_items-->
-
     </div>
 @endsection

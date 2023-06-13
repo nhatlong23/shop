@@ -53,6 +53,10 @@
                                     placeholder="title sản phẩm" required autocomplete="off">
                             </div>
                             <div class="form-group">
+                                <label for="exampleInputEmail1">Tag</label>
+                                <input type="text" name="product_tag" data-role="tagsinput" class="form-control">
+                            </div>
+                            <div class="form-group">
                                 <label for="exampleInputEmail1">Hình Ảnh</label>
                                 <input type="file" name="product_image" class="form-control" id="exampleInputEmail1"
                                     required>

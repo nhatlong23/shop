@@ -53,6 +53,11 @@
                                 <textarea id="editor_title" style="resize: none" rows="8" class="form-control" name="product_title">{{ $edit_product->product_title }}</textarea>
                             </div>
                             <div class="form-group">
+                                <label for="exampleInputEmail1">Tag</label>
+                                <input type="text" name="product_tag" class="form-control" data-role="tagsinput"
+                                    value="{{ $edit_product->product_tag }}">
+                            </div>
+                            <div class="form-group">
                                 <label for="exampleInputEmail1">Hình ảnh sản phẩm</label>
                                 <input type="file" name="product_image" class="form-control" id="exampleInputEmail1">
                                 <img src="{{ URL::to('uploads/product/' . $edit_product->product_image) }}" height="100"
