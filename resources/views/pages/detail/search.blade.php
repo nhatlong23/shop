@@ -12,9 +12,9 @@
     <div class="col-sm-9 padding-right">
         <div class="features_items">
             <!--features_items-->
-            <h2 class="title text-center">Kết quả tìm kiếm: {{ $keywords }}</h2>
+            <h2 class="title text-center">Kết quả tìm kiếm: {{ $search }}</h2>
             @foreach ($search_product as $key => $product)
-                <a href="{{ URL::to('detail-product/' . $product->product_id) }}">
+                <a href="{{ URL::to('detail-product/' . $product->slug) }}">
                     <div class="col-sm-4">
                         <div class="product-image-wrapper">
                             <div class="single-products">

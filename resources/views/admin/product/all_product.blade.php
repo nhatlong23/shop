@@ -5,27 +5,6 @@
             <div class="panel-heading">
                 LIỆT KÊ SẢN PHẨM
             </div>
-            <div class="row w3-res-tb">
-                <div class="col-sm-5 m-b-xs">
-                    <select class="input-sm form-control w-sm inline v-middle">
-                        <option value="0">Bulk action</option>
-                        <option value="1">Delete selected</option>
-                        <option value="2">Bulk edit</option>
-                        <option value="3">Export</option>
-                    </select>
-                    <button class="btn btn-sm btn-default">Apply</button>
-                </div>
-                <div class="col-sm-4">
-                </div>
-                <div class="col-sm-3">
-                    <div class="input-group">
-                        <input type="text" class="input-sm form-control" placeholder="Search">
-                        <span class="input-group-btn">
-                            <button class="btn btn-sm btn-default" type="button">Go!</button>
-                        </span>
-                    </div>
-                </div>
-            </div>
             <div class="table-responsive">
                 <?php
                 $message = Session::get('message');
@@ -34,7 +13,7 @@
                     Session::put('message', null);
                 }
                 ?>
-                <table class="table table-striped b-t b-light">
+                <table class="table table-striped b-t b-light" id="myTable">
                     <thead>
                         <tr>
                             <th style="width:20px;">
@@ -44,9 +23,11 @@
                             </th>
                             <th>Tên Sản Phẩm</th>
                             <th>Slug</th>
+                            <th>Tag</th>
                             <th>Giá</th>
                             <th>Title</th>
                             <th>Hình Ảnh</th>
+                            <th>Gallery</th>
                             <th>Số lượng</th>
                             <th>Danh Mục</th>
                             <th>Thương hiệu</th>
@@ -63,15 +44,19 @@
                                 <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label>
                                 </td>
                                 <td>{{ $product->product_name }}</td>
-                                <td>{{ substr($product->slug,0,5 ) }}</td>
+                                <td>{{ substr($product->slug, 0, 5) }}</td>
+                                <td>{{ substr($product->product_tag, 0, 5) }}</td>
                                 <td>{{ $product->product_price }}</td>
                                 <td>{{ $product->product_title }}</td>
                                 <td> <img src="uploads/product/{{ $product->product_image }}" height="100" width="100">
                                 </td>
+                                <td>
+                                    <a href="{{ route('gallery.show', $product->product_id) }}">Thêm thư viện ảnh</a>
+                                </td>
                                 <td>{{ $product->product_quantity }}</td>
                                 <td>{{ $product->category->category_name }}</td>
                                 <td>{{ $product->brand->brand_name }}</td>
-                                <td>{{ date('d-m-Y', strtotime($product->created_at)); }}</td>
+                                <td>{{ date('d-m-Y', strtotime($product->created_at)) }}</td>
                                 <td>{{ $product->updated_at }}</td>
                                 <td>
                                     <?php
@@ -99,28 +84,12 @@
                                         <i class="fa fa-times text-danger text"></i>
                                     </a>
                                 </td>
+                                <td></td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-            <footer class="panel-footer">
-                <div class="row">
-                    <div class="col-sm-5 text-center">
-                        <small class="text-muted inline m-t-sm m-b-sm">showing 20-30 of 50 items</small>
-                    </div>
-                    <div class="col-sm-7 text-right text-center-xs">
-                        <ul class="pagination pagination-sm m-t-none m-b-none">
-                            <li><a href=""><i class="fa fa-chevron-left"></i></a></li>
-                            <li><a href="">1</a></li>
-                            <li><a href="">2</a></li>
-                            <li><a href="">3</a></li>
-                            <li><a href="">4</a></li>
-                            <li><a href=""><i class="fa fa-chevron-right"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </footer>
         </div>
     </div>
 @endsection

@@ -16,6 +16,8 @@
         "postcss": "^8.1.14"
     },
     "dependencies": {
-        "sweetalert2": "^11.7.5"
+        "lightgallery": "^2.7.1",
+        "lightslider": "^1.1.6",
+        "sweetalert2": "^11.4.8"
     }
 }

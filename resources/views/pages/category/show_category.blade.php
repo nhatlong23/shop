@@ -16,7 +16,7 @@
         @endforeach
 
         @foreach ($category_by_slug as $key => $product)
-            <a href="{{ URL::to('detail-product/' . $product->slug) }}">
+            <a href="{{ asset('detail-product/' . $product->slug) }}">
                 <div class="col-sm-4">
                     <div class="product-image-wrapper">
                         <div class="single-products">
@@ -33,9 +33,11 @@
                                         class="cart_product_price_{{ $product->product_id }}">
                                     <input type="hidden" value="1"
                                         class="cart_product_qty_{{ $product->product_id }}">
+                                    <input type="hidden" value="{{ $product->product_quantity }}"
+                                        class="cart_product_quantity_{{ $product->product_id }}">
 
-                                    <a href="{{ URL::to('detail-product/' . $product->slug) }}">
-                                        <img src="{{ URL::to('uploads/product/' . $product->product_image) }}"
+                                    <a href="{{ asset('detail-product/' . $product->slug) }}">
+                                        <img src="{{ asset('uploads/product/' . $product->product_image) }}"
                                             alt="" />
                                         <h2>{{ number_format($product->product_price) . ' ' . 'VND' }}</h2>
                                         <p>{{ $product->product_name }}</p>

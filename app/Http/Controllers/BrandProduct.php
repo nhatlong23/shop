@@ -32,7 +32,6 @@ class BrandProduct extends Controller
     public function all_brand_product()
     {
         $this->AuthLogin();
-        // $all_brand_product = DB::table('tbl_brand_product')->get();
         $all_brand_product = Brand::all();
         return view('admin.brand.all_brand_product', compact('all_brand_product'));
     }

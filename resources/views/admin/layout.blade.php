@@ -17,12 +17,13 @@
     <link href="{{ asset('backend/css/font-awesome.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('backend/css/morris.css') }}" type="text/css" />
     <link rel="stylesheet" href="{{ asset('backend/css/monthly.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/css/bootstrap-tagsinput.css') }}">
+    <link href="{{ asset('backend/DataTables/datatables.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('backend/DataTables/datatables.css') }}" rel="stylesheet" />
     <script src="{{ asset('backend/js/jquery2.0.3.min.js') }}"></script>
     <script src="{{ asset('backend/js/raphael-min.js') }}"></script>
     <script src="{{ asset('backend/js/morris.js') }}"></script>
     <script src="{{ asset('backend/js/jquery-3.6.0.min.js') }}"></script>
-
-
 </head>
 
 <body>
@@ -355,6 +356,16 @@
 
                         <li class="sub-menu">
                             <a href="javascript:;">
+                                <i class="fa fa-comments"></i>
+                                <span>Bình luận sản phẩm</span>
+                            </a>
+                            <ul class="sub">
+                                <li><a href="{{ route('comment.index') }}">Liệt kê bình luận sản phẩm</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="sub-menu">
+                            <a href="javascript:;">
                                 <i class="fa fa-info"></i>
                                 <span>Thông tin wedsite</span>
                             </a>
@@ -398,6 +409,10 @@
     <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/flot-chart/excanvas.min.js"></script><![endif]-->
     <script src="{{ asset('backend/js/jquery.scrollTo.js') }}"></script>
     <script src="{{ asset('backend/ckeditor5/ckeditor.js') }}"></script>
+    <script src="{{ asset('backend/DataTables/datatables.min.js') }}"></script>
+    <script src="{{ asset('backend/DataTables/datatables.js') }}"></script>
+    <script src="{{ asset('backend/js/bootstrap-tagsinput.min.js') }}"></script>
+    <script src="{{ asset('backend/js/bootstrap-tagsinput.js') }}"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <!-- morris JavaScript -->
     <script>
@@ -531,6 +546,179 @@
         });
     </script>
     <!-- //calendar -->
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#myTable').DataTable({
+                "debug": true
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $('.comment_status_btn').click(function() {
+            var comment_status = $(this).data('comment_status');
+            var comment_id = $(this).data('comment_id');
+            var product_id = $(this).attr('id');
+            var _token = $('input[name="_token"]').val();
+            if (comment_status == 0) {
+                var alert = 'Đã duyệt bình luận';
+            } else {
+                var alert = 'Chờ duyệt bình luận';
+            }
+            $.ajax({
+                url: '/comment-status',
+                method: 'POST',
+                data: {
+                    comment_status: comment_status,
+                    comment_id: comment_id,
+                    product_id: product_id,
+                    _token: _token
+                },
+                success: function(data) {
+                    location.reload();
+                    $('#notify_comment').html(
+                        '<span class="text-danger"> ' + alert + '</span>'
+                    );
+                }
+            });
+        });
+
+        $('.btn_reply_comment').click(function() {
+            var comment_id = $(this).data('comment_id');
+            var comment = $('.reply_comment_' + comment_id).val();
+            var product_id = $(this).data('product_id');
+            var _token = $('input[name="_token"]').val();
+            $.ajax({
+                url: '/reply-comment',
+                method: 'POST',
+                data: {
+                    comment: comment,
+                    comment_id: comment_id,
+                    product_id: product_id,
+                    _token: _token
+                },
+                success: function(data) {
+                    location.reload();
+                    $('.reply_comment' + comment_id).val('');
+                    $('#notify_comment').html(
+                        '<span class="text-danger"> Trả lời bình luận thành công</span>'
+                    );
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            load_gallery();
+
+            function load_gallery() {
+                var product_id = $('.product_id').val();
+                var _token = $('input[name="_token"]').val();
+
+                $.ajax({
+                    url: '/load-gallery',
+                    method: 'POST',
+                    data: {
+                        product_id: product_id,
+                        _token: _token
+                    },
+                    success: function(data) {
+                        $('#gallery_load').html(data);
+                    }
+                });
+            }
+
+            $('#file').change(function() {
+                var error = '';
+                var files = $('#file')[0].files;
+
+                if (files.length > 5) {
+                    error += '<p>Bạn chỉ được chọn tối đa 5 ảnh</p>';
+                } else if (files.length == 0) {
+                    error += '<p>Bạn chưa chọn ảnh</p>';
+                } else if (files.size > 2000000) {
+                    error += '<p>Ảnh bạn chọn không được quá 2MB</p>';
+                }
+                if (error == '') {} else {
+                    $('#file').val('');
+                    $('#error_gallery').html('<span class="text-danger">' + error + '</span>');
+                }
+            });
+
+            $(document).on('blur', '.edit_gallery_name', function() {
+                var gallery_id = $(this).data('gallery_id');
+                var gallery_name = $(this).text();
+                var _token = $('input[name="_token"]').val();
+
+                $.ajax({
+                    url: '/update-gallery-name',
+                    method: 'POST',
+                    data: {
+                        gallery_name: gallery_name,
+                        gallery_id: gallery_id,
+                        _token: _token
+                    },
+                    success: function(data) {
+                        load_gallery();
+                        $('#error_gallery').html(
+                            '<span class="text-danger"> Cập nhật hình ảnh thành công</span>'
+                        );
+                    }
+                });
+            });
+
+
+            $(document).on('click', '.delete_gallery', function() {
+                var gallery_id = $(this).data('gallery_id');
+                var _token = $('input[name="_token"]').val();
+                if (confirm('Bạn có chắc muốn xóa hình ảnh này không ?')) {
+                    $.ajax({
+                        url: '/delete-gallery',
+                        method: 'POST',
+                        data: {
+                            gallery_id: gallery_id,
+                            _token: _token
+                        },
+                        success: function(data) {
+                            load_gallery();
+                            $('#error_gallery').html(
+                                '<span class="text-danger"> Xóa hình ảnh thành công</span>');
+                        }
+                    });
+                }
+            });
+
+            $(document).on('change', '.file_image', function() {
+                var gallery_id = $(this).data('gallery_id');
+                var _token = $('input[name="_token"]').val();
+                var image = document.getElementById('file-' + gallery_id).files[0];
+
+                var form_data = new FormData();
+                form_data.append('file', document.getElementById('file-' + gallery_id).files[0]);
+                form_data.append('gallery_id', gallery_id);
+                form_data.append('_token', _token);
+                $.ajax({
+                    url: '/update-gallery-image',
+                    method: 'POST',
+                    data: form_data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function(data) {
+                        load_gallery();
+                        $('#error_gallery').html(
+                            '<span class="text-danger"> Cập nhật hình ảnh thành công</span>'
+                        );
+                    }
+                });
+            });
+
+
+        });
+    </script>
+
     <script type="text/javascript">
         $('.update_quantity_order').click(function() {
             var order_product_id = $(this).data('product_id');
@@ -690,19 +878,14 @@
             });
         });
     </script>
-    {{-- <script>
+    <script>
         ClassicEditor
-            .create(document.querySelector('#editor'))
-            .catch(error => {
-                console.error(error);
-            });
-
+            .create(document.querySelector('#editor_desc'))
         ClassicEditor
-            .create(document.querySelector('#editor1'))
-            .catch(error => {
-                console.error(error);
-            });
-    </script> --}}
+            .create(document.querySelector('#editor_content'))
+        ClassicEditor
+            .create(document.querySelector('#editor_title'))
+    </script>
 
     <script type="text/javascript">
         function ChangeToSlug() {

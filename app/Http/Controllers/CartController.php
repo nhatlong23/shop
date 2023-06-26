@@ -9,8 +9,9 @@ use Illuminate\Support\Facades\Redirect;
 use Gloudemans\Shoppingcart\Contracts\Buyable;
 use Cart;
 use App\Models\City;
-use App\Models\Province;
-use App\Models\Wards;
+use App\Models\Info;
+use App\Models\Category;
+use App\Models\Brand;
 use Carbon\Carbon;
 
 class CartController extends Controller
@@ -56,10 +57,16 @@ class CartController extends Controller
 
     public function cart()
     {
+        $info = Info::find(1);
+        $meta_title = $info->info_title;
+        $meta_description = $info->info_desc;
+        $meta_image = '';
+        $meta_url = url()->current();
+
         $city = City::orderBy('matp', 'ASC')->get();
-        $cate_product = DB::table('tbl_category_product')->where('category_status', '0')->orderby('category_id', 'desc')->get();
-        $brand_product = DB::table('tbl_brand_product')->where('brand_status', '0')->orderby('brand_id', 'desc')->get();
-        return view('pages.cart.cart_ajax')->with('category', $cate_product)->with('brand', $brand_product)->with('city', $city);
+        $cate_product = Category::where('category_status', '0')->orderby('category_id', 'desc')->get();
+        $brand_product = Brand::where('brand_status', '0')->orderby('brand_id', 'desc')->get();
+        return view('pages.cart.cart_ajax', compact('cate_product', 'brand_product', 'city', 'info', 'meta_title', 'meta_description', 'meta_image', 'meta_url'));
     }
 
     public function add_cart_ajax(Request $request)

@@ -16,6 +16,7 @@ class Product extends Model
         'product_title',
         'product_desc',
         'product_quantity',
+        'product_tag',
         'product_content',
         'slug',
         'product_price',
@@ -32,5 +33,8 @@ class Product extends Model
     {
         return $this->belongsTo(Brand::class, 'brand_id');
     }
-    
+    public function comment()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

@@ -9,7 +9,7 @@
         <div class="features_items">
             <!--features_items-->
             <h2 class="title text-center">Sản phẩm mới nhất</h2>
-            @foreach ($all_product as $key => $product)
+            @foreach ($newProducts as $key => $product)
                 <div class="col-sm-4">
                     <div class="product-image-wrapper">
                         <div class="single-products">
@@ -28,17 +28,17 @@
                                         class="cart_product_qty_{{ $product->product_id }}">
                                     <input type="hidden" value="{{ $product->product_quantity }}"
                                         class="cart_product_quantity_{{ $product->product_id }}">
-                                    <a href="{{ URL::to('detail-product/' . $product->slug) }}">
-                                        <img src="{{ URL::to('uploads/product/' . $product->product_image) }}"
+                                    <a href="{{ asset('detail-product/' . $product->slug) }}">
+                                        <img src="{{ asset('uploads/product/' . $product->product_image) }}"
                                             alt="" />
                                         <h2>{{ number_format($product->product_price) . ' ' . 'VND' }}</h2>
                                         <p>{{ $product->product_name }}</p>
-                                        {{-- <a href="#" class="btn btn-default add-to-cart"><i
-                                            class="fa fa-shopping-cart"></i>Add
-                                        to cart</a> --}}
                                     </a>
                                     <button type="button" class="btn btn-default add-to-cart" name="add-to-cart"
                                         data-id_product="{{ $product->product_id }}">Thêm giỏ hàng</button>
+                                    <input type="button" data-toggle="modal" data-target="#quickview" value="Xem Nhanh"
+                                        class="btn btn-default quickview" data-id_product="{{ $product->product_id }}"
+                                        name="add-to-cart">
                                 </form>
                             </div>
                         </div>
@@ -54,6 +54,59 @@
         </div>
         <!--features_items-->
 
+        <!-- Modal -->
+        <div class="modal fade" id="quickview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title product_quickview_title" id="quickview">
+                            <span id="product_quickview_title"></span>
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <span id="product_quickview_image"></span>
+                                {{-- <span id="product_quickview_gallery"></span> --}}
+                            </div>
+                            <form>
+                                @csrf
+                                <div id="product_quickview_value"></div>
+                                <div class="col-md-7">
+                                    <h2 class="quickview">
+                                        <span id="product_quickview_title"></span>
+                                    </h2>
+                                    <p>Mã ID: <span id="product_quickview_id"></span></p>
+                                    <p style="color: #FE980F; font-size: 20px; font-weight: bold;">Giá sản phẩm: <span
+                                            id="product_quickview_price"></span></p>
+                                    <span>
+                                        <label for="">Số lượng:</label>
+                                        <div id="product_quickview_qty" ></div>
+                                    </span>
+                                    <br>
+                                    <h4 style="color: #brown; font-size: 20px; font-weight: bold;">Mô tả sản phẩm:</h4>
+                                    <p> <span id="product_quickview_desc"></span></p>
+
+                                    <div id="product_quickview_button"></div>
+                                    <div id="beforesend_quickview"></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-secondary">
+                            <a href="{{ asset('detail-product/' . $product->slug) }}"> Đi đến sản phẩm chi tiết</a>
+                        </button>
+                        <button type="button" class="btn btn-default redirect-cart">Đi đến giỏ hàng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="category-tab">
             <!--category-tab-->
             <div class="col-sm-12">
@@ -153,100 +206,55 @@
             </div>
         </div>
         <!--/category-tab-->
-
         <div class="recommended_items">
             <!--recommended_items-->
-            <h2 class="title text-center">recommended items</h2>
-
+            <h2 class="title text-center">đề suất sản phẩm</h2>
             <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
-                    <div class="item active">
-                        <div class="col-sm-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <img src="images/home/recommend1.jpg" alt="" />
-                                        <h2>$56</h2>
-                                        <p>Easy Polo Black Edition</p>
-                                        <a href="#" class="btn btn-default add-to-cart"><i
-                                                class="fa fa-shopping-cart"></i>Add to cart</a>
+                    <?php $i = 0; ?>
+                    @foreach ($recommended->chunk(3) as $chunk)
+                        <div class="item {{ $i == 0 ? 'active' : '' }}">
+                            <div class="row">
+                                @foreach ($chunk as $lienquan)
+                                    <div class="col-md-4 col-sm-6 col-xs-12">
+                                        <div class="product-image-wrapper">
+                                            <div class="single-products">
+                                                <div class="productinfo text-center">
+                                                    <form>
+                                                        @csrf
+                                                        <a href="{{ asset('detail-product/' . $lienquan->slug) }}">
+                                                            <img src="{{ asset('uploads/product/' . $lienquan->product_image) }}"
+                                                                alt="" />
+                                                            <h2>{{ number_format($lienquan->product_price) . ' ' . 'VND' }}
+                                                            </h2>
+                                                            <p>{{ $lienquan->product_name }}</p>
+                                                        </a>
+                                                        <input type="hidden" value="{{ $lienquan->product_id }}"
+                                                            class="cart_product_id_{{ $lienquan->product_id }}">
+                                                        <input type="hidden" value="{{ $lienquan->product_name }}"
+                                                            class="cart_product_name_{{ $lienquan->product_id }}">
+                                                        <input type="hidden" value="{{ $lienquan->product_image }}"
+                                                            class="cart_product_image_{{ $lienquan->product_id }}">
+                                                        <input type="hidden" value="{{ $lienquan->product_price }}"
+                                                            class="cart_product_price_{{ $lienquan->product_id }}">
+                                                        <input type="hidden" value="{{ $lienquan->product_quantity }}"
+                                                            class="cart_product_quantity_{{ $lienquan->product_id }}">
+                                                        <input type="hidden" value="1"
+                                                            class="cart_product_qty_{{ $lienquan->product_id }}">
+    
+                                                        <input type="button" value="Thêm giỏ hàng"
+                                                            class="btn btn-primary btn-sm add-to-cart"
+                                                            data-id_product="{{ $lienquan->product_id }}" name="add-to-cart">
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-
-                                </div>
+                                @endforeach
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <img src="images/home/recommend2.jpg" alt="" />
-                                        <h2>$56</h2>
-                                        <p>Easy Polo Black Edition</p>
-                                        <a href="#" class="btn btn-default add-to-cart"><i
-                                                class="fa fa-shopping-cart"></i>Add to cart</a>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <img src="images/home/recommend3.jpg" alt="" />
-                                        <h2>$56</h2>
-                                        <p>Easy Polo Black Edition</p>
-                                        <a href="#" class="btn btn-default add-to-cart"><i
-                                                class="fa fa-shopping-cart"></i>Add to cart</a>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="col-sm-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <img src="images/home/recommend1.jpg" alt="" />
-                                        <h2>$56</h2>
-                                        <p>Easy Polo Black Edition</p>
-                                        <a href="#" class="btn btn-default add-to-cart"><i
-                                                class="fa fa-shopping-cart"></i>Add to cart</a>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <img src="images/home/recommend2.jpg" alt="" />
-                                        <h2>$56</h2>
-                                        <p>Easy Polo Black Edition</p>
-                                        <a href="#" class="btn btn-default add-to-cart"><i
-                                                class="fa fa-shopping-cart"></i>Add to cart</a>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <img src="images/home/recommend3.jpg" alt="" />
-                                        <h2>$56</h2>
-                                        <p>Easy Polo Black Edition</p>
-                                        <a href="#" class="btn btn-default add-to-cart"><i
-                                                class="fa fa-shopping-cart"></i>Add to cart</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        <?php $i++; ?>
+                    @endforeach
                 </div>
                 <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
                     <i class="fa fa-angle-left"></i>
@@ -256,7 +264,7 @@
                 </a>
             </div>
         </div>
+    
         <!--/recommended_items-->
-
     </div>
 @endsection
