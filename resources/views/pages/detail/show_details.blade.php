@@ -7,82 +7,6 @@
     @foreach ($product_details as $key => $value)
         <div class="product-details">
             <!--product-details-->
-            <style>
-                li.active {
-                    border: 2px solid #FE980F;
-                }
-
-                .wrapper {
-                    overflow: hidden;
-                }
-
-                .wrapper ul li img {
-                    width: 100%;
-                    height: 100%;
-                    transition: scale 400ms;
-                }
-
-                .wrapper:hover ul li img {
-                    scale: 120%;
-                }
-
-                .tags {
-                    list-style: none;
-                    margin: 0;
-                    overflow: hidden;
-                    padding: 0;
-                }
-
-                .tags li {
-                    float: left;
-                }
-
-                .tag {
-                    background: #eee;
-                    border-radius: 3px 0 0 3px;
-                    color: #999;
-                    display: inline-block;
-                    height: 26px;
-                    line-height: 26px;
-                    padding: 0 20px 0 23px;
-                    position: relative;
-                    margin: 0 10px 10px 0;
-                    text-decoration: none;
-                    -webkit-transition: color 0.2s;
-                }
-
-                .tag::before {
-                    background: #fff;
-                    border-radius: 10px;
-                    box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
-                    content: '';
-                    height: 6px;
-                    left: 10px;
-                    position: absolute;
-                    width: 6px;
-                    top: 10px;
-                }
-
-                .tag::after {
-                    background: #fff;
-                    border-bottom: 13px solid transparent;
-                    border-left: 10px solid #eee;
-                    border-top: 13px solid transparent;
-                    content: '';
-                    position: absolute;
-                    right: 0;
-                    top: 0;
-                }
-
-                .tag:hover {
-                    background-color: crimson;
-                    color: white;
-                }
-
-                .tag:hover::after {
-                    border-left-color: crimson;
-                }
-            </style>
             <div>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
@@ -141,6 +65,14 @@
                             Tạm hết hàng
                         @endif
                     </p>
+                    <p>
+                    <h3>Màu sắc: Đen</h3>
+                    </p>
+                    <p>
+                        <input type="radio" name="color" id="">
+                        <input type="radio" name="color" id="">
+                    </p>
+                    <p>Size: XL</p>
                     <p><b>Thương Hiệu: </b>{{ $value->brand_name }}</p>
                     <p><b>Danh mục: </b>{{ $value->category_name }}</p>
                     <fieldset>
@@ -173,7 +105,7 @@
                 <li class="active"><a href="#details" data-toggle="tab">Mô tả</a></li>
                 <li><a href="#companyprofile" data-toggle="tab">Chi tiết sản phẩm</a></li>
                 <li><a href="#tag" data-toggle="tab">Tag</a></li>
-                <li><a href="#reviews" data-toggle="tab">Đánh giá (5)</a></li>
+                <li><a href="#reviews" data-toggle="tab">Đánh giá ({{ $comment }})</a></li>
             </ul>
         </div>
         <div class="tab-content">
@@ -206,21 +138,57 @@
                         <li><a href=""><i class="fa fa-clock-o"></i>12:41 PM</a></li>
                         <li><a href=""><i class="fa fa-calendar-o"></i>31 DEC 2014</a></li>
                     </ul>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor i
-                        ncididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exe
-                        rcitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in
-                        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                    <p><b>Write Your Review</b></p>
-
+                    {{-- @if ($comment->status = 1) --}}
+                    <form>
+                        @csrf
+                        <input type="hidden" name="comment_product_id" value="{{ $value->product_id }}"
+                            class="comment_product_id">
+                        <div class="card">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div id="comment_load"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <br>
+                    {{-- @endif --}}
+                    <p><b>Viết đánh giá của bạn:</b></p>
                     <form action="#">
                         <span>
-                            <input type="text" placeholder="Your Name" />
-                            <input type="email" placeholder="Email Address" />
+                            <input class="comment_name" style="width:100%; margin-left: 0;border-radius: 20px;"
+                                type="text" placeholder="Nhập tên" />
                         </span>
-                        <textarea name=""></textarea>
-                        <b>Rating: </b> <img src="images/product-details/rating.png" alt="" />
-                        <button type="button" class="btn btn-default pull-right">
-                            Submit
+                        <textarea style="border-radius: 20px;" name="comment" class="comment_content" placeholder="Nhập nội dung"></textarea>
+                        <div id="notify_comment"></div>
+                        <div>
+                            <b>Rating: </b>
+                            <ul class="list-inline rating" title="Average rating"
+                                style="display: contents; font-weight: bold;">
+                                @for ($count = 1; $count <= 5; $count++)
+                                    @php
+                                        if ($count <= $rating) {
+                                            $color = 'color:#ffcc00;';
+                                        } else {
+                                            $color = 'color:#ccc;';
+                                        }
+                                    @endphp
+                                    <li title="Đánh giá sao" id="{{ $value->product_id }}-{{ $count }}"
+                                        data-index="{{ $count }}" data-product_id="{{ $value->product_id }}"
+                                        data-rating="{{ $rating }}" class="rating"
+                                        style="cursor: pointer; {{ $color }} font-size: 30px">
+                                        &#9733;
+                                    </li>
+                                @endfor
+                                <li>({{ $rating }}đ/ {{ $reviews }}lượt)</li>
+                            </ul>
+                        </div>
+                        <button type="button" class="btn btn-default pull-right send-comment">
+                            Gửi bình luận
                         </button>
                     </form>
                 </div>
@@ -235,43 +203,50 @@
         <h2 class="title text-center">Sản phẩm liên quan</h2>
         <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
-                <div class="item active">
-                    @foreach ($related as $key => $lienquan)
-                        <div class="col-sm-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <form>
-                                            @csrf
-                                            <a href="{{ asset('detail-product/' . $lienquan->slug) }}">
-                                                <img src="{{ asset('uploads/product/' . $lienquan->product_image) }}"
-                                                    alt="" />
-                                                <h2>{{ number_format($lienquan->product_price) . ' ' . 'VND' }}</h2>
-                                                <p>{{ $lienquan->product_name }}</p>
-                                            </a>
-                                            <input type="hidden" value="{{ $lienquan->product_id }}"
-                                                class="cart_product_id_{{ $lienquan->product_id }}">
-                                            <input type="hidden" value="{{ $lienquan->product_name }}"
-                                                class="cart_product_name_{{ $lienquan->product_id }}">
-                                            <input type="hidden" value="{{ $lienquan->product_image }}"
-                                                class="cart_product_image_{{ $lienquan->product_id }}">
-                                            <input type="hidden" value="{{ $lienquan->product_price }}"
-                                                class="cart_product_price_{{ $lienquan->product_id }}">
-                                            <input type="hidden" value="{{ $lienquan->product_quantity }}"
-                                                class="cart_product_quantity_{{ $lienquan->product_id }}">
-                                            <input type="hidden" value="1"
-                                                class="cart_product_qty_{{ $lienquan->product_id }}">
+                <?php $i = 0; ?>
+                @foreach ($related->chunk(3) as $chunk)
+                    <div class="item {{ $i == 0 ? 'active' : '' }}">
+                        <div class="row">
+                            @foreach ($chunk as $lienquan)
+                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                    <div class="product-image-wrapper">
+                                        <div class="single-products">
+                                            <div class="productinfo text-center">
+                                                <form>
+                                                    @csrf
+                                                    <a href="{{ asset('detail-product/' . $lienquan->slug) }}">
+                                                        <img src="{{ asset('uploads/product/' . $lienquan->product_image) }}"
+                                                            alt="" />
+                                                        <h2>{{ number_format($lienquan->product_price) . ' ' . 'VND' }}
+                                                        </h2>
+                                                        <p>{{ $lienquan->product_name }}</p>
+                                                    </a>
+                                                    <input type="hidden" value="{{ $lienquan->product_id }}"
+                                                        class="cart_product_id_{{ $lienquan->product_id }}">
+                                                    <input type="hidden" value="{{ $lienquan->product_name }}"
+                                                        class="cart_product_name_{{ $lienquan->product_id }}">
+                                                    <input type="hidden" value="{{ $lienquan->product_image }}"
+                                                        class="cart_product_image_{{ $lienquan->product_id }}">
+                                                    <input type="hidden" value="{{ $lienquan->product_price }}"
+                                                        class="cart_product_price_{{ $lienquan->product_id }}">
+                                                    <input type="hidden" value="{{ $lienquan->product_quantity }}"
+                                                        class="cart_product_quantity_{{ $lienquan->product_id }}">
+                                                    <input type="hidden" value="1"
+                                                        class="cart_product_qty_{{ $lienquan->product_id }}">
 
-                                            <input type="button" value="Thêm giỏ hàng"
-                                                class="btn btn-primary btn-sm add-to-cart"
-                                                data-id_product="{{ $lienquan->product_id }}" name="add-to-cart">
-                                        </form>
+                                                    <input type="button" value="Thêm giỏ hàng"
+                                                        class="btn btn-primary btn-sm add-to-cart"
+                                                        data-id_product="{{ $lienquan->product_id }}" name="add-to-cart">
+                                                </form>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endforeach
                         </div>
-                    @endforeach
-                </div>
+                    </div>
+                    <?php $i++; ?>
+                @endforeach
             </div>
             <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
                 <i class="fa fa-angle-left"></i>
@@ -281,5 +256,6 @@
             </a>
         </div>
     </div>
+
     <!--/recommended_items-->
 @endsection

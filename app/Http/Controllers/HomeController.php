@@ -3,17 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\support\Facades\Redirect;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Slider;
-use App\Models\Info;
 use App\Models\Gallery;
+use App\Models\Comment;
+use App\Models\Rating;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\DB as FacadesDB;
 
 class HomeController extends Controller
 {
@@ -21,7 +20,8 @@ class HomeController extends Controller
     {
         $slider = Slider::orderBy('slider_id', 'DESC')->where('slider_status', '1')->take(4)->get();
         $newProducts = Product::where('created_at', '>=', now()->subDays(30))->where('product_status', 1)->inRandomOrder()->limit(10)->get();
-        return view('pages.home', compact('slider', 'newProducts'));
+        $recommended = Product::where('product_status', 1)->where('product_sold', '>', 5)->inRandomOrder()->limit(10)->get();
+        return view('pages.home', compact('slider', 'newProducts', 'recommended'));
     }
 
     public function search(Request $request)
@@ -96,12 +96,24 @@ class HomeController extends Controller
             $meta_title = $product->product_name;
             $meta_description = $product->product_desc;
         }
-        //gallery
         $gallery = Gallery::where('product_id', $product_id)->get();
-        $related = Product::with('category', 'brand')->where('category_id', $product->category_id)
-            ->orderBy(FacadesDB::raw('RAND()'))->whereNotIn('slug', [$slug])->get();
-
-        return view('pages.detail.show_details', compact('product_details', 'related', 'gallery', 'meta_title', 'meta_description', 'product_category', 'category_slug'));
+        $related = Product::with('category', 'brand')->where('category_id', $product->category_id)->inRandomOrder()->whereNotIn('slug', [$slug])->get();
+        $comment = Comment::where('product_id', $product_id)->where('status', 1)->count();
+        $rating = Rating::where('product_id', $product_id)->avg('rating');
+        $rating = round($rating);
+        $reviews = Rating::where('product_id', $product_id)->count();
+        return view('pages.detail.show_details', compact(
+            'product_details',
+            'related',
+            'gallery',
+            'meta_title',
+            'meta_description',
+            'product_category',
+            'category_slug',
+            'comment',
+            'rating',
+            'reviews'
+        ));
     }
 
     public function quickview(Request $request)
@@ -126,7 +138,7 @@ class HomeController extends Controller
         $output['product_image'] = '<p><img style="width: 100%;" src="' . asset('uploads/product/' . $product->product_image) . '" alt=""></p> ';
         $output['product_button'] = '<input type="button" name="add-to-cart" id="buy_quickview" class="btn btn-secondary btn-sm add-to-cart-quickview" value="Mua Ngay"
         data-id_product="' . $product->product_id . '">';
-        $output['product_qty'] = '<input name="qty" type="number" min="1" class="cart_product_qty_'. $product->product_id.'" value="1" />';
+        $output['product_qty'] = '<input name="qty" type="number" min="1" class="cart_product_qty_' . $product->product_id . '" value="1" />';
         $output['product_quickview_value'] = ' 
         <input type="hidden" value=" ' . $product->product_id . ' " class="cart_product_id_' . $product->product_id . ' ">
         <input type="hidden" value=" ' . $product->product_name . ' " class="cart_product_name_' . $product->product_id . ' ">
@@ -134,9 +146,82 @@ class HomeController extends Controller
         <input type="hidden" value=" ' . $product->product_price . ' " class="cart_product_price_' . $product->product_id . ' ">
         <input type="hidden" value="1" class="cart_product_qty_ ' . $product->product_id . ' ">
         <input type="hidden" value=" ' . $product->product_quantity . ' " class="cart_product_quantity_' . $product->product_id . ' ">
-        <input name="productid_hidden" type="hidden" value=" '.$product->product_id .'" />
+        <input name="productid_hidden" type="hidden" value=" ' . $product->product_id . '" />
         ';
         echo json_encode($output);
+    }
+
+    public function load_comment(Request $request)
+    {
+        $product_id = $request->product_id;
+        $comments = Comment::where('product_id', $product_id)->where('status', 1)->orderBy('id', 'DESC')->limit(6)->get();
+        $output = '';
+        $current_time = Carbon::now('Asia/Ho_Chi_Minh');
+        foreach ($comments as $comment) {
+            $createdTime = Carbon::parse($comment->created_at);
+            $timeAgo = $createdTime->diffForHumans();
+
+            $output .= ' 
+                <div class="media" style="display: flex;">
+                    <img class="mr-3 rounded-circle" alt="" src="' . asset('uploads/avatar/' . $comment->avatar) . '" />
+                    <div class="media-body" style="width: 100%">
+                        <div class="row" style="margin-bottom: -20px;">
+                            <div class="col-8 dis">
+                                <h5 style="color: green;">@' . $comment->name . '</h5>
+                                <span class="margin">- ' . $timeAgo . ' ago</span>
+                            </div>
+                            <div class="col-4">
+                                <div class="pull-right reply" style="margin-right: 20px;">
+                                    <a href="#"><span><i class="fa fa-reply"></i>reply</span></a>
+                                </div>
+                            </div>
+                        </div>
+                        ' . $comment->comment . '
+                ';
+
+            $replies = Comment::with('product')->where('comment_parent_comment', $comment->id)->get();
+
+            foreach ($replies as $reply) {
+                $createdTime = Carbon::parse($reply->created_at);
+                $timeAgo = $createdTime->diffForHumans();
+
+                $output .= '
+                    <div class="media mt-4" style="display: flex;">
+                        <a class="pr-3" href="#"><img class="rounded-circle" alt=""
+                                src="' . asset('uploads/avatar/' . $reply->avatar) . '" /></a>
+                        <div class="media-body">
+                            <div class="row">
+                                <div class="col-12 dis">
+                                    <h5>' . $reply->name . '</h5>
+                                    <span class="margin">- ' . $timeAgo . ' ago</span>
+                                </div>
+                            </div>
+                            ' . $reply->comment . '
+                        </div>
+                    </div>
+                ';
+            }
+
+            $output .= '</div></div>';
+        }
+
+        echo $output;
+    }
+
+
+    public function send_comment(Request $request)
+    {
+        $product_id = $request->product_id;
+        $comment_name = $request->comment_name;
+        $comment_content = $request->comment_content;
+
+        $comment = new Comment();
+        $comment->product_id = $product_id;
+        $comment->name = $comment_name;
+        $comment->comment = $comment_content;
+        $comment->avatar = 'Cute-Avatar.png';
+        $comment->created_at = Carbon::now('Asia/Ho_Chi_Minh');
+        $comment->save();
     }
 
     public function send_mail()

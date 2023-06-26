@@ -14,6 +14,7 @@ use App\Http\Controllers\SliderController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,6 +34,9 @@ Route::get('/home',[HomeController::class, 'index']);
 Route::get('/search', [HomeController::class, 'search']);
 Route::get('/tag/{tag}', [HomeController::class, 'tag']);
 Route::post('/quickview', [HomeController::class, 'quickview']);
+Route::post('/load-comment', [HomeController::class, 'load_comment']);
+Route::post('/send-comment', [HomeController::class, 'send_comment']);
+Route::post('/insert-rating', [ProductController::class, 'insert_rating']);
 
 Route::get('/category-product/{slug}', [HomeController::class, 'show_category_home']);
 Route::get('/brand-product/{slug}', [HomeController::class, 'show_brand_home']);
@@ -133,6 +137,11 @@ Route::get('/view-order/{order_code}', [OrderController::class, 'view_order']);
 Route::get('/print-order/{checkout_code}', [OrderController::class, 'print_order']);
 Route::post('/update-order-status', [OrderController::class, 'update_order_status']);
 Route::post('/update-quantity-order', [OrderController::class, 'update_quantity_order']);
+
+//backend comment
+Route::resource('comment', CommentController::class);
+Route::post('/comment-status', [CommentController::class, 'comment_status']);
+Route::post('/reply-comment', [CommentController::class, 'reply_comment']);
 
 //backend info
 Route::resource('info', InfoController::class);
