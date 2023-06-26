@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Info;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+
 
 class InfoController extends Controller
 {
@@ -106,6 +108,7 @@ class InfoController extends Controller
         $info->info_desc = $data['info_desc'];
         $info->info_phone = $data['info_phone'];
         $info->info_email = $data['info_email'];
+        $info->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
         $get_image = $request->file('info_logo');
 
 

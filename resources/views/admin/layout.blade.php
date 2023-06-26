@@ -356,6 +356,16 @@
 
                         <li class="sub-menu">
                             <a href="javascript:;">
+                                <i class="fa fa-comments"></i>
+                                <span>Bình luận sản phẩm</span>
+                            </a>
+                            <ul class="sub">
+                                <li><a href="{{ route('comment.index') }}">Liệt kê bình luận sản phẩm</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="sub-menu">
+                            <a href="javascript:;">
                                 <i class="fa fa-info"></i>
                                 <span>Thông tin wedsite</span>
                             </a>
@@ -541,6 +551,60 @@
         $(document).ready(function() {
             $('#myTable').DataTable({
                 "debug": true
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $('.comment_status_btn').click(function() {
+            var comment_status = $(this).data('comment_status');
+            var comment_id = $(this).data('comment_id');
+            var product_id = $(this).attr('id');
+            var _token = $('input[name="_token"]').val();
+            if (comment_status == 0) {
+                var alert = 'Đã duyệt bình luận';
+            } else {
+                var alert = 'Chờ duyệt bình luận';
+            }
+            $.ajax({
+                url: '/comment-status',
+                method: 'POST',
+                data: {
+                    comment_status: comment_status,
+                    comment_id: comment_id,
+                    product_id: product_id,
+                    _token: _token
+                },
+                success: function(data) {
+                    location.reload();
+                    $('#notify_comment').html(
+                        '<span class="text-danger"> ' + alert + '</span>'
+                    );
+                }
+            });
+        });
+
+        $('.btn_reply_comment').click(function() {
+            var comment_id = $(this).data('comment_id');
+            var comment = $('.reply_comment_' + comment_id).val();
+            var product_id = $(this).data('product_id');
+            var _token = $('input[name="_token"]').val();
+            $.ajax({
+                url: '/reply-comment',
+                method: 'POST',
+                data: {
+                    comment: comment,
+                    comment_id: comment_id,
+                    product_id: product_id,
+                    _token: _token
+                },
+                success: function(data) {
+                    location.reload();
+                    $('.reply_comment' + comment_id).val('');
+                    $('#notify_comment').html(
+                        '<span class="text-danger"> Trả lời bình luận thành công</span>'
+                    );
+                }
             });
         });
     </script>

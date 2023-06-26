@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Gallery;
 use App\Models\Product;
+use Carbon\Carbon;
 
 class GalleryController extends Controller
 {
@@ -82,6 +83,7 @@ class GalleryController extends Controller
                 $gallery->name = $new_image;
                 $gallery->images = $new_image;
                 $gallery->product_id = $product_id;
+                $gallery->created_at = Carbon::now('Asia/Ho_Chi_Minh');
                 $gallery->save();
             }
         }
@@ -159,6 +161,7 @@ class GalleryController extends Controller
         $gallery_name = $request->gallery_name;
         $gallery = Gallery::find($gallery_id);
         $gallery->name = $gallery_name;
+        $gallery->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
         $gallery->save();
     }
 
@@ -182,6 +185,7 @@ class GalleryController extends Controller
             $gallery = Gallery::find($gallery_id);
             unlink('uploads/gallery/' . $gallery->images);
             $gallery->images = $new_image;
+            $gallery->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
             $gallery->save();
         }
     }

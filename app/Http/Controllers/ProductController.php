@@ -12,6 +12,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Gallery;
+use App\Models\Rating;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 
@@ -45,7 +46,7 @@ class ProductController extends Controller
         // $category = Category::pluck ('category_name', 'category_id');
         // $brand = Brand::pluck ('brand_name', 'brand_id');
         $all_product = Product::with('category', 'brand')->orderby('product_id', 'desc')->get();
-        
+
         $path = public_path() . "/json/";
         if (!is_dir($path)) {
             mkdir($path, 0777, true);
@@ -247,5 +248,24 @@ class ProductController extends Controller
         $product->delete();
         Session::put('message', 'Xóa sản phẩm thành công');
         return back();
+    }
+
+    //them danh gia vao csdl
+    public function insert_rating(Request $request)
+    {
+        $data = $request->all();
+        $ip_rating = $request->ip();
+
+        $rating_count = Rating::where('product_id', $data['product_id'])->where('ip_rating', $ip_rating)->count();
+        if ($rating_count > 0) {
+            echo 'exist';
+        } else {
+            $rating = new Rating();
+            $rating->product_id = $data['product_id'];
+            $rating->rating = $data['index'];
+            $rating->ip_rating = $ip_rating;
+            $rating->save();
+            echo 'done';
+        }
     }
 }
