@@ -40,12 +40,12 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Giá sản phẩm</label>
-                                <input type="text" name="product_price" class="form-control" id="exampleInputEmail1"
+                                <input type="text" name="product_price" class="form-control"
                                     value="{{ $edit_product->product_price }}">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Số lượng sản phẩm</label>
-                                <input type="text" name="product_quantity" class="form-control" id="exampleInputEmail1"
+                                <input type="text" name="product_quantity" class="form-control"
                                     value="{{ $edit_product->product_quantity }}">
                             </div>
                             <div class="form-group">
@@ -59,7 +59,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Hình ảnh sản phẩm</label>
-                                <input type="file" name="product_image" class="form-control" id="exampleInputEmail1">
+                                <input type="file" name="product_image" class="form-control">
                                 <img src="{{ URL::to('uploads/product/' . $edit_product->product_image) }}" height="100"
                                     width="100">
                             </div>

@@ -40,16 +40,16 @@
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Giá tiền</label>
                                 <input type="text" data-validation="number" name="product_price" class="form-control"
-                                    id="exampleInputEmail1" placeholder="Giá sản phẩm" required autocomplete="off">
+                                     placeholder="Giá sản phẩm" required autocomplete="off">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Số lượng sản phẩm</label>
                                 <input type="text" data-validation="number" name="product_quantity" class="form-control"
-                                    id="exampleInputEmail1" placeholder="Số lượng sản phẩm" required autocomplete="off">
+                                     placeholder="Số lượng sản phẩm" required autocomplete="off">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Tiêu đề</label>
-                                <input type="text" name="product_title" class="form-control" id="exampleInputEmail1"
+                                <input type="text" name="product_title" class="form-control" 
                                     placeholder="title sản phẩm" required autocomplete="off">
                             </div>
                             <div class="form-group">
@@ -58,17 +58,17 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Hình Ảnh</label>
-                                <input type="file" name="product_image" class="form-control" id="exampleInputEmail1"
+                                <input type="file" name="product_image" class="form-control" 
                                     required>
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Mô tả</label>
-                                <textarea id="editor" style="resize: none" rows="8" class="form-control" name="product_desc"
+                                <textarea id="editor_desc" style="resize: none" rows="8" class="form-control" name="product_desc"
                                     placeholder="Mô tả sản phẩm" required autocomplete="off"> </textarea>
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Nội dung sản phẩm</label>
-                                <textarea style="resize: none" rows="8" class="form-control" name="product_content" id=""
+                                <textarea id="editor_content" style="resize: none" rows="8" class="form-control" name="product_content"
                                     placeholder="Nội dung sản phẩm" required autocomplete="off"> </textarea>
                             </div>
                             <div class="form-group">

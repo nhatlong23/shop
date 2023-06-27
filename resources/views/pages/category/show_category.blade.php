@@ -15,6 +15,49 @@
             <h2 class="title text-center">{{ $name->category_name }}</h2>
         @endforeach
 
+        <div class="row">
+            <div class="col-md-4">
+                <label for="amount">Sắp xếp theo</label>
+                <form>
+                    @php
+                        $url = Request::url();
+                        $sort_by = request()->input('sort_by');
+                    @endphp
+                    @csrf
+                    <select name="sort" id="sort" class="from-control">
+                        <option value="{{ $url }}?sort_by=none" {{ $sort_by == 'none' ? 'selected' : '' }}>
+                            ---Lọc---</option>
+                        <option value="{{ $url }}?sort_by=tang_dan" {{ $sort_by == 'tang_dan' ? 'selected' : '' }}>
+                            ---Giá tăng dần---</option>
+                        <option value="{{ $url }}?sort_by=giam_dan" {{ $sort_by == 'giam_dan' ? 'selected' : '' }}>
+                            ---Giá giảm dần---</option>
+                        <option value="{{ $url }}?sort_by=kytu_az" {{ $sort_by == 'kytu_az' ? 'selected' : '' }}>
+                            ---A đến Z---</option>
+                        <option value="{{ $url }}?sort_by=kytu_za" {{ $sort_by == 'kytu_za' ? 'selected' : '' }}>
+                            ---Z đến A---</option>
+                    </select>
+                </form>
+            </div>
+            <div class="col-md-4">
+                <label for="amount">Lọc giá theo</label>
+                <form>
+                    @csrf
+                    <div class="price-range-slider">
+                        <div id="slider-range" class="range-bar"></div>
+                        <div>
+                            <p class="range-value"> <input type="text" id="amount_start" readonly
+                                    style="border: 0; font-weight:bold"></p>
+                            <p class="range-value"> <input type="text" id="amount_end" readonly
+                                    style="border: 0; font-weight:bold"></p>
+                        </div>
+                        <input type="hidden" name="start_price" id="start_price">
+                        <input type="hidden" name="end_price" id="end_price">
+                        <input type="submit" name="filter_price" value="Lọc giá" class="btn btn-default">
+                    </div>
+                </form>
+            </div>
+        </div>
+
         @foreach ($category_by_slug as $key => $product)
             <a href="{{ asset('detail-product/' . $product->slug) }}">
                 <div class="col-sm-4">

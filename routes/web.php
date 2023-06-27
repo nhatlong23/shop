@@ -37,6 +37,7 @@ Route::post('/quickview', [HomeController::class, 'quickview']);
 Route::post('/load-comment', [HomeController::class, 'load_comment']);
 Route::post('/send-comment', [HomeController::class, 'send_comment']);
 Route::post('/insert-rating', [ProductController::class, 'insert_rating']);
+Route::get('/lien-he',[HomeController::class, 'contact']);
 
 Route::get('/category-product/{slug}', [HomeController::class, 'show_category_home']);
 Route::get('/brand-product/{slug}', [HomeController::class, 'show_brand_home']);
@@ -104,6 +105,8 @@ Route::get('/unactive-category-product/{category_product_id}',[CategoryProduct::
 Route::get('/active-category-product/{category_product_id}',[CategoryProduct::class, 'active_category_product']);
 Route::post('/save-category-product',[CategoryProduct::class, 'save_category_product']);
 Route::post('/update-category-product/{category_product_id}', [CategoryProduct::class, 'update_category_product']);
+Route::post('/tabs-product',[CategoryProduct::class, 'tabs_product']);
+
 //import-export csv
 Route::post('/import',[CategoryProduct::class, 'import_csv']);
 Route::post('/export',[CategoryProduct::class, 'export_csv']);
