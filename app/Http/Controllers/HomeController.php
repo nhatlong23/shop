@@ -21,7 +21,12 @@ class HomeController extends Controller
         $slider = Slider::orderBy('slider_id', 'DESC')->where('slider_status', '1')->take(4)->get();
         $newProducts = Product::where('created_at', '>=', now()->subDays(30))->where('product_status', 1)->inRandomOrder()->limit(10)->get();
         $recommended = Product::where('product_status', 1)->where('product_sold', '>', 5)->inRandomOrder()->limit(10)->get();
-        return view('pages.home', compact('slider', 'newProducts', 'recommended'));
+        $category_tabs = Category::where('category_status', '1')->where('category_parent', '<>', 0)->orderBy('category_id', 'desc')->get();
+        return view('pages.home', compact('slider', 'newProducts', 'recommended', 'category_tabs'));
+    }
+    public function contact()
+    {
+        return view('pages.contact.index');
     }
 
     public function search(Request $request)
@@ -53,13 +58,49 @@ class HomeController extends Controller
     public function show_category_home($slug)
     {
         $cate_slug = Category::where('slug', $slug)->first();
+        if (!$cate_slug) {
+            // Handle case where category with given slug doesn't exist
+            return view('404');
+        }
         $meta_title = $cate_slug->category_name;
         $meta_description = $cate_slug->category_desc;
         $category_name = Category::where('category_status', '1')->where('slug', $slug)->limit(1)->get();
 
-        $category_by_slug = Product::with('category', 'brand')->where('product_status', '1')->where('category_id', $cate_slug->category_id)->get();
+       
+        $category_by_slug = [];
+
+        if (isset($_GET['sort_by'])) {
+            $sort_by = $_GET['sort_by'];
+            if ($sort_by == 'giam_dan') {
+                $category_by_slug = Product::with('category')->where('category_id', $cate_slug->category_id)
+                    ->where('product_status', '1')->orderBy('product_price', 'DESC')->paginate(12)->appends(request()->query());
+            } elseif ($sort_by == 'tang_dan') {
+                $category_by_slug = Product::with('category')->where('category_id', $cate_slug->category_id)
+                    ->where('product_status', '1')->orderBy('product_price', 'ASC')->paginate(12)->appends(request()->query());
+            } elseif ($sort_by == 'kytu_za') {
+                $category_by_slug = Product::with('category')->where('category_id', $cate_slug->category_id)
+                    ->where('product_status', '1')->orderBy('product_name', 'DESC')->paginate(12)->appends(request()->query());
+            } elseif ($sort_by == 'kytu_az') {
+                $category_by_slug = Product::with('category')->where('category_id', $cate_slug->category_id)
+                    ->where('product_status', '1')->orderBy('product_name', 'ASC')->paginate(12)->appends(request()->query());
+            } elseif ($sort_by == 'none') {
+                $category_by_slug = Product::with('category')->where('category_id', $cate_slug->category_id)
+                    ->where('product_status', '1')->paginate(12)->appends(request()->query());
+            } elseif (isset($_GET['start_price']) && $_GET(['end_price'])) {
+                $min_price = $_GET['start_price'];
+                $max_price = $_GET['end_price'];
+
+                $category_by_slug = Product::with('category')->whereBetween('product_price', [$min_price, $max_price])
+                    ->where('product_status', '1')->paginate(12)->appends(request()->query());
+            }
+        } else {
+            $category_by_slug = Product::with('category')->where('category_id', $cate_slug->category_id)
+                ->where('product_status', '1')->paginate(12)->appends(request()->query());
+        }
+
         return view('pages.category.show_category', compact('category_by_slug', 'category_name', 'meta_title', 'meta_description'));
     }
+
 
     public function show_brand_home($slug)
     {

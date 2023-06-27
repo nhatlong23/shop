@@ -107,7 +107,7 @@ class CategoryProduct extends Controller
         $this->AuthLogin();
         $subcategory = Category::orderBy('category_id', 'desc')->get();
         $edit_category_product = Category::where('category_id', $category_product_id)->get();
-        return view('admin.category.edit_category_product', compact('edit_category_product','subcategory'));
+        return view('admin.category.edit_category_product', compact('edit_category_product', 'subcategory'));
     }
 
     public function update_category_product(Request $request, $category_product_id)
@@ -135,7 +135,7 @@ class CategoryProduct extends Controller
                 'category_status.required' => 'Trạng thái danh mục không được để trống',
             ]
         );
-        
+
         $category = Category::find($category_product_id);
         $category->category_name = $data['category_name'];
         $category->slug = $data['slug'];
@@ -145,7 +145,7 @@ class CategoryProduct extends Controller
         $category->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
         $category->save();
         Session::put('message', 'Cập nhật danh mục sản phẩm thành công');
-        
+
         return redirect::to('all-category-product');
     }
 
@@ -164,5 +164,34 @@ class CategoryProduct extends Controller
 
     public function import_csv()
     {
+    }
+    public function tabs_product(Request $request)
+    {
+        $data = $request->all();
+        $output = '';
+        $product = Product::where('category_id', $data['cate_id'])->orderBy('product_id', 'desc')->limit(4)->get();
+        $product_count = $product->count();
+        if ($product_count > 0) {
+            foreach ($product as $key => $pro) {
+                $output .= '
+                    <div class="col-sm-3">
+                        <div class="product-image-wrapper">
+                            <div class="single-products">
+                                <div class="productinfo text-center"> 
+                                    <img src="' . asset('uploads/product/' . $pro->product_image) . '" alt="" />
+                                    <h2>' . number_format($pro->product_price) . ' VNĐ</h2>
+                                    <p>' . $pro->product_name . '</p>
+                                    <a href="#" class="btn btn-default add-to-cart"><i
+                                            class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ';
+            }
+        } else {
+            $output = '<h2>Không có sản phẩm nào</h2>';
+        }
+        echo $output;
     }
 }

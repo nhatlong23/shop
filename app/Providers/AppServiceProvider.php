@@ -7,6 +7,7 @@ use App\Models\Info;
 use Illuminate\Support\Facades\View;
 use App\Models\Category;
 use App\Models\Brand;
+use App\Models\Product;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,6 +33,10 @@ class AppServiceProvider extends ServiceProvider
         $meta_description = $info->info_desc;
         $meta_image = '';
         $meta_url = url()->current();
+        $min_price = Product::min('product_price');
+        $max_price = Product::max('product_price');
+        // $min_price_range = $min_price + 50000;
+        // $max_price_range = $max_price + 1000000;
 
         $category = Category::where('category_status', '1')->orderby('category_id', 'asc')->get();
         $brand = Brand::where('brand_status', '1')->orderby('brand_id', 'asc')->get();
@@ -43,6 +48,10 @@ class AppServiceProvider extends ServiceProvider
             'meta_url' => $meta_url,
             'category' => $category,
             'brand' => $brand,
+            'min_price' => $min_price,
+            'max_price' => $max_price,
+            // 'min_price_range' => $min_price_range,
+            // 'max_price_range' => $max_price_range,
         ];
         View::share($data);
     }

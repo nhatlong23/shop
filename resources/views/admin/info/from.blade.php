@@ -38,12 +38,20 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Mô tả website</label>
-                                <input type="text" data-validation="number" name="info_desc" class="form-control"
-                                    value="{{ $info->info_desc }}" placeholder="Mô tả website" required autocomplete="off">
+                                <textarea type="text" name="info_desc" class="form-control" id="editor_desc"
+                                    placeholder="Mô tả website" required autocomplete="off"> {{ $info->info_desc }}
+                                </textarea>
                             </div>
                             <div class="form-group">
+                                <label for="exampleInputEmail1">Map website</label>
+                                <textarea type="text" style="resize: none" rows="8" name="info_map" class="form-control" placeholder="Map website" required autocomplete="off">
+                                    {{ $info->info_map }}
+                                </textarea>
+                            </div>
+                            
+                            <div class="form-group">
                                 <label for="exampleInputEmail1">Logo Wedsite</label>
-                                <input type="file" name="info_logo" class="form-control" required>
+                                <input type="file" name="info_logo" class="form-control">
                                 <img src="{{ asset('uploads/logo/' . $info->info_logo) }}" width="150">
                             </div>
                             <button type="submit" class="btn btn-info">Cập nhật</button>

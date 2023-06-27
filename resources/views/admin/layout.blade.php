@@ -880,11 +880,18 @@
     </script>
     <script>
         ClassicEditor
-            .create(document.querySelector('#editor_desc'))
-        ClassicEditor
-            .create(document.querySelector('#editor_content'))
-        ClassicEditor
-            .create(document.querySelector('#editor_title'))
+            .create(document.querySelector('#editor_desc'), {
+
+                ckfinder: {
+                    // Upload the images to the server using the CKFinder QuickUpload command.
+                    uploadUrl: 'https://example.com/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images&responseType=json'
+                }
+            })
+            .then( /* ... */ )
+            .catch( /* ... */ );
+        ClassicEditor.create(document.querySelector('#editor_content'))
+        ClassicEditor.create(document.querySelector('#editor_title'))
+        ClassicEditor.create(document.querySelector('#editor_map'))
     </script>
 
     <script type="text/javascript">

@@ -127,22 +127,22 @@
 }
 
 .quickview {
-    background: #F5F5ED;
+    background: #f5f5ed;
     border: 0 none;
     border-radius: 0;
     color: #696763;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 15px;
     margin-bottom: 25px;
 }
 
 .quickview:hover {
-    background: #FE980F;
+    background: #fe980f;
     color: #fff;
 }
 
 .quickview:focus {
-    background: #FE980F;
+    background: #fe980f;
     color: #fff;
 }
 
@@ -184,3 +184,69 @@ p.quickview {
 span#product_quickview_content img {
     width: 100%;
 }
+ul.nav.nav-pills.nav-justified li {
+    text-align: center;
+    font-size: 13px;
+}
+.button_wishlist {
+    border: none;
+    background: #ffff;
+    color: #b3afa8;
+}
+ul.nav.nav-pills.nav-justified i {
+    color: #b3afa8;
+}
+.button_wishlist span:hover {
+    color: #fe980f;
+}
+.button_wishlist:focus {
+    border: none;
+    outline: none;
+}
+
+  
+  .price-range-slider {
+      width:100%;
+    float:left;
+    padding:10px 20px;
+      .range-value {
+          margin:0;
+          input {
+              width:100%;
+              background:none;
+              color: #000;
+              font-size: 16px;
+              font-weight: initial;
+              box-shadow: none;
+              border: none;
+              margin: 20px 0 20px 0;
+          }
+      }
+      
+      .range-bar {
+          border: none;
+          background: #000;
+          height: 3px;	
+          width: 96%;
+          margin-left: 8px;
+          
+          .ui-slider-range {
+              background:#06b9c0;
+          }
+          
+          .ui-slider-handle {
+              border:none;
+              border-radius:25px;
+              background:#fff;
+              border:2px solid #06b9c0;
+              height:17px;
+              width:17px;
+              top: -0.52em;
+              cursor:pointer;
+          }
+          .ui-slider-handle + span {
+              background:#06b9c0;
+          }
+      }
+  }
+  /*--- /.price-range-slider ---*/

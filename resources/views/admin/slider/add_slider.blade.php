@@ -24,7 +24,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Hình Ảnh</label>
-                                <input type="file" name="slider_image" class="form-control" id="exampleInputEmail1"
+                                <input type="file" name="slider_image" class="form-control" 
                                     required>
                             </div>
                             <div class="form-group">

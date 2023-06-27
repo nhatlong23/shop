@@ -26,7 +26,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Hình ảnh sản phẩm</label>
-                                <input type="file" name="slider_image" class="form-control" id="exampleInputEmail1">
+                                <input type="file" name="slider_image" class="form-control" >
                                 <img src="{{ URL::to('uploads/slider/' . $edit_slider->slider_image) }}" height="120"
                                     width="500">
                             </div>
