@@ -45,7 +45,7 @@
                     <div class="signup-form">
                         <!--sign up form-->
                         <h2>Đăng kí</h2>
-                        <form action="{{ URL::to('add-customer') }}" method="post">
+                        <form action="{{ URL::to('add-customer') }}" method="post" autocomplete="off">
                             @csrf
                             <input type="text" name="customer_name" placeholder="Họ và Tên" />
                             <input type="email" name="customer_email" placeholder="Nhập địa chỉ email" />

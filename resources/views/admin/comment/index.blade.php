@@ -14,6 +14,7 @@
                 }
                 ?>
                 <table class="table table-striped b-t b-light" id="myTable">
+                    @csrf
                     <thead>
                         <tr>
                             <th style="width:20px;">

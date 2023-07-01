@@ -24,7 +24,7 @@
                 @endif
                 <div class="panel-body">
                     <div class="position-center">
-                        <form role="form" action="{{ URL::to('update-product/' . $edit_product->product_id) }}"
+                        <form role="form" action="{{ asset('update-product/' . $edit_product->product_id) }}"
                             method="post" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <div class="form-group">
@@ -44,6 +44,11 @@
                                     value="{{ $edit_product->product_price }}">
                             </div>
                             <div class="form-group">
+                                <label for="exampleInputEmail1">Giá gốc</label>
+                                <input type="text" name="product_cost" class="form-control"
+                                    value="{{ $edit_product->product_cost }}">
+                            </div>
+                            <div class="form-group">
                                 <label for="exampleInputEmail1">Số lượng sản phẩm</label>
                                 <input type="text" name="product_quantity" class="form-control"
                                     value="{{ $edit_product->product_quantity }}">
@@ -58,9 +63,21 @@
                                     value="{{ $edit_product->product_tag }}">
                             </div>
                             <div class="form-group">
+                                <label for="exampleInputEmail1">Tài liệu sản phẩm</label>
+                                <input type="file" name="product_file" class="form-control">
+                                @if ($edit_product->product_file)
+                                    <p class="" >
+                                        <a target="_blank" href="{{asset('upload/file/'. $edit_product->product_file)}}">{{$edit_product->product_file}}</a>
+                                        <button onclick="return confirm('Are you sure you want to delete this item?');" type="submit" data-file_id="{{$edit_product->product_id}}" class="btn btn-danger btn-sm btn-delete-file"><i class="fa fa-times"></i></button>
+                                    </p>
+                                @else
+                                    <p class="text-danger">Chưa có tài liệu</p>
+                                @endif
+                            </div>
+                            <div class="form-group">
                                 <label for="exampleInputEmail1">Hình ảnh sản phẩm</label>
                                 <input type="file" name="product_image" class="form-control">
-                                <img src="{{ URL::to('uploads/product/' . $edit_product->product_image) }}" height="100"
+                                <img src="{{ asset('uploads/product/' . $edit_product->product_image) }}" height="100"
                                     width="100">
                             </div>
                             <div class="form-group">

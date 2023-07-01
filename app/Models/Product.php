@@ -18,9 +18,12 @@ class Product extends Model
         'product_quantity',
         'product_tag',
         'product_content',
+        'product_view',
         'slug',
         'product_price',
+        'product_cost',
         'product_image',
+        'product_file',
         'category_status',
     ];
     protected $primaryKey = 'product_id';

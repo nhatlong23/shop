@@ -13,6 +13,7 @@
                     Session::put('message', null);
                 }
                 ?>
+                <p><a href="{{asset('/send-coupon')}}" class="btn btn-default">Gửi đến khách  V.I.P</a></p>
                 <table class="table table-striped b-t b-light" id="myTable">
                     <thead>
                         <tr>

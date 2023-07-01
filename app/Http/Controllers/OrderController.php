@@ -10,6 +10,8 @@ use App\Models\Feeship;
 use App\Models\Customer;
 use App\Models\Coupon;
 use App\Models\Product;
+use App\Models\Statistics;
+use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrderController extends Controller
@@ -284,25 +286,44 @@ class OrderController extends Controller
     $order->order_status = $data['order_status'];
     $order->save();
 
-    if ($order->order_status == 2) {
-      foreach ($data['order_product_id'] as $key => $product_id) {
-        $product = Product::find($product_id);
-        $product_quantity = $product->product_quantity;
-        $product_sold = $product->product_sold;
+    // order date
+    $order_date = $order->order_date;
+    $statistic = Statistics::where('order_date', $order_date)->first();
+
+    if ($statistic) {
+      $statistic_count = $statistic->count();
+    } else {
+      $statistic_count = 0;
+    }
+
+    $total_order = 0;
+    $sales = 0;
+    $profit = 0;
+    $quantity = 0;
+
+    foreach ($data['order_product_id'] as $key => $product_id) {
+      $product = Product::find($product_id);
+      $product_quantity = $product->product_quantity;
+      $product_sold = $product->product_sold;
+
+      if ($order->order_status == 2) {
         foreach ($data['quantity'] as $key2 => $qty) {
           if ($key == $key2) {
             $pro_remain = $product_quantity - $qty;
             $product->product_quantity = $pro_remain;
             $product->product_sold = $product_sold + $qty;
             $product->save();
+
+            // update doanh thu
+            $quantity += $qty;
+            $total_order += 1;
+            $product_price = $product->product_price;
+            $product_cost = $product->product_cost;
+            $sales += $product_price * $qty;
+            $profit += $sales - ($product_cost * $qty);
           }
         }
-      }
-    } elseif ($order->order_status != 2 && $order->order_status != 3) {
-      foreach ($data['order_product_id'] as $key => $product_id) {
-        $product = Product::find($product_id);
-        $product_quantity = $product->product_quantity;
-        $product_sold = $product->product_sold;
+      } elseif (!in_array($order->order_status, [2, 3])) {
         foreach ($data['quantity'] as $key2 => $qty) {
           if ($key == $key2) {
             $pro_remain = $product_quantity + $qty;
@@ -313,7 +334,26 @@ class OrderController extends Controller
         }
       }
     }
+
+    // update statistic db
+    if ($statistic_count > 0) {
+      $statistic->sales = $statistic->sales + $sales;
+      $statistic->profit = $statistic->profit + $profit;
+      $statistic->quantity = $statistic->quantity + $quantity;
+      $statistic->total_order = $statistic->total_order + $total_order + 1;
+      $statistic->save();
+    } else {
+      $statistic_new = new Statistics();
+      $statistic_new->order_date = $order_date;
+      $statistic_new->sales = $sales;
+      $statistic_new->profit = $profit;
+      $statistic_new->quantity = $quantity;
+      $statistic_new->total_order = $total_order;
+      $statistic_new->save();
+    }
   }
+
+
 
   public function update_quantity_order(Request $request)
   {

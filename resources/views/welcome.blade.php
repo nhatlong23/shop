@@ -421,8 +421,169 @@
     {{-- <script src="{{ asset('backend/js/jquery-3.6.0.min.js') }}"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-    <script src="{{asset('frontend/js/simple.money.format.js')}}"></script>
+    <script src="{{ asset('frontend/js/simple.money.format.js') }}"></script>
 
+    <script style="text/javascrip">
+        $(document).ready(function() {
+            $('.send_order').click(function() {
+                const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger'
+                    },
+                    buttonsStyling: false
+                })
+
+                swalWithBootstrapButtons.fire({
+                    title: 'Xác nhận đơn hàng?',
+                    text: "Đơn hàng sẽ không đưuọc hoàn trả khi đặt,Bạn có muốn đặt không?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Cảm ơn,Mua hàng!',
+                    cancelButtonText: 'Không,Ở lại trang!',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var shipping_email = $('.shipping_email').val();
+                        var shipping_name = $('.shipping_name').val();
+                        var shipping_address = $('.shipping_address').val();
+                        var shipping_phone = $('.shipping_phone').val();
+                        var shipping_notes = $('.shipping_notes').val();
+                        var shipping_method = $('.payment_select').val();
+                        var order_coupon = $('.order_coupon').val();
+                        var order_fee = $('.order_fee').val();
+                        var _token = $('input[name="_token"]').val();
+
+                        $.ajax({
+                            url: '/confirm-order',
+                            method: 'POST',
+                            data: {
+                                _token: _token,
+                                shipping_email: shipping_email,
+                                shipping_name: shipping_name,
+                                shipping_address: shipping_address,
+                                shipping_phone: shipping_phone,
+                                shipping_notes: shipping_notes,
+                                shipping_method: shipping_method,
+                                order_coupon: order_coupon,
+                                order_fee: order_fee
+                            },
+                            success: function(data) {
+                                swalWithBootstrapButtons.fire(
+                                    'Đơn hàng!',
+                                    'Đơn hàng của bạn đã được gửi thành công.',
+                                    'success'
+                                )
+                                window.location.href = "{{ '/success-order' }}";
+                            }
+                        });
+                    } else if (
+                        result.dismiss === Swal.DismissReason.cancel
+                    ) {
+                        swalWithBootstrapButtons.fire(
+                            'Đóng',
+                            'Đơn hàng chưa được gửi,làm ơn hoàn tất đặt hàng :)',
+                            'error'
+                        )
+                    }
+                });
+
+            });
+        });
+    </script>
+    <script style="text/javascrip">
+        $(document).on('click', '.redirect-cart', function() {
+            window.location.href = "{{ '/cart' }}";
+        });
+    </script>
+    <script style="text/javascrip">
+        $(document).on('click', '.add-to-cart-quickview', function() {
+            var id = $(this).data('id_product');
+            var cart_product_id = $('.cart_product_id_' + id).val();
+            var cart_product_name = $('.cart_product_name_' + id).val();
+            var cart_product_image = $('.cart_product_image_' + id).val();
+            var cart_product_price = $('.cart_product_price_' + id).val();
+            var cart_product_qty = $('.cart_product_qty_' + id).val();
+            var cart_product_quantity = $('.cart_product_quantity_' + id).val();
+            var _token = $('input[name="_token"]').val();
+            if (parseInt(cart_product_qty) > parseInt(cart_product_quantity)) {
+                alert('Sản phẩm' + ' ' + cart_product_name + ' ' + 'chỉ còn' + ' ' +
+                    cart_product_quantity + ' ' + 'sản phẩm');
+            } else {
+                $.ajax({
+                    url: '/add-cart-ajax',
+                    method: 'POST',
+                    data: {
+                        _token: _token,
+                        cart_product_id: cart_product_id,
+                        cart_product_name: cart_product_name,
+                        cart_product_image: cart_product_image,
+                        cart_product_price: cart_product_price,
+                        cart_product_qty: cart_product_qty,
+                        cart_product_quantity: cart_product_quantity
+                    },
+                    beforeSend: function() {
+                        $('#beforesend_quickview').html(
+                            "<p class='text text-primary'>Đang thêm sản phẩm đã thêm vào giỏ hàng</p>"
+                        );
+                    },
+                    success: function(data) {
+                        $('#beforesend_quickview').html(
+                            "<p class='text text-primary'>Sản phẩm đã thêm vào giỏ hàng</p>");
+                        $('#buy_quickview').attr('disabled', true);
+                    }
+                });
+            }
+        })
+    </script>
+    <script style="text/javascrip">
+        $(document).ready(function() {
+            $('.add-to-cart').click(function() {
+                var id = $(this).data('id_product');
+                var cart_product_id = $('.cart_product_id_' + id).val();
+                var cart_product_name = $('.cart_product_name_' + id).val();
+                var cart_product_image = $('.cart_product_image_' + id).val();
+                var cart_product_price = $('.cart_product_price_' + id).val();
+                var cart_product_qty = $('.cart_product_qty_' + id).val();
+                var cart_product_quantity = $('.cart_product_quantity_' + id).val();
+                var _token = $('input[name="_token"]').val();
+                if (parseInt(cart_product_qty) > parseInt(cart_product_quantity)) {
+                    alert('Sản phẩm' + ' ' + cart_product_name + ' ' + 'chỉ còn' + ' ' +
+                        cart_product_quantity + ' ' + 'sản phẩm');
+                } else {
+                    $.ajax({
+                        url: '/add-cart-ajax',
+                        method: 'POST',
+                        data: {
+                            _token: _token,
+                            cart_product_id: cart_product_id,
+                            cart_product_name: cart_product_name,
+                            cart_product_image: cart_product_image,
+                            cart_product_price: cart_product_price,
+                            cart_product_qty: cart_product_qty,
+                            cart_product_quantity: cart_product_quantity
+                        },
+                        success: function(data) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thêm sản phẩm thành công',
+                                showCancelButton: true,
+                                confirmButtonText: 'Đi đến giỏ hàng!',
+                                cancelButtonText: 'Tiếp tục mua sắm!',
+                                timer: 5000, // thời gian chờ là 5000ms (5 giây)
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "{{ asset('/cart') }}";
+                                }
+                            })
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 
     <script style="text/javascrip">
         $(function() {

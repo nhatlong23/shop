@@ -38,19 +38,24 @@
                                     placeholder="slug" required autocomplete="off">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Giá tiền</label>
-                                <input type="text" data-validation="number" name="product_price" class="form-control"
-                                     placeholder="Giá sản phẩm" required autocomplete="off">
+                                <label for="exampleInputEmail1">Giá bán</label>
+                                <input type="text" data-validation="length" data-validation="min5" name="product_price" class="form-control money"
+                                    placeholder="Giá sản phẩm" required autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Giá gốc</label>
+                                <input type="text" data-validation="length" name="product_cost" class="form-control money1"
+                                    placeholder="Giá gốc" required autocomplete="off">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Số lượng sản phẩm</label>
                                 <input type="text" data-validation="number" name="product_quantity" class="form-control"
-                                     placeholder="Số lượng sản phẩm" required autocomplete="off">
+                                    placeholder="Số lượng sản phẩm" required autocomplete="off">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Tiêu đề</label>
-                                <input type="text" name="product_title" class="form-control" 
-                                    placeholder="title sản phẩm" required autocomplete="off">
+                                <input type="text" name="product_title" class="form-control" placeholder="title sản phẩm"
+                                    required autocomplete="off">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Tag</label>
@@ -58,8 +63,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Hình Ảnh</label>
-                                <input type="file" name="product_image" class="form-control" 
-                                    required>
+                                <input type="file" name="product_image" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Tài liệu</label>
+                                <input type="file" name="product_file" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Mô tả</label>

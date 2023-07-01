@@ -12,6 +12,7 @@ use App\Models\Gallery;
 use App\Models\Comment;
 use App\Models\Rating;
 use Carbon\Carbon;
+use App\Models\Visitors;
 use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
@@ -143,6 +144,10 @@ class HomeController extends Controller
         $rating = Rating::where('product_id', $product_id)->avg('rating');
         $rating = round($rating);
         $reviews = Rating::where('product_id', $product_id)->count();
+        //update views
+        $product = Product::where('product_id', $product_id)->first();
+        $product->product_views = $product->product_views + 1;
+        $product->save();
         return view('pages.detail.show_details', compact(
             'product_details',
             'related',
@@ -265,16 +270,5 @@ class HomeController extends Controller
         $comment->save();
     }
 
-    public function send_mail()
-    {
-        $to_name = "Long Nguyen";
-        $to_email = "nhatlong23568@gmail.com"; //send to this email
-        $data = array("name" => "Mail từ tài khoản khách hàng", "body" => "mail gửi về vấn đề hàng hóa");
-        Mail::send('pages.send_mail', $data, function ($message) use ($to_name, $to_email) {
-            $message->to($to_email)->subject('Test thử gửi mail');
-            $message->from($to_email, $to_name);
-        });
-
-        return redirect('/')->with('message', 'Gửi mail thành công');
-    }
+   
 }

@@ -21,8 +21,8 @@
                     <i class="fa fa-users"></i>
                 </div>
                 <div class="col-md-8 market-update-left">
-                    <h4>Users</h4>
-                    <h3>1,250</h3>
+                    <h4>Khách hàng</h4>
+                    <h3>{{$customer_count}}</h3>
                     <p>Other hand, we denounce</p>
                 </div>
                 <div class="clearfix"> </div>
@@ -34,7 +34,7 @@
                     <i class="fa fa-usd"></i>
                 </div>
                 <div class="col-md-8 market-update-left">
-                    <h4>Sales</h4>
+                    <h4>Lợi nhuận</h4>
                     <h3>1,500</h3>
                     <p>Other hand, we denounce</p>
                 </div>
@@ -47,8 +47,8 @@
                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                 </div>
                 <div class="col-md-8 market-update-left">
-                    <h4>Orders</h4>
-                    <h3>1,500</h3>
+                    <h4>Đơn hàng</h4>
+                    <h3>{{$order_count}}</h3>
                     <p>Other hand, we denounce</p>
                 </div>
                 <div class="clearfix"> </div>
@@ -64,21 +64,120 @@
                 <div class="agileinfo-grap">
                     <div class="agileits-box">
                         <header class="agileits-box-header clearfix">
-                            <h3>Visitor Statistics</h3>
+                            <h3>Thống kê đơn hàng</h3>
                             <div class="toolbar">
-
-
+                                <form>
+                                    @csrf
+                                    <div class="col-md-2">
+                                        <p>Từ ngày: <input type="text" id="datepicker" class="from-control"></p>
+                                        <input type="button" name="" id="btn-dashboard-filter"
+                                            class="btn btn-primary btn-sm" value="Lọc kết quả">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <p>Đến ngày: <input type="text" id="datepicker1" class="from-control"></p>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <p>Trạng thái:
+                                            <select id="dashboard_status" class="form-control">
+                                                <option value="">--Chọn--</option>
+                                                <option value="7day">7 ngày qua</option>
+                                                <option value="last_month">Tháng trước</option>
+                                                <option value="this_month">Tháng này</option>
+                                                <option value="365day">365 ngày qua</option>
+                                            </select>
+                                        </p>
+                                    </div>
+                                </form>
                             </div>
                         </header>
                         <div class="agileits-box-body clearfix">
-                            <div id="hero-area"></div>
+                            <div id="myfirstchart" style="height: 250px;"></div>
                         </div>
                     </div>
                 </div>
                 <!--//agileinfo-grap-->
-
             </div>
         </div>
+        <div class="panel-body">
+            <div class="col-md-12 w3ls-graph">
+                <!--agileinfo-grap-->
+                <div class="agileinfo-grap">
+                    <div class="agileits-box">
+                        <header class="agileits-box-header clearfix">
+                            <h3>Thống kê lượt truy cập</h3>
+                            <div class="toolbar">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-dark">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Đang online</th>
+                                                <th scope="col">Tổng tháng trước</th>
+                                                <th scope="col">Tổng tháng này</th>
+                                                <th scope="col">Tổng 1 năm</th>
+                                                <th scope="col">Tổng lượt truy cập</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>{{ $visitor_count }}</td>
+                                                <td>{{ $total_last_month }}</td>
+                                                <td>{{ $total_this_month }}</td>
+                                                <td>{{ $total_one_years }}</td>
+                                                <td>{{ $total_visitors }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </header>
+                    </div>
+                </div>
+                <!--//agileinfo-grap-->
+            </div>
+        </div>
+    </div>
+    <div class="agileits-w3layouts-stats">
+        <div class="col-md-4 stats-info widget">
+            <div class="stats-info-agileits">
+                <div class="stats-title">
+                    <h4 class="title">Thống kê tổng sản phẩm</h4>
+                </div>
+                <div class="stats-body">
+                    <div id="donut" style="height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 stats-info stats-last widget-shadow">
+            <div class="stats-last-agile">
+                <table class="table stats-table ">
+                    <thead>
+                        <tr>
+                            <th>S.NO</th>
+                            <th>Sản phẩm</th>
+                            <th>STATUS</th>
+                            <th>Lượt xem</th>
+                            <th>Bán chạy</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($product_view as $key => $product_views)
+                            <tr>
+                                <th scope="row">{{ $key + 1 }}</th>
+                                <td><a target="_blank" href="{{ asset('detail-product/' . $product_views->slug) }}">{{ $product_views->product_name }}</a></td>
+                                <td><span class="label label-success">In progress</span></td>
+                                <td>
+                                    <h5>{{ $product_views->product_views }} <i class="fa fa-level-up"></i></h5>
+                                </td>
+                                <td>
+                                    <h5>{{ $product_views->product_sold }} <i class="fa fa-level-up"></i></h5>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="clearfix"> </div>
     </div>
     <div class="agil-info-calendar">
         <!-- calendar -->
