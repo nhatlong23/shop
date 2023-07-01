@@ -15,6 +15,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\MailController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -82,7 +84,10 @@ Route::post('/calculate-fee', [DeliveryController::class, 'calculate_fee']);
 Route::get('/unset-fee', [DeliveryController::class, 'unset_fee']);
 
 //send mail
-Route::get('/send-mail', [HomeController::class, 'send_mail']);
+Route::get('/send-mail', [MailController::class, 'send_mail']);
+Route::get('/send-coupon', [MailController::class, 'send_coupon']);
+Route::get('/mail-example', [MailController::class, 'mail_example']);
+
 //login-facebook
 Route::get('/login-facebook', [AdminController::class, 'login_facebook']);
 Route::get('/admin/callback', [AdminController::class, 'callback_facebook']);
@@ -130,6 +135,7 @@ Route::group(['middleware' => 'roles'], function () {
     Route::get('/active-product/{product_id}', [ProductController::class, 'active_product']);
     Route::post('/save-product', [ProductController::class, 'save_product']);
     Route::post('/update-product/{product_id}', [ProductController::class, 'update_product']);
+    Route::post('/delete-file', [ProductController::class, 'delete_file']);
 });
 //backend order
 Route::get('/manage-order', [CheckoutController::class, 'manage_order']);
@@ -183,3 +189,25 @@ Route::group(['middleware' => 'roles'], function () {
     Route::get('/impersonate/{admin_id}', [UserController::class, 'impersonate']);
     Route::get('/impersonate-leave', [UserController::class, 'impersonate_leave']);
 });
+//statistical backend
+Route::post('/dashboard-filter', [AdminController::class, 'dashboard_filter']);
+Route::post('/dashboard-status', [AdminController::class, 'dashboard_status']);
+Route::post('/dashboard-30days-order', [AdminController::class, 'dashboard_30days_order']);
+
+//Upload File Document
+Route::get('/upload-file', [FileController::class, 'upload_file']);
+Route::get('/upload-image', [FileController::class, 'upload_image']);
+Route::get('/upload-video', [FileController::class, 'upload_video']);
+Route::get('/download-file/{path}/{name}', [FileController::class, 'download_file']);
+Route::get('/create-file', [FileController::class, 'create_file']);
+Route::get('/list-file', [FileController::class, 'list_file']);
+Route::get('/read-file', [FileController::class, 'read_file']);
+Route::get('/delete-file/{path}', [FileController::class, 'delete_file']);
+Route::get('/create-forded', [FileController::class, 'create_forded']);
+Route::get('/rename-forded', [FileController::class, 'rename_forded']);
+Route::get('/delete-forded', [FileController::class, 'delete_forded']);
+Route::resource('document', FileController::class);
+
+
+
+

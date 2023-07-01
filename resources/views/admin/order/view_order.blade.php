@@ -269,11 +269,11 @@
                                             <select class="form-control order_details">
                                                 <option value="">----------------Chọn hình thức đơn
                                                     hàng--------------</option>
-                                                <option id="{{ $or->order_id }}" value="1">Đơn hàng đang chờ xử lý
+                                                <option disabled id="{{ $or->order_id }}" value="1">Đơn hàng đang chờ xử lý
                                                 </option>
                                                 <option id="{{ $or->order_id }}" selected value="2">Đã xử lý-Đã giao
                                                     hàng</option>
-                                                <option id="{{ $or->order_id }}" value="3">Hủy đơn hàng- Tạm giữ
+                                                <option disabled id="{{ $or->order_id }}" value="3">Hủy đơn hàng- Tạm giữ
                                                 </option>
                                             </select>
                                         </form>

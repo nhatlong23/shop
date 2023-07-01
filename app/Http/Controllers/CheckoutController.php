@@ -47,15 +47,14 @@ class CheckoutController extends Controller
     {
         $data = $request->validate(
             [
-                'customer_name' => 'required|unique:tbl_customers,customer_name|max:25',
+                'customer_name' => 'required|max:25',
                 'customer_phone' => 'required|unique:tbl_customers,customer_phone|max:25',
                 'customer_email' => 'required|unique:tbl_customers,customer_email|max:25',
-                'customer_password' => 'required|min:6|max:20|confirmed',
+                'customer_password' => 'required|min:6|confirmed',
 
             ],
             [
                 'customer_name.required' => 'Tên không được để trống',
-                'customer_name.unique' => 'Tên đã tồn tại',
                 'customer_name.max' => 'Tên không được vượt quá 25 ký tự',
                 'customer_phone.required' => 'Số điện thoại không được để trống',
                 'customer_phone.unique' => 'Số điện thoại đã tồn tại',
@@ -65,7 +64,6 @@ class CheckoutController extends Controller
                 'customer_email.max' => 'Email không được vượt quá 25 ký tự',
                 'customer_password.required' => 'Mật khẩu không được để trống',
                 'customer_password.min' => 'Mật khẩu phải có ít nhất 6 ký tự',
-                'customer_password.max' => 'Mật khẩu không được vượt quá 20 ký tự',
                 'customer_password.confirmed' => 'Mật khẩu không trùng khớp',
             ]
         );
@@ -164,7 +162,7 @@ class CheckoutController extends Controller
     {
         $data = $request->all();
         $email = $data['email_account'];
-        $password = md5($data['password_account']);
+        $password = bcrypt($data['password_account']);
         $result = Customer::where('customer_email', $email)->where('customer_password', $password)->first();
         if ($result) {
             Session::put('customer_id', $result->customer_id);
@@ -195,6 +193,7 @@ class CheckoutController extends Controller
         $order->shipping_id = $shipping_id;
         $order->order_status = 1;
         $order->order_code = $checkout_code;
+        $order->order_date = Carbon::now('Asia/Ho_Chi_Minh');
         $order->created_at = Carbon::now('Asia/Ho_Chi_Minh');
         $order->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
         $order->save();

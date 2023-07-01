@@ -34,7 +34,7 @@ class AuthController extends Controller
 
         $admin = new Admin();
         $admin->admin_email = $request->admin_email;
-        $admin->admin_password = md5($request->admin_password);
+        $admin->admin_password = bcrypt($request->admin_password);
         $admin->admin_name = $request->admin_name;
         $admin->admin_phone = $request->admin_phone;
         $admin->created_at = Carbon::now('Asia/Ho_Chi_Minh');

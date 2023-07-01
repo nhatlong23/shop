@@ -24,8 +24,10 @@
                             <th>Tên Sản Phẩm</th>
                             <th>Slug</th>
                             <th>Tag</th>
-                            <th>Giá</th>
+                            <th>Giá bán</th>
+                            <th>Giá gốc</th>
                             <th>Title</th>
+                            <th>Tài liệu</th>
                             <th>Hình Ảnh</th>
                             <th>Gallery</th>
                             <th>Số lượng</th>
@@ -47,7 +49,10 @@
                                 <td>{{ substr($product->slug, 0, 5) }}</td>
                                 <td>{{ substr($product->product_tag, 0, 5) }}</td>
                                 <td>{{ $product->product_price }}</td>
+                                <td>{{ $product->product_cost }}</td>
                                 <td>{{ $product->product_title }}</td>
+                                <td><a target="_blank" href="{{ asset('uploads/file/' . $product->product_file) }}">{{ $product->product_file }}</a>
+                                </td>
                                 <td> <img src="uploads/product/{{ $product->product_image }}" height="100" width="100">
                                 </td>
                                 <td>
