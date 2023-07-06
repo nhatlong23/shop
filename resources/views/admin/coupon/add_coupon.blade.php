@@ -32,6 +32,16 @@
                                     placeholder="Nhập tên mã giảm giá">
                             </div>
                             <div class="form-group">
+                                <label>Ngày bắt đầu</label>
+                                <input type="text" name="coupon_start" id="coupon_start" class="form-control"
+                                    placeholder="Nhập ngày bắt đầu mã giảm giá">
+                            </div>
+                            <div class="form-group">
+                                <label>Ngày kết thúc</label>
+                                <input type="text" name="coupon_end" id="coupon_end" class="form-control"
+                                    placeholder="Nhập ngày kết thúc mã giảm giá">
+                            </div>
+                            <div class="form-group">
                                 <label>Mã giảm giá</label>
                                 <input type="text" name="coupon_code" class="form-control" placeholder="Nhập mã"
                                     autocomplete="off">

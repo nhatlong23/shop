@@ -111,14 +111,14 @@
                         </div>
                         <div class="btn-group pull-right">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-default dropdown-toggle usa"
-                                    data-toggle="dropdown">
-                                    USA
+                                <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
+                                    Ngôn ngữ
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Canada</a></li>
-                                    <li><a href="#">UK</a></li>
+                                    <li><a href="{{asset('lang/vi')}}">Tiếng việt</a></li>
+                                    <li><a href="{{asset('lang/en')}}">Tiếng Anh</a></li>
+                                    <li><a href="{{asset('lang/cn')}}">Tiếng Trung</a></li>
                                 </ul>
                             </div>
 
@@ -138,45 +138,45 @@
                     <div class="col-sm-8">
                         <div class="shop-menu pull-right">
                             <ul class="nav navbar-nav">
-                                <li><a href=""><i class="fa fa-user"></i> Tài khoản</a></li>
-                                <?php
-								$customer_id = Session::get('customer_id');
-                                $shipping_id = Session::get('shipping_id');
-								if($customer_id != NULL && $shipping_id == NULL) {
-								?>
-                                <li><a href="{{ asset('checkout') }}"><i class="fa fa-crosshairs"></i> Thanh
-                                        Toán</a></li>
-                                <?php
-								} elseif($customer_id != NULL && $shipping_id != NULL) {
-								?>
-                                <li><a href="{{ asset('payment') }}"><i class="fa fa-crosshairs"></i> Thanh
-                                        Toán</a>
+                                <li>
+                                    <a href=""><i class="fa fa-user"></i> Tài khoản</a>
                                 </li>
-                                <?php
-								}else{
-								?>
-                                <li><a href="{{ asset('login-checkout') }}"><i class="fa fa-crosshairs"></i> Thanh
-                                        Toán</a></li>
-                                <?php
-                                }
-                                ?>
-                                <li><a href="#"><i class="fa fa-star"></i> Yêu Thích</a></li>
-                                <li><a href="{{ asset('cart/') }}"><i class="fa fa-shopping-cart"></i> Giỏ
-                                        Hàng</a></li>
-                                <?php
-								$customer_id = Session::get('customer_id');
-								if ($customer_id != NULL) {
-								?>
-                                <li><a href="{{ asset('logout-checkout/') }}"><i class="fa fa-lock"></i> Đăng
-                                        xuất</a></li>
-                                <?php
-								} else {
-								?>
-                                <li><a href="{{ asset('login-checkout/') }}"><i class="fa fa-lock"></i> Đăng
-                                        Nhập</a></li>
-                                <?php
-								}
-								?>
+                                @php
+                                    $customer_id = Session::get('customer_id');
+                                    $shipping_id = Session::get('shipping_id');
+                                @endphp
+                                @if ($customer_id != null && $shipping_id == null)
+                                    <li>
+                                        <a href="{{ asset('checkout') }}"><i class="fa fa-crosshairs"></i> Thanh
+                                            Toán</a>
+                                    </li>
+                                @else
+                                    <li>
+                                        <a href="{{ asset('login-checkout') }}"><i class="fa fa-crosshairs"></i>
+                                            Thanh Toán</a>
+                                    </li>
+                                @endif
+                                <li>
+                                    <a href="#"><i class="fa fa-star"></i> Yêu Thích</a>
+                                </li>
+                                <li>
+                                    <a href="{{ asset('cart') }}"><i class="fa fa-shopping-cart"></i> Giỏ Hàng</a>
+                                </li>
+                                @if ($customer_id != null)
+                                    <li>
+                                        <a href="{{ asset('history') }}"><i class="fa fa-lock"></i> Lịch sử đơn
+                                            hàng</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ asset('logout-checkout') }}"><i class="fa fa-lock"></i> Đăng
+                                            xuất</a>
+                                    </li>
+                                @else
+                                    <li>
+                                        <a href="{{ asset('login-checkout') }}"><i class="fa fa-lock"></i> Đăng
+                                            Nhập</a>
+                                    </li>
+                                @endif
                             </ul>
                         </div>
                     </div>
@@ -422,6 +422,158 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="{{ asset('frontend/js/simple.money.format.js') }}"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AeNIeyAOsi6FMxQM6YFQ0LPCoAffka3SUi9pr8ZvRGoWH-xHE17p6y7bVC_QtJx5Aw5Uk3jIUVH5Yb2v"> // Required. Replace YOUR_CLIENT_ID with your sandbox client ID.</script>
+    <script>
+        paypal.Buttons({
+          createOrder: function(data, actions) {
+            // This function sets up the details of the transaction, including the amount and line item details.
+            return actions.order.create({
+              purchase_units: [{
+                amount: {
+                  value: '0.01'
+                }
+              }]
+            });
+          }
+        }).render('#paypal-button-container');
+      </script>
+
+
+    <script style="text/javascrip">
+        $(document).ready(function() {
+            $("#email").blur(function() {
+                var email = $("#email").val();
+                if (IsEmail(email) == false) {
+                    $("#sign-up").attr("disabled", true);
+                    $("#popover-email").removeClass("hide");
+                } else {
+                    $("#popover-email").addClass("hide");
+                }
+            });
+            $("#password").keyup(function() {
+                var password = $("#password").val();
+                if (checkStrength(password) == false) {
+                    $("#sign-up").attr("disabled", true);
+                }
+            });
+            $("#confirm-password").blur(function() {
+                if ($("#password").val() !== $("#confirm-password").val()) {
+                    $("#popover-cpassword").removeClass("hide");
+                    $("#sign-up").attr("disabled", true);
+                } else {
+                    $("#popover-cpassword").addClass("hide");
+                }
+            });
+            $("#contact-number").blur(function() {
+                if ($("#contact-number").val().length != 10) {
+                    $("#popover-cnumber").removeClass("hide");
+                    $("#sign-up").attr("disabled", true);
+                } else {
+                    $("#popover-cnumber").addClass("hide");
+                    $("#sign-up").attr("disabled", false);
+                }
+            });
+            $("#sign-up").hover(function() {
+                if ($("#sign-up").prop("disabled")) {
+                    $("#sign-up").popover({
+                        html: true,
+                        trigger: "hover",
+                        placement: "below",
+                        offset: 20,
+                        content: function() {
+                            return $("#sign-up-popover").html();
+                        }
+                    });
+                }
+            });
+
+            function IsEmail(email) {
+                var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+                if (!regex.test(email)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+
+            function checkStrength(password) {
+                var strength = 0;
+
+                //If password contains both lower and uppercase characters, increase strength value.
+                if (password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)) {
+                    strength += 1;
+                    $(".low-upper-case").addClass("text-success");
+                    $(".low-upper-case i").removeClass("fa-file-text").addClass("fa-check");
+                    $("#popover-password-top").addClass("hide");
+                } else {
+                    $(".low-upper-case").removeClass("text-success");
+                    $(".low-upper-case i").addClass("fa-file-text").removeClass("fa-check");
+                    $("#popover-password-top").removeClass("hide");
+                }
+
+                //If it has numbers and characters, increase strength value.
+                if (password.match(/([a-zA-Z])/) && password.match(/([0-9])/)) {
+                    strength += 1;
+                    $(".one-number").addClass("text-success");
+                    $(".one-number i").removeClass("fa-file-text").addClass("fa-check");
+                    $("#popover-password-top").addClass("hide");
+                } else {
+                    $(".one-number").removeClass("text-success");
+                    $(".one-number i").addClass("fa-file-text").removeClass("fa-check");
+                    $("#popover-password-top").removeClass("hide");
+                }
+
+                //If it has one special character, increase strength value.
+                if (password.match(/([!,%,&,@,#,$,^,*,?,_,~])/)) {
+                    strength += 1;
+                    $(".one-special-char").addClass("text-success");
+                    $(".one-special-char i").removeClass("fa-file-text").addClass("fa-check");
+                    $("#popover-password-top").addClass("hide");
+                } else {
+                    $(".one-special-char").removeClass("text-success");
+                    $(".one-special-char i").addClass("fa-file-text").removeClass("fa-check");
+                    $("#popover-password-top").removeClass("hide");
+                }
+
+                if (password.length > 7) {
+                    strength += 1;
+                    $(".eight-character").addClass("text-success");
+                    $(".eight-character i").removeClass("fa-file-text").addClass("fa-check");
+                    $("#popover-password-top").addClass("hide");
+                } else {
+                    $(".eight-character").removeClass("text-success");
+                    $(".eight-character i").addClass("fa-file-text").removeClass("fa-check");
+                    $("#popover-password-top").removeClass("hide");
+                }
+
+                // If value is less than 2
+
+                if (strength < 2) {
+                    $("#result").removeClass();
+                    $("#password-strength").addClass("progress-bar-danger");
+
+                    $("#result").addClass("text-danger").text("Very Week");
+                    $("#password-strength").css("width", "10%");
+                } else if (strength == 2) {
+                    $("#result").addClass("good");
+                    $("#password-strength").removeClass("progress-bar-danger");
+                    $("#password-strength").addClass("progress-bar-warning");
+                    $("#result").addClass("text-warning").text("Week");
+                    $("#password-strength").css("width", "60%");
+                    return "Week";
+                } else if (strength == 4) {
+                    $("#result").removeClass();
+                    $("#result").addClass("strong");
+                    $("#password-strength").removeClass("progress-bar-warning");
+                    $("#password-strength").addClass("progress-bar-success");
+                    $("#result").addClass("text-success").text("Strength");
+                    $("#password-strength").css("width", "100%");
+
+                    return "Strong";
+                }
+            }
+        });
+    </script>
 
     <script style="text/javascrip">
         $(document).ready(function() {

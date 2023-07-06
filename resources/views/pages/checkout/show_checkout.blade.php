@@ -230,6 +230,7 @@
                         <option value="1">Qua tiền mặt</option>
                     </select>
                 </div>
+                <div id="paypal-button-container"></div>
             </div>
             <input class="btn btn-primary btn-sm send_order" type="button" name="send_order" value="Xác nhận đơn hàng">
         </div>

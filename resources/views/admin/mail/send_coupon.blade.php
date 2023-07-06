@@ -383,14 +383,14 @@
                     <table cellspacing="0" cellpadding="0" width="600" class="w320">
                         <tr>
                             <td class="header-lg">
-                                We miss you!
+                                Chúng tôi nhớ bạn!
                             </td>
                         </tr>
                         <tr>
                             <td class="free-text">
-                                We noticed you haven't been around for awhile and we wanted to say that we miss you.
-                                We've been working really hard to improve our services and selection and hope you will
-                                give us another visit.
+                                Chúng tôi nhận thấy bạn đã không ở đây một thời gian và chúng tôi muốn nói rằng chúng
+                                tôi nhớ bạn. Chúng tôi đã làm việc rất chăm chỉ để cải thiện dịch vụ và lựa chọn của
+                                mình và hy vọng bạn sẽ ghé thăm chúng tôi vào một dịp khác.
                             </td>
                         </tr>
                         <tr>
@@ -402,15 +402,22 @@
                                             <table cellpadding="0" cellspacing="0" width="100%">
                                                 <tr>
                                                     <td style="padding-bottom: 30px;">
-                                                        As a token of our appreciation, please accept this coupon code
-                                                        for <span
-                                                            style="font-weight:700; color: #ff6f6f; font-size: 18px;">40%
-                                                            off</span> your next purchase!
+                                                        Để tỏ lòng biết ơn của chúng tôi, vui lòng chấp nhận mã phiếu
+                                                        giảm giá này để được giảm giá
+                                                        <span
+                                                            style="font-weight:700; color: #ff6f6f; font-size: 18px;">
+                                                            @if ($coupon['coupon_condition'] == 1)
+                                                                {{ $coupon['coupon_number'] }} % off
+                                                            @else
+                                                                {{ number_format($coupon['coupon_number']), ',', '.' }}
+                                                                VNĐ off
+                                                            @endif
+                                                        </span> cho lần mua hàng tiếp theo của bạn!
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="code-block">
-                                                        Ax8Sp0023KL2
+                                                        {{ $coupon['coupon_code'] }}
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -446,7 +453,7 @@
                             <table cellpadding="0" cellspacing="0" width="100%">
                                 <tr>
                                     <td class="header-md">
-                                        Our newest offers!
+                                        Ưu đãi mới nhất của chúng tôi!
                                     </td>
                                 </tr>
                             </table>
@@ -576,9 +583,12 @@
                     <table cellspacing="0" cellpadding="0" width="600" class="w320">
                         <tr>
                             <td style="padding: 25px 0 25px">
-                                <strong>Awesome Inc</strong><br />
-                                1234 Awesome St <br />
-                                Wonderland <br /><br />
+                                <p>Website E-Shopper Inc.</p>
+                                <p>K103/6, Bình thái 1</p>
+                                <p>Cẩm Lệ, Đà nẵng</p>
+                                <p><strong>Mobile</strong>: +84 899 244 850</p>
+                                <p><strong>Fax</strong>: 1-714-252-0026</p>
+                                <p><strong>Email</strong>: info@e-shopperlongnguyen.com</p>
                             </td>
                         </tr>
                     </table>

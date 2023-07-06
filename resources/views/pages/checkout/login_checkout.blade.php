@@ -25,13 +25,16 @@
                     <div class="login-form">
                         <!--login form-->
                         <h2>Đăng nhập</h2>
-                        <form action="{{ URL::to('login-customer/') }}" method="post" enctype="multipart/form-data">
+                        <form action="{{ asset('login-customer/') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <input type="text" name="email_account" placeholder="Email" />
                             <input type="password" name="password_account" placeholder="password" />
                             <span>
                                 <input type="checkbox" class="checkbox">
                                 Ghi nhớ đăng nhập
+                            </span>
+                            <span>
+                                <a href="{{ asset('forgot-password') }}">Đổi mật khẩu</a>
                             </span>
                             <button type="submit" class="btn btn-default">Đăng nhập</button>
                         </form>

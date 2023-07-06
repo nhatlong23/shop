@@ -36,6 +36,8 @@ class CouponController extends Controller
             'coupon_code' => 'required|unique:tbl_coupon,coupon_code',
             'coupon_time' => 'required|alpha_num',
             'coupon_number' => 'required|alpha_num',
+            'coupon_start' => 'required|date',
+            'coupon_end' => 'required|date',
         ], [
             'coupon_name.required' => 'Tên mã giảm giá không được để trống',
             'coupon_name.unique' => 'Tên mã giảm giá đã tồn tại',
@@ -45,6 +47,10 @@ class CouponController extends Controller
             'coupon_time.alpha_num' => 'Số lượng mã phải là số',
             'coupon_number.required' => 'Số % hoặc tiền giảm không được để trống',
             'coupon_number.alpha_num' => 'Số % hoặc tiền giảm phải là số',
+            'coupon_start.required' => 'Ngày bắt đầu không được để trống',
+            'coupon_end.required' => 'Ngày kết thúc không được để trống',
+            'coupon_start.date' => 'Ngày bắt đầu không đúng định dạng',
+            'coupon_end.date' => 'Ngày kết thúc không đúng định dạng',
         ]);
 
         $coupon = new Coupon();
@@ -52,8 +58,10 @@ class CouponController extends Controller
         $coupon->coupon_code = $request->coupon_code;
         $coupon->coupon_time = $request->coupon_time;
         $coupon->coupon_number = $request->coupon_number;
+        $coupon->coupon_start  = $request->coupon_start;
+        $coupon->coupon_end = $request->coupon_end;
         $coupon->coupon_condition = $request->coupon_condition;
-        $coupon->created_at = Carbon::now();
+        $coupon->created_at = Carbon::now('Asia/Ho_Chi_Minh');
         $coupon->save();
         Session::put('message', 'Thêm mã giảm giá thành công');
         return redirect::to('/add-coupon');
@@ -63,7 +71,8 @@ class CouponController extends Controller
     {
         $this->AuthLogin();
         $coupon = Coupon::orderBy('coupon_id', 'DESC')->get();
-        return view('admin.coupon.all_coupon', compact('coupon'));
+        $today = Carbon::now('Asia/Ho_Chi_Minh');
+        return view('admin.coupon.all_coupon', compact('coupon','today'));
     }
 
     public function delete_coupon($coupon_id)
@@ -77,8 +86,8 @@ class CouponController extends Controller
     public function check_coupon(Request $request)
     {
         $data = $request->all();
-
-        $coupon = Coupon::where('coupon_code', $data['coupon'])->first();
+        $today = Carbon::now('Asia/Ho_Chi_Minh');
+        $coupon = Coupon::where('coupon_code', $data['coupon'])->where('coupon_status',1)->where('coupon_end','>=',$today)->first();
         if ($coupon) {
             $count_coupon = $coupon->count();
             if ($count_coupon > 0) {
@@ -105,7 +114,7 @@ class CouponController extends Controller
                 return redirect()->back()->with('message', 'Thêm mã giảm giá thành công');
             }
         } else {
-            return redirect()->back()->with('message', 'Mã giảm giá không tồn tại');
+            return redirect()->back()->with('message', 'Mã giảm giá không tồn tại,Hoặt mã đã hết hạn rồi bạn nhé :))');
         }
     }
     public function  unset_coupon(){
