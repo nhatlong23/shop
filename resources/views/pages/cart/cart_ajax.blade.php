@@ -71,12 +71,10 @@
                                 @endforeach
 
                                 <td>
-                                    <input class="btn btn-default check_out" type="submit" value="Cập nhật"
-                                        name="update_qty">
+                                    <input class="btn btn-default check_out" type="submit" value="Cập nhật" name="update_qty">
                                 </td>
                                 <td>
-                                    <a class="btn btn-default check_out" href="{{ URL::to('/delete-all-cart') }}">Xóa tất
-                                        cả</a>
+                                    <a class="btn btn-default check_out" href="{{ URL::to('/delete-all-cart') }}">Xóa tất cả</a>
                                 </td>
                             @endif
                         </tbody>

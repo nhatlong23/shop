@@ -396,8 +396,7 @@
     <!--[if !mso 9]><!-->
     <div
         style="display: none; overflow: hidden; line-height: 1px; max-height: 0px; max-width: 0px; opacity: 0; mso-hide: all;">
-        Chúng tôi đã nhận được đơn đặt hàng của bạn! Thế giới của bạn sắp trông đẹp hơn rất nhiều. Chúng tôi sẽ gửi cho
-        bạn một email khác khi đơn đặt hàng của bạn được vận chuyển.
+        Chúng tôi đã giao đơn hàng của bạn cho đơn vị vận chuyển! Thế giới của bạn sắp trông đẹp hơn rất nhiều.
     </div>
     <!--<![endif]-->
     <!-- BEGIN: CONTAINER -->
@@ -477,7 +476,7 @@
                                                                                         valign="top">
                                                                                         <h1 data-key="1468266_heading"
                                                                                             style="font-family: Georgia,serif,'Playfair Display'; font-size: 28px; line-height: 46px; font-weight: 700; color: #4b4b4b; text-transform: none; background-color: #ffffff; margin: 0;">
-                                                                                            Xác nhận đơn hàng
+                                                                                            Giao cho đơn vị vận chuyển
                                                                                         </h1>
                                                                                     </th>
                                                                                 </tr>
@@ -505,14 +504,7 @@
                                                                             align="center">
                                                                         </p>
                                                                         <p style="mso-line-height-rule: exactly; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,'Karla'; font-size: 16px; line-height: 26px; font-weight: 400; color: #666363; margin: 13px 0;"
-                                                                            align="center">Chúng tôi đã nhận được đơn
-                                                                            đặt hàng của bạn! Thế giới của bạn sắp trông
-                                                                            đẹp hơn rất nhiều.
-                                                                        </p>
-                                                                        <p style="mso-line-height-rule: exactly; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,'Karla'; font-size: 16px; line-height: 26px; font-weight: 400; color: #666363; margin: 13px 0;"
-                                                                            align="center">Chúng tôi sẽ gửi cho bạn một
-                                                                            email khác khi đơn đặt hàng của bạn được vận
-                                                                            chuyển.
+                                                                            align="center">Chúng tôi đã giao đơn hàng của bạn cho đơn vị vận chuyển! Thế giới của bạn sắp trông đẹp hơn rất nhiều.
                                                                         </p>
                                                                     </th>
                                                                 </tr>
@@ -732,12 +724,12 @@
                                                                                                                 @php
                                                                                                                     $total_after_coupon = ($total * $order_code_array['coupon_number']) / 100;
                                                                                                                     echo '-' . number_format($total_after_coupon, 0, ',', '.') . ' VNĐ (' . $order_code_array['coupon_number'] . '%)' . '<br>';
-                                                                                                                    $total_coupon = $total - $total_after_coupon + $shipping_array['fee_shipping'];
+                                                                                                                    $total_coupon = $total - $total_after_coupon + $shipping_array['fee_ship'];
                                                                                                                 @endphp
                                                                                                             @else
                                                                                                                 @php
                                                                                                                     echo '-' . number_format($order_code_array['coupon_number'], 0, ',', '.') . ' VNĐ' . '<br>';
-                                                                                                                    $total_coupon = $total - $order_code_array['coupon_number'] + $shipping_array['fee_shipping'];
+                                                                                                                    $total_coupon = $total - $order_code_array['coupon_number'] + $shipping_array['fee_ship'];
                                                                                                                 @endphp
                                                                                                             @endif
                                                                                                         @else
@@ -765,7 +757,7 @@
                                                                                                         align="right"
                                                                                                         bgcolor="#ffffff"
                                                                                                         valign="middle">
-                                                                                                        {{ number_format($shipping_array['fee_shipping'], 0, ',', '.') }}VNĐ
+                                                                                                        {{ number_format($shipping_array['fee_ship'], 0, ',', '.') }}VNĐ
                                                                                                     </th>
                                                                                                 </tr>
 
@@ -1055,6 +1047,9 @@
                                                                             cứ điều gì, vui lòng gửi email cho chúng tôi
                                                                             :)
                                                                         </p>
+                                                                        <p style="mso-line-height-rule: exactly; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,'Karla'; font-size: 16px; line-height: 26px; font-weight: 400; color: #666363; margin: 0;"
+                                                                            align="center">Xem lại lịch sử đơn hàng của bạn tại: <a target="_blank" href="{{asset('history')}}">Đây</a>
+                                                                        </p>
                                                                     </th>
                                                                 </tr>
                                                                 <!-- END SECTION: Closing Text -->
@@ -1260,7 +1255,7 @@
                                                                                                             style="text-align: center;">
                                                                                                         <br
                                                                                                             style="text-align: center;">
-                                                                                                        Copyright © 2018
+                                                                                                        Copyright © 2023
                                                                                                     </th>
                                                                                                 </tr>
                                                                                                 <!-- Store Address : END -->

@@ -311,7 +311,7 @@
                                 <span>Mã Giảm Giá</span>
                             </a>
                             <ul class="sub">
-                                <li><a href="{{ asset('/add-coupon') }}">Quản lí mã giảm giá</a></li>
+                                <li><a href="{{ asset('/add-coupon') }}">Thêm mã giảm giá</a></li>
                                 <li><a href="{{ asset('/all-coupon') }}">Liệt kê mã giảm giá</a></li>
                             </ul>
                         </li>
@@ -561,6 +561,26 @@
 
         });
     </script>
+
+    <script type="text/javascript">
+        $(function() {
+                $("#coupon_start").datepicker({
+                    prevText: "Tháng Trước",
+                    nextText: "Tháng Sau",
+                    dateFormat: "yy-mm-dd",
+                    dayNamesMin: ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ Nhật"],
+                    duration: "slow"
+                });
+                $("#coupon_end").datepicker({
+                    prevText: "Tháng Trước",
+                    nextText: "Tháng Sau",
+                    dateFormat: "yy-mm-dd",
+                    dayNamesMin: ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ Nhật"],
+                    duration: "slow"
+                });
+            });
+    </script>
+
     <script type="text/javascript">
         $('.btn-delete-file').click(function() {
             var product_id = $(this).data('file_id');

@@ -62,8 +62,9 @@ Route::get('/success-order', [CheckoutController::class, 'success_order']);
 Route::post('/add-customer', [CheckoutController::class, 'add_customer']);
 Route::post('/order-place', [CheckoutController::class, 'order_place']);
 Route::post('/login-customer', [CheckoutController::class, 'login_customer']);
+Route::get('/login-customer-google', [CheckoutController::class, 'login_customer_google']);
+Route::get('/customer/callback', [CheckoutController::class, 'callback_customer_google']);
 Route::get('/checkout', [CheckoutController::class, 'checkout']);
-Route::get('/payment', [CheckoutController::class, 'payment']);
 Route::post('/save-checkout-customer', [CheckoutController::class, 'save_checkout_customer']);
 Route::post('/confirm-order', [CheckoutController::class, 'confirm_order']);
 //coupon
@@ -85,8 +86,13 @@ Route::get('/unset-fee', [DeliveryController::class, 'unset_fee']);
 
 //send mail
 Route::get('/send-mail', [MailController::class, 'send_mail']);
+Route::get('/send-coupon-vip/{coupon_time}/{coupon_condition}/{coupon_number}/{coupon_code}', [MailController::class, 'send_coupon_vip'])->name('send-coupon-vip');
 Route::get('/send-coupon', [MailController::class, 'send_coupon']);
 Route::get('/mail-example', [MailController::class, 'mail_example']);
+Route::get('/forgot-password', [MailController::class, 'forgot_password']);
+Route::post('/reset-password', [MailController::class, 'reset_password']);
+Route::get('/update-new-password', [MailController::class, 'update_new_password']);
+Route::post('/reset-new-password', [MailController::class, 'reset_new_password']);
 
 //login-facebook
 Route::get('/login-facebook', [AdminController::class, 'login_facebook']);
@@ -146,6 +152,8 @@ Route::get('/view-order/{order_code}', [OrderController::class, 'view_order']);
 Route::get('/print-order/{checkout_code}', [OrderController::class, 'print_order']);
 Route::post('/update-order-status', [OrderController::class, 'update_order_status']);
 Route::post('/update-quantity-order', [OrderController::class, 'update_quantity_order']);
+Route::get('/history', [OrderController::class, 'history']);
+Route::get('/view-history-order/{order_code}', [OrderController::class, 'view_history_order']);
 
 //backend comment
 Route::resource('comment', CommentController::class);

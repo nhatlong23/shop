@@ -241,7 +241,7 @@
                                             <div
                                                 style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:16px;line-height:22px;text-align:center;color:#555;">
                                                 Please validate your email address in order to get started using
-                                                {{ Product }}.
+                                                Product
                                             </div>
 
                                         </td>

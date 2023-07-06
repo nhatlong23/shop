@@ -185,121 +185,106 @@
                                                 <tbody>
                                                     <tr>
                                                         <td style="width:64px;">
-
                                                             <img height="auto" src="https://i.imgur.com/KO1vcE9.png"
                                                                 style="border:0;display:block;outline:none;text-decoration:none;width:100%;"
                                                                 width="64" />
-
                                                         </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
-
                                         </td>
                                     </tr>
+                                    <tr></tr>
+                                    <td align="center"
+                                        style="font-size:0px;padding:10px 25px;padding-bottom:40px;word-break:break-word;">
+                                        <div
+                                            style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:38px;font-weight:bold;line-height:1;text-align:center;color:#555;">
+                                            Ối!
+                                        </div>
+                                    </td>
+                    </tr>
+                    <tr>
+                        <td align="center"
+                            style="font-size:0px;padding:10px 25px;padding-bottom:40px;word-break:break-word;">
+                            <div
+                                style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:18px;line-height:1;text-align:center;color:#555;">
+                                Có vẻ như bạn đã quên mật khẩu của mình.
+                            </div>
+                        </td>
+                    </tr>
 
+                    <tr>
+                        <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
+
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
+                                style="border-collapse:collapse;border-spacing:0px;">
+                                <tbody>
                                     <tr>
-                                        <td align="center"
-                                            style="font-size:0px;padding:10px 25px;padding-bottom:40px;word-break:break-word;">
-
-                                            <div
-                                                style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:38px;font-weight:bold;line-height:1;text-align:center;color:#555;">
-                                                Oops!
-                                            </div>
-
+                                        <td style="width:128px;">
+                                            <img height="auto" src="https://i.imgur.com/247tYSw.png"
+                                                style="border:0;display:block;outline:none;text-decoration:none;width:100%;"
+                                                width="128" />
                                         </td>
                                     </tr>
+                                </tbody>
+                            </table>
 
-                                    <tr>
-                                        <td align="center"
-                                            style="font-size:0px;padding:10px 25px;padding-bottom:40px;word-break:break-word;">
+                        </td>
+                    </tr>
 
-                                            <div
-                                                style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:18px;line-height:1;text-align:center;color:#555;">
-                                                It seems that you’ve forgotten your password.
-                                            </div>
+                    <tr>
+                        <td align="center"
+                            style="font-size:0px;padding:10px 25px;padding-top:30px;padding-bottom:50px;word-break:break-word;">
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
+                                style="border-collapse:separate;line-height:100%;">
+                                <tr>
+                                    <td align="center" bgcolor="#2F67F6" role="presentation"
+                                        style="border:none;border-radius:3px;color:#ffffff;cursor:auto;padding:15px 25px;"
+                                        valign="middle">
+                                        <a href="{{$data['body']}}"
+                                            style="background:#2F67F6;color:#ffffff;font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;font-weight:normal;line-height:120%;Margin:0;text-decoration:none;text-transform:none;">
+                                            Reset Password
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
 
-                                        </td>
-                                    </tr>
+                        </td>
+                    </tr>
 
-                                    <tr>
-                                        <td align="center"
-                                            style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                    <tr>
+                        <td align="center"
+                            style="font-size:0px;padding:10px 25px;padding-bottom:40px;word-break:break-word;">
 
-                                            <table align="center" border="0" cellpadding="0" cellspacing="0"
-                                                role="presentation"
-                                                style="border-collapse:collapse;border-spacing:0px;">
-                                                <tbody>
-                                                    <tr>
-                                                        <td style="width:128px;">
-
-                                                            <img height="auto" src="https://i.imgur.com/247tYSw.png"
-                                                                style="border:0;display:block;outline:none;text-decoration:none;width:100%;"
-                                                                width="128" />
-
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td align="center"
-                                            style="font-size:0px;padding:10px 25px;padding-top:30px;padding-bottom:50px;word-break:break-word;">
-
-                                            <table align="center" border="0" cellpadding="0" cellspacing="0"
-                                                role="presentation"
-                                                style="border-collapse:separate;line-height:100%;">
-                                                <tr>
-                                                    <td align="center" bgcolor="#2F67F6" role="presentation"
-                                                        style="border:none;border-radius:3px;color:#ffffff;cursor:auto;padding:15px 25px;"
-                                                        valign="middle">
-                                                        <p
-                                                            style="background:#2F67F6;color:#ffffff;font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;font-weight:normal;line-height:120%;Margin:0;text-decoration:none;text-transform:none;">
-                                                            Reset Password
-                                                        </p>
-                                                    </td>
-                                                </tr>
-                                            </table>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td align="center"
-                                            style="font-size:0px;padding:10px 25px;padding-bottom:40px;word-break:break-word;">
-
-                                            <div
-                                                style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:16px;line-height:20px;text-align:center;color:#7F8FA4;">
-                                                If you did not make this request, just ignore this email. Otherwise
-                                                please click the button above to reset your password.
-                                            </div>
-
-                                        </td>
-                                    </tr>
-
-                                </table>
-
+                            <div
+                                style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:16px;line-height:20px;text-align:center;color:#7F8FA4;">
+                                Nếu bạn không thực hiện yêu cầu này, chỉ cần bỏ qua email này. Nếu không, vui lòng nhấp
+                                vào nút ở trên để đặt lại mật khẩu của bạn.
                             </div>
 
-                            <!--[if mso | IE]>
+                        </td>
+                    </tr>
+
+            </table>
+
+        </div>
+
+        <!--[if mso | IE]>
             </td>
           
         </tr>
       
                   </table>
                 <![endif]-->
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        </td>
+        </tr>
+        </tbody>
+        </table>
 
-        </div>
+    </div>
 
 
-        <!--[if mso | IE]>
+    <!--[if mso | IE]>
           </td>
         </tr>
       </table>
@@ -312,14 +297,14 @@
       <![endif]-->
 
 
-        <div style="Margin:0px auto;max-width:600px;">
+    <div style="Margin:0px auto;max-width:600px;">
 
-            <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
-                style="width:100%;">
-                <tbody>
-                    <tr>
-                        <td style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;vertical-align:top;">
-                            <!--[if mso | IE]>
+        <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
+            style="width:100%;">
+            <tbody>
+                <tr>
+                    <td style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;vertical-align:top;">
+                        <!--[if mso | IE]>
                   <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                 
         <tr>
@@ -329,69 +314,69 @@
             >
           <![endif]-->
 
-                            <div class="mj-column-per-100 outlook-group-fix"
-                                style="font-size:13px;text-align:left;direction:ltr;display:inline-block;vertical-align:bottom;width:100%;">
+                        <div class="mj-column-per-100 outlook-group-fix"
+                            style="font-size:13px;text-align:left;direction:ltr;display:inline-block;vertical-align:bottom;width:100%;">
 
-                                <table border="0" cellpadding="0" cellspacing="0" role="presentation"
-                                    width="100%">
-                                    <tbody>
-                                        <tr>
-                                            <td style="vertical-align:bottom;padding:0;">
+                            <table border="0" cellpadding="0" cellspacing="0" role="presentation"
+                                width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td style="vertical-align:bottom;padding:0;">
 
-                                                <table border="0" cellpadding="0" cellspacing="0"
-                                                    role="presentation" width="100%">
+                                            <table border="0" cellpadding="0" cellspacing="0"
+                                                role="presentation" width="100%">
 
-                                                    <tr>
-                                                        <td align="center"
-                                                            style="font-size:0px;padding:0;word-break:break-word;">
+                                                <tr>
+                                                    <td align="center"
+                                                        style="font-size:0px;padding:0;word-break:break-word;">
 
-                                                            <div
-                                                                style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;font-weight:300;line-height:1;text-align:center;color:#575757;">
-                                                                Some Firm Ltd, 35 Avenue. City 10115, USA
-                                                            </div>
+                                                        <div
+                                                            style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;font-weight:300;line-height:1;text-align:center;color:#575757;">
+                                                            Some Firm Ltd, 35 Avenue. City 10115, USA
+                                                        </div>
 
-                                                        </td>
-                                                    </tr>
+                                                    </td>
+                                                </tr>
 
-                                                    <tr>
-                                                        <td align="center"
-                                                            style="font-size:0px;padding:10px;word-break:break-word;">
+                                                <tr>
+                                                    <td align="center"
+                                                        style="font-size:0px;padding:10px;word-break:break-word;">
 
-                                                            <div
-                                                                style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;font-weight:300;line-height:1;text-align:center;color:#575757;">
-                                                                <a href=""
-                                                                    style="color:#575757">Unsubscribe</a> from our
-                                                                emails
-                                                            </div>
+                                                        <div
+                                                            style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;font-weight:300;line-height:1;text-align:center;color:#575757;">
+                                                            <a href="" style="color:#575757">Unsubscribe</a>
+                                                            from our
+                                                            emails
+                                                        </div>
 
-                                                        </td>
-                                                    </tr>
+                                                    </td>
+                                                </tr>
 
-                                                </table>
+                                            </table>
 
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
 
-                            </div>
+                        </div>
 
-                            <!--[if mso | IE]>
+                        <!--[if mso | IE]>
             </td>
           
         </tr>
       
                   </table>
                 <![endif]-->
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-        </div>
+    </div>
 
 
-        <!--[if mso | IE]>
+    <!--[if mso | IE]>
           </td>
         </tr>
       </table>

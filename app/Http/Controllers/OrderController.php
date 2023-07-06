@@ -11,8 +11,10 @@ use App\Models\Customer;
 use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\Statistics;
+use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Session;
 
 class OrderController extends Controller
 {
@@ -286,6 +288,67 @@ class OrderController extends Controller
     $order->order_status = $data['order_status'];
     $order->save();
 
+    //send mail shipping
+    $order_date = Carbon::now('Asia/Ho_Chi_Minh');
+    if (isset($coupon)) {
+      $coupon_number = $coupon->coupon_number;
+      $coupon_condition = $coupon->coupon_condition;
+    } else {
+      // Không có mã giảm giá
+      $coupon_number = null;
+      $coupon_condition = 'Không có mã giảm giá';
+    }
+    $title_mail = "Đơn hàng của bạn đã được giao cho đơn vị vận chuyển: " . $order_date;
+    $customer = Customer::where('customer_id', $order->customer_id)->first();
+    $data['email'][] = $customer->customer_email;
+
+    //lay san pham
+    $cart_array = [];
+    foreach ($data['order_product_id'] as $key => $product) {
+      $product_mail = Product::find($product);
+      foreach ($data['quantity'] as $key2 => $qty) {
+        if ($key == $key2) {
+          $cart_array[] = array(
+            "product_image" => $product_mail['product_image'],
+            'product_name' => $product_mail['product_name'],
+            'product_price' => $product_mail['product_price'],
+            'product_qty' => $qty,
+          );
+        }
+      }
+    }
+
+    //lay shiping
+    $details = OrderDetails::where('order_code', $order->order_code)->first();
+    $fee_ship = $details->product_feeship;
+    $coupon_mail = $details->product_coupon;
+    $shipping = Shipping::where('shipping_id', $order->shipping_id)->first();
+
+    $shipping_array = array(
+      'fee_ship' => $fee_ship,
+      'customer_name' => $customer->customer_name,
+      'shipping_name' => $shipping['shipping_name'],
+      'shipping_phone' => $shipping['shipping_phone'],
+      'shipping_address' => $shipping['shipping_address'],
+      'shipping_email' => $shipping['shipping_email'],
+      'shipping_notes' => $shipping['shipping_notes'],
+      "shipping_method" => $shipping['shipping_method'],
+    );
+
+    //order_code, coupon code
+    $order_code_array = array(
+      "order_code" => $details->order_code,
+      "coupon_code" => $coupon_mail,
+      "order_date" => $order_date,
+      "coupon_number" => $coupon_number,
+      "coupon_condition" => $coupon_condition,
+    );
+
+    Mail::send('admin.mail.send_shipping', ['cart_array' => $cart_array, 'shipping_array' => $shipping_array, 'order_code_array' => $order_code_array], function ($message) use ($title_mail, $data) {
+      $message->to($data['email'])->subject($title_mail);
+      $message->from($data['email'], $title_mail);
+    });
+
     // order date
     $order_date = $order->order_date;
     $statistic = Statistics::where('order_date', $order_date)->first();
@@ -353,7 +416,46 @@ class OrderController extends Controller
     }
   }
 
+  public function history()
+  {
+    if (!Session::get('customer_id')) {
+      return redirect('login-checkout')->with('message', 'Bạn cần đăng nhập để xem lịch sử đơn hàng');
+    } else {
+      $customer_id = Session::get('customer_id');
+      $get_order = Order::where('customer_id', $customer_id)->orderBy('created_at', 'DESC')->paginate(5);
+      return view('pages.history.history', compact('get_order'));
+    }
+  }
 
+  public function view_history_order($order_code)
+  {
+      if (!Session::get('customer_id')) {
+          return redirect('login-checkout')->with('message', 'Bạn cần đăng nhập để xem lịch sử đơn hàng');
+      } else {
+          $get_order = Order::where('order_code', $order_code)->first();
+          $order_details = OrderDetails::with('product')->where('order_code', $order_code)->get();
+          $customer_id = $get_order->customer_id;
+          $shipping_id = $get_order->shipping_id;
+          $order_status = $get_order->order_status;
+          $customer = Customer::where('customer_id', $customer_id)->first();
+          $shipping = Shipping::where('shipping_id', $shipping_id)->first();
+          $product_coupon = '';
+          foreach ($order_details as $key => $order_item) {
+              $product_coupon = $order_item->product_coupon;
+          }
+  
+          if ($product_coupon != '0') {
+              $coupon = Coupon::where('coupon_code', $product_coupon)->first();
+              $coupon_condition = $coupon->coupon_condition;
+              $coupon_number = $coupon->coupon_number;
+          } else {
+              $coupon_condition = 2;
+              $coupon_number = 0;
+          }
+      }
+      
+      return view('pages.history.view_history_order', compact('order_details', 'customer', 'shipping', 'coupon_condition', 'coupon_number', 'get_order', 'order_status'));
+  }
 
   public function update_quantity_order(Request $request)
   {
