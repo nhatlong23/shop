@@ -112,7 +112,7 @@
                         <div class="btn-group pull-right">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-                                    Ngôn ngữ
+                                    @lang('lang.language')
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
@@ -139,42 +139,38 @@
                         <div class="shop-menu pull-right">
                             <ul class="nav navbar-nav">
                                 <li>
-                                    <a href=""><i class="fa fa-user"></i> Tài khoản</a>
+                                    <a href=""><i class="fa fa-user"></i> @lang('lang.account')</a>
                                 </li>
                                 @php
-                                    $customer_id = Session::get('customer_id');
-                                    $shipping_id = Session::get('shipping_id');
+                                    $customer_id = Session('customer_id');
+                                    $shipping_id = Session('shipping_id');
+                                    $name = session('customer_name');
                                 @endphp
                                 @if ($customer_id != null && $shipping_id == null)
                                     <li>
-                                        <a href="{{ asset('checkout') }}"><i class="fa fa-crosshairs"></i> Thanh
-                                            Toán</a>
+                                        <a href="{{ asset('checkout') }}"><i class="fa fa-crosshairs"></i> @lang('lang.pay')</a>
                                     </li>
                                 @else
                                     <li>
-                                        <a href="{{ asset('login-checkout') }}"><i class="fa fa-crosshairs"></i>
-                                            Thanh Toán</a>
+                                        <a href="{{ asset('login-checkout') }}"><i class="fa fa-crosshairs"></i> @lang('lang.pay')</a>
                                     </li>
                                 @endif
                                 <li>
-                                    <a href="#"><i class="fa fa-star"></i> Yêu Thích</a>
+                                    <a href="#"><i class="fa fa-star"></i> @lang('lang.wishlist')</a>
                                 </li>
                                 <li>
-                                    <a href="{{ asset('cart') }}"><i class="fa fa-shopping-cart"></i> Giỏ Hàng</a>
+                                    <a href="{{ asset('cart') }}"><i class="fa fa-shopping-cart"></i> @lang('lang.cart')</a>
                                 </li>
                                 @if ($customer_id != null)
                                     <li>
-                                        <a href="{{ asset('history') }}"><i class="fa fa-lock"></i> Lịch sử đơn
-                                            hàng</a>
+                                        <a href="{{ asset('history') }}"><i class="fa fa-lock"></i> @lang('lang.order_history')</a>
                                     </li>
                                     <li>
-                                        <a href="{{ asset('logout-checkout') }}"><i class="fa fa-lock"></i> Đăng
-                                            xuất</a>
+                                        <a href="{{ asset('logout-checkout') }}"><i class="fa fa-lock"></i> @lang('lang.logout')({{ $name }})</a>
                                     </li>
                                 @else
                                     <li>
-                                        <a href="{{ asset('login-checkout') }}"><i class="fa fa-lock"></i> Đăng
-                                            Nhập</a>
+                                        <a href="{{ asset('login-checkout') }}"><i class="fa fa-lock"></i> @lang('lang.login')</a>
                                     </li>
                                 @endif
                             </ul>
@@ -202,8 +198,8 @@
                         </div>
                         <div class="mainmenu pull-left">
                             <ul class="nav navbar-nav collapse navbar-collapse">
-                                <li><a href="{{ asset('home') }}" class="active">Trang Chủ</a></li>
-                                <li class="dropdown"><a href="#">Sản Phẩm<i class="fa fa-angle-down"></i></a>
+                                <li><a href="{{ asset('home') }}" class="active">@lang('lang.home')</a></li>
+                                <li class="dropdown"><a href="#">@lang('lang.product')<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
                                         <li><a href="shop.html">Products</a></li>
                                         <li><a href="product-details.html">Product Details</a></li>
@@ -212,18 +208,18 @@
                                         <li><a href="login.html">Login</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="{{ asset('blog') }}">Tin Tức</a></li>
-                                <li><a href="{{ asset('cart') }}">Giỏ Hàng</a></li>
-                                <li><a href="{{ asset('lien-he') }}">Liên Hệ</a></li>
+                                <li><a href="{{ asset('blog') }}">@lang('lang.blog')</a></li>
+                                <li><a href="{{ asset('cart') }}">@lang('lang.cart')</a></li>
+                                <li><a href="{{ asset('lien-he') }}">@lang('lang.contact')</a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <form method="GET" action="{{ asset('/search') }}">
                             <div class="search_box pull-right">
-                                <input type="text" name="search" id="timkiem" placeholder="Search"
+                                <input type="text" name="search" id="timkiem" placeholder="@lang('lang.search')"
                                     autocomplete="off" maxlength="20" />
-                                <button class="btn btn-default btn-sm">Tìm kiếm</button>
+                                <button class="btn btn-default btn-sm">@lang('lang.search')</button>
                             </div>
                             <ul class="dropdown-menu" id="result" style="display: none;"></ul>
                         </form>

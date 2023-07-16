@@ -4,7 +4,7 @@
         <div class="container">
             <div class="breadcrumbs">
                 <ol class="breadcrumb">
-                    <li><a href="{{ URL::to('/home') }}">Trang chủ</a></li>
+                    <li><a href="{{ asset('/home') }}">Trang chủ</a></li>
                     <li class="active">Giỏ hàng của bạn</li>
                 </ol>
             </div>
@@ -16,29 +16,30 @@
             </div>
             <!--/register-req-->
 
-            <div class="review-payment">
-                <h2>Xem lại và thanh toán</h2>
-            </div>
-            <div class="table-responsive cart_info">
-                <form method="post" action="{{ URL('update-cart') }}">
-                    @csrf
-                    <table class="table table-condensed">
-                        <thead>
-                            <tr class="cart_menu">
-                                <td class="image">Image</td>
-                                <td class="description">Mô tả</td>
-                                <td class="price">Price</td>
-                                <td class="quantity">Quantity</td>
-                                <td class="total">Total</td>
-                                <td></td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                                $total = 0;
-                            @endphp
-                            @if (Session::get('cart') == true)
-                                @foreach (Session::get('cart') as $key => $cart)
+            @if (session('cart'))
+                <div class="review-payment">
+                    <h2>Xem lại và thanh toán</h2>
+                </div>
+
+                <div class="table-responsive cart_info">
+                    <form method="post" action="{{ asset('update-cart') }}">
+                        @csrf
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr class="cart_menu">
+                                    <td class="image">Hình ảnh</td>
+                                    <td class="description">Mô tả</td>
+                                    <td class="price">Giá tiền</td>
+                                    <td class="quantity">Số lượng</td>
+                                    <td class="total">Tổng</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $total = 0;
+                                @endphp
+                                @foreach (Session('cart') as $key => $cart)
                                     @php
                                         $subtotal = $cart['product_price'] * $cart['product_qty'];
                                         $total += $subtotal;
@@ -60,29 +61,25 @@
                                                 <input min="1" class="cart_quantity" type="number"
                                                     name="cart_qty[{{ $cart['session_id'] }}]" size="1"
                                                     value="{{ $cart['product_qty'] }}">
-
                                             </div>
                                         </td>
                                         <td class="cart_total">
-                                            <p class="cart_total_price">
-                                                {{ number_format($subtotal, 0, ',', '.') }}VND
-                                            </p>
+                                            <p class="cart_total_price">{{ number_format($subtotal, 0, ',', '.') }}VND</p>
                                         </td>
                                         <td class="cart_delete">
                                             <a class="cart_quantity_delete"
-                                                href="{{ URL('delete-cart/' . $cart['session_id']) }}"><i
+                                                href="{{ asset('delete-cart/' . $cart['session_id']) }}"><i
                                                     class="fa fa-times"></i>
                                             </a>
                                         </td>
                                     </tr>
                                 @endforeach
-
                                 <td>
                                     <input class="btn btn-default check_out" type="submit" value="Cập nhật"
                                         name="update_qty">
                                 </td>
                                 <td>
-                                    <a class="btn btn-default check_out" href="{{ URL::to('/delete-all-cart') }}">Xóa tất
+                                    <a class="btn btn-default check_out" href="{{ asset('/delete-all-cart') }}">Xóa tất
                                         cả</a>
                                 </td>
                                 <tr>
@@ -105,28 +102,25 @@
                                                 <td>Mã giảm giá:</td>
                                                 <td>
                                                     <span>
-                                                        @if (Session::get('coupon'))
-                                                            @foreach (Session::get('coupon') as $key => $cou)
-                                                                @if ($cou['coupon_condition'] == 1)
-                                                                    <li><span>-{{ $cou['coupon_number'] }} %
-                                                                            @php
-                                                                                $total_coupon = ($total * $cou['coupon_number']) / 100;
-                                                                                echo ' (' . number_format($total_coupon, 0, ',', '.') . ' VND) ';
-                                                                            @endphp
+                                                        @if (session('coupon'))
+                                                            @foreach (session('coupon') as $key => $coupon)
+                                                                @if ($coupon['coupon_condition'] == 1)
+                                                                    <li>
+                                                                        <span>-{{ $coupon['coupon_number'] }} %
+                                                                            ({{ number_format(($total * $coupon['coupon_number']) / 100, 0, ',', '.') }}VND)
                                                                         </span>
                                                                     </li>
                                                                     @php
-                                                                        $total_coupon = ($total * $cou['coupon_number']) / 100;
+                                                                        $total_coupon = ($total * $coupon['coupon_number']) / 100;
                                                                         $sub_total_coupon = $total - $total_coupon;
                                                                     @endphp
-                                                                @elseif($cou['coupon_condition'] == 2)
+                                                                @elseif ($coupon['coupon_condition'] == 2)
                                                                     <li>
-                                                                        <span>-{{ number_format($cou['coupon_number'], 0, ',', '.') }}
-                                                                            VND
-                                                                        </span>
+                                                                        <span>-{{ number_format($coupon['coupon_number'], 0, ',', '.') }}
+                                                                            VND</span>
                                                                     </li>
                                                                     @php
-                                                                        $total_coupon = $total - $cou['coupon_number'];
+                                                                        $total_coupon = $total - $coupon['coupon_number'];
                                                                     @endphp
                                                                 @endif
                                                             @endforeach
@@ -138,10 +132,8 @@
                                                 <td>Phí Vận chuyến:</td>
                                                 <td>
                                                     <span id="load_fee">
-                                                        @if (session::get('cart'))
-                                                            @if (Session::get('fee'))
-                                                                {{ number_format(Session::get('fee'), 0, ',', '.') }} VND
-                                                            @endif
+                                                        @if (session('cart') && session('fee'))
+                                                            {{ number_format(session('fee'), 0, ',', '.') }} VND
                                                         @endif
                                                     </span>
                                                 </td>
@@ -150,24 +142,24 @@
                                                 <td>Tổng:</td>
                                                 <td>
                                                     <span>
-                                                        @if (session::get('cart'))
+                                                        @if (session('cart'))
                                                             @php
-                                                                if (Session::get('fee') && !Session::get('coupon')) {
-                                                                    $total_all = $total + Session::get('fee');
+                                                                if (session('fee') && !session('coupon')) {
+                                                                    $total_all = $total + session('fee');
                                                                     echo number_format($total_all, 0, ',', '.') . ' VND';
-                                                                } elseif (Session::get('fee') && Session::get('coupon')) {
-                                                                    if ($cou['coupon_condition'] == 1) {
-                                                                        $total_coupon = ($total * $cou['coupon_number']) / 100;
-                                                                        $total_all_coupon = $total - $total_coupon + Session::get('fee');
+                                                                } elseif (session('fee') && session('coupon')) {
+                                                                    if ($coupon['coupon_condition'] == 1) {
+                                                                        $total_coupon = ($total * $coupon['coupon_number']) / 100;
+                                                                        $total_all_coupon = $total - $total_coupon + session('fee');
                                                                         echo number_format($total_all_coupon, 0, ',', '.') . ' VND';
                                                                     } elseif ($cou['coupon_condition'] == 2) {
-                                                                        $total_coupon = $total - $cou['coupon_number'];
-                                                                        $total_all_coupon = $total_coupon + Session::get('fee');
+                                                                        $total_coupon = $total - $coupon['coupon_number'];
+                                                                        $total_all_coupon = $total_coupon + session('fee');
                                                                         echo number_format($total_all_coupon, 0, ',', '.') . ' VND';
                                                                     }
-                                                                } elseif (!Session::get('fee') && Session::get('coupon')) {
+                                                                } elseif (!session('fee') && session('coupon')) {
                                                                     echo number_format($sub_total_coupon, 0, ',', '.') . ' VND';
-                                                                } elseif (!Session::get('fee') && !Session::get('coupon')) {
+                                                                } elseif (!session('fee') && !session('coupon')) {
                                                                     echo number_format($total, 0, ',', '.') . ' VND';
                                                                 }
                                                             @endphp
@@ -178,11 +170,11 @@
                                         </table>
                                     </td>
                                 </tr>
-                            @endif
-                        </tbody>
-                    </table>
-                </form>
-            </div>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            @endif
             {{-- <form method="post"> --}}
             {{-- @csrf --}}
             <div class="shopper-informations">
@@ -200,15 +192,15 @@
                                         placeholder="Địa chỉ">
                                     <input type="text" name="shipping_phone" class="shipping_phone" placeholder="Phone">
                                     <textarea name="shipping_notes" class="shipping_notes" placeholder="Ghi chú về đơn đặt hàng của bạn" rows="16"></textarea>
-                                    @if (session::get('fee'))
+                                    @if (session('fee'))
                                         <input type="hidden" name="order_fee" class="order_fee"
-                                            value="{{ session::get('fee') }}">
+                                            value="{{ session('fee') }}">
                                     @else
                                         <input type="hidden" name="order_fee" class="order_fee" value="10000">
                                     @endif
 
-                                    @if (session::get('coupon'))
-                                        @foreach (session::get('coupon') as $key => $cou)
+                                    @if (session('coupon'))
+                                        @foreach (session('coupon') as $key => $cou)
                                             <input type="hidden" name="order_coupon" class="order_coupon"
                                                 value="{{ $cou['coupon_code'] }}">
                                         @endforeach
@@ -226,11 +218,11 @@
                 <div class="from-group">
                     <label for="">Chọn hình thức thanh toán</label>
                     <select name="payment_select" class="from-control input-sm m-bot13 payment_select">
-                        <option value="0">Qua chuyển khoản</option>
                         <option value="1">Qua tiền mặt</option>
+                        <option value="0">Qua chuyển khoản</option>
                     </select>
                 </div>
-                <div id="paypal-button-container"></div>
+                {{-- <div id="paypal-button-container"></div> --}}
             </div>
             <input class="btn btn-primary btn-sm send_order" type="button" name="send_order" value="Xác nhận đơn hàng">
         </div>

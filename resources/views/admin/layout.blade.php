@@ -259,14 +259,18 @@
                 <!-- sidebar menu start-->
                 <div class="leftside-navigation">
                     <ul class="sidebar-menu" id="nav-accordion">
-                        <li>
+                        <li class="sub-menu">
                             <a href="{{ asset('dashboard') }}">
                                 <i class="fa fa-dashboard"></i>
                                 <span>Tổng quan</span>
                             </a>
                         </li>
 
-                        <li class="sub-menu">
+                        @php
+                            $segment = Request::segment(1);
+                        @endphp
+
+                        <li class="sub-menu" {{ $segment == 'category' ? 'active' : '' }}>
                             <a href="javascript:;">
                                 <i class="fa fa-book"></i>
                                 <span>Danh Mục Sản Phẩm</span>
@@ -276,7 +280,7 @@
                                 <li><a href="{{ asset('all-category-product') }}">Liệt kê danh mục sản phẩm</a></li>
                             </ul>
                         </li>
-                        <li class="sub-menu">
+                        <li class="sub-menu" {{ $segment == 'brand' ? 'active' : '' }}>
                             <a href="javascript:;">
                                 <i class="fa fa-pagelines"></i>
                                 <span>Thương Hiệu Sản Phẩm</span>
@@ -334,11 +338,22 @@
                                 <li><a href="{{ asset('/add-slider') }}">Thêm slider</a></li>
                             </ul>
                         </li>
+
+                        <li class="sub-menu" {{ $segment == 'customer' ? 'active' : '' }}>
+                            <a href="javascript:;">
+                                <i class="fa fa-font-user"></i>
+                                <span>Khách hàng</span>
+                            </a>
+                            <ul class="sub">
+                                <li><a href="{{ route('customer.index') }}">Liệt kê khách hàng</a></li>
+                            </ul>
+                        </li>
+
                         @hasrole(['Admin', 'Author'])
                             <li class="sub-menu">
                                 <a href="javascript:;">
                                     <i class="fa fa-users"></i>
-                                    <span>Users</span>
+                                    <span>Users Admin</span>
                                 </a>
                                 <ul class="sub">
                                     <li><a href="{{ asset('/all-user') }}">Liệt kê user</a></li>
@@ -356,7 +371,7 @@
                             </li>
                         @endimpersonate
 
-                        <li class="sub-menu">
+                        <li class="sub-menu" {{ $segment == 'comment' ? 'active' : '' }}>
                             <a href="javascript:;">
                                 <i class="fa fa-comments"></i>
                                 <span>Bình luận sản phẩm</span>
@@ -405,7 +420,7 @@
             <!-- footer -->
             <div class="footer">
                 <div class="wthree-copyright">
-                    <p>© 2017 Visitors. All rights reserved | Design by <a href="http://w3layouts.com">W3layouts</a>
+                    <p>© 2023 Visitors. All rights reserved | Design by <a href="http://w3layouts.com">W3layouts</a>
                     </p>
                 </div>
             </div>

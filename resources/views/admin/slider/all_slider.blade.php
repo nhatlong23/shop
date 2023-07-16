@@ -106,6 +106,8 @@
                             <li><a href="">3</a></li>
                             <li><a href="">4</a></li>
                             <li><a href=""><i class="fa fa-chevron-right"></i></a></li>
+                           {!! $all_slider->render() !!}
+
                         </ul>
                     </div>
                 </div>

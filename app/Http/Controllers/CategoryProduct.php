@@ -169,20 +169,19 @@ class CategoryProduct extends Controller
     {
         $data = $request->all();
         $output = '';
-        $product = Product::where('category_id', $data['cate_id'])->orderBy('product_id', 'desc')->limit(4)->get();
-        $product_count = $product->count();
+        $products = Product::where('category_id', $data['cate_id'])->orderBy('product_id', 'desc')->limit(4)->get();
+        $product_count = $products->count();
         if ($product_count > 0) {
-            foreach ($product as $key => $pro) {
+            foreach ($products as $product) {
                 $output .= '
                     <div class="col-sm-3">
                         <div class="product-image-wrapper">
                             <div class="single-products">
                                 <div class="productinfo text-center"> 
-                                    <img src="' . asset('uploads/product/' . $pro->product_image) . '" alt="" />
-                                    <h2>' . number_format($pro->product_price) . ' VNĐ</h2>
-                                    <p>' . $pro->product_name . '</p>
-                                    <a href="#" class="btn btn-default add-to-cart"><i
-                                            class="fa fa-shopping-cart"></i>Thêm vào giỏ hàng</a>
+                                    <img src="' . asset('uploads/product/' . $product->product_image) . '" alt="" />
+                                    <h2>' . number_format($product->product_price, 0, ',', '.') . ' VNĐ</h2>
+                                    <p>' . $product->product_name . '</p>
+                                    <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>' . trans('lang.add_to_cart') . '</a>
                                 </div>
                             </div>
                         </div>
@@ -192,6 +191,8 @@ class CategoryProduct extends Controller
         } else {
             $output = '<h2>Không có sản phẩm nào</h2>';
         }
-        echo $output;
+        return $output;
     }
+    
+    
 }
