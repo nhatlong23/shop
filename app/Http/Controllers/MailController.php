@@ -8,6 +8,8 @@ use Carbon\Carbon;
 use App\Models\Coupon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
+
 
 class MailController extends Controller
 {
@@ -211,12 +213,37 @@ class MailController extends Controller
         }
     }
 
+    public function confirm_email(Request $request)
+    {
+        $data = $request->all();
+        $customer = Customer::where('customer_email', '=', $data['email'])->first();
+
+        if ($customer) {
+            if ($customer->customer_status == 1) {
+                // Customer email is already verified
+                $customer_id = $customer->customer_id;
+
+                // Update session data
+                Session::put('customer_id', $customer_id);
+                Session::put('customer_name', $customer->customer_name);
+
+                return redirect('checkout');
+            } else {
+                // Customer email is not verified
+                return redirect()->back()->with('message', 'Vui lòng xác nhận email để đăng nhập');
+            }
+        }
+
+        // Handle the case where the customer is not found
+        return redirect()->back()->with('message', 'Không tìm thấy khách hàng');
+    }
+
     public function update_new_password(){
         return view ('pages.checkout.update_new_password');
     }
 
     public function mail_example()
     {
-        return view('admin.mail.send_shipping');
+        return view('admin.mail.send_confirm');
     }
 }

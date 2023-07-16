@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'vi',
 
     /*
     |--------------------------------------------------------------------------
@@ -176,7 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\BladeServiceProvider::class,
         App\Providers\GoogleDriveServiceProvider::class,
-
+        Astrotomic\Translatable\TranslatableServiceProvider::class,
     ],
 
     /*

@@ -1,5 +1,5 @@
 <div class="left-sidebar">
-    <h2>Danh Mục</h2>
+    <h2>@lang('lang.category')</h2>
     <div class="panel-group category-products" id="accordian">
         <!--category-productsr-->
         @php
@@ -52,22 +52,32 @@
 
 <div class="brands_products">
     <!--brands_products-->
-    <h2>Thương Hiệu</h2>
+    <h2>@lang('lang.brand')</h2>
     <div class="brands-name">
         <ul class="nav nav-pills nav-stacked">
-            @foreach ($brand as $key => $brand)
+            {{-- @foreach ($brand as $key => $brand)
                 <ul class="nav nav-pills nav-stacked">
-                    <li><a href="{{ asset('brand-product/' . $brand->slug) }}"> <span
-                                class="pull-right">(50)</span>{{ $brand->brand_name }}</a></li>
+                    <li>
+                        <a href="{{ asset('brand-product/' . $brand->slug) }}"> <span class="pull-right">(50)</span>{{ $brand->brand_name }}
+                        </a>
+                    </li>
                 </ul>
-            @endforeach
+            @endforeach --}}
         </ul>
     </div>
 </div>
 <!--/brands_products-->
-
+<h2>@lang('lang.brand')</h2>
+@foreach ($brand as $key => $brand)
+<ul class="nav nav-pills nav-stacked">
+    <li>
+        <a href="{{ asset('brand-product/' . $brand->slug) }}"> <span class="pull-right">(50)</span>{{ $brand->brand_name }}
+        </a>
+    </li>
+</ul>
+@endforeach
 <div class="brands_products">
-    <h2>Yêu thích</h2>
+    <h2>@lang('lang.wishlist')</h2>
     <div class="brands-name">
         <div id="row_wishlist" class="row" ></div>
     </div>

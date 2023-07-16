@@ -71,9 +71,24 @@ class CheckoutController extends Controller
         $customer->created_at = Carbon::now();
         $customer->save();
         $customer_id = $customer->customer_id;
+
+        // Send confirmation email
+        $to_email = $customer->customer_email;
+        $confirm_date = Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
+        $title_mail = "Xác nhận email ngày: " . $confirm_date;
+        $link_confirm_email = url('confirm-email?email='.$to_email);
+
+        // Store session data
         Session::put('customer_id', $customer_id);
         Session::put('customer_name', $data['customer_name']);
-        return Redirect::to('checkout');
+
+        $data = array("name" => $title_mail, "body" => $link_confirm_email, "email" => $to_email);
+        Mail::send('admin.mail.send_confirm', ['data'=>$data], function ($message) use ($title_mail, $data) {
+            $message->to($data['email'])->subject($title_mail);
+            $message->from($data['email'], $title_mail);
+        });
+
+        return redirect()->back()->with('message', 'Vui lòng kiểm tra email để xác nhận đăng nhập');
     }
 
     public function checkout()
@@ -94,12 +109,17 @@ class CheckoutController extends Controller
         $email = $data['email_account'];
         $password = $data['password_account'];
         $result = Customer::where('customer_email', $email)->first();
-        
+
         if ($result && password_verify($password, $result->customer_password)) {
-            Session::put('customer_id', $result->customer_id);
-            return Redirect::to('/checkout');
+            if ($result->customer_status == 1) {
+                Session::put('customer_id', $result->customer_id);
+                Session::put('customer_name', $result->customer_name);
+                return redirect('/checkout');
+            } else {
+                return redirect()->back()->with('message', 'Không thể đăng nhập. Tài khoản của bạn chưa được xác nhận hoặc đã bị vô hiệu hóa.');
+            }
         } else {
-            return Redirect::to('/login-checkout');
+            return redirect('/login-checkout')->with('message', 'Tài khoản hoặc mật khẩu không chính xác.');
         }
     }
 

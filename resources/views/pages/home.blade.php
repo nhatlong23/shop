@@ -8,7 +8,7 @@
     <div class="col-sm-9 padding-right">
         <div class="features_items">
             <!--features_items-->
-            <h2 class="title text-center">Sản phẩm mới nhất</h2>
+            <h2 class="title text-center">@lang('lang.latest_product')</h2>
             @foreach ($newProducts as $key => $product)
                 <div class="col-sm-4">
                     <div class="product-image-wrapper">
@@ -39,8 +39,8 @@
                                         <p>{{ $product->product_name }}</p>
                                     </a>
                                     <button type="button" class="btn btn-default add-to-cart" name="add-to-cart"
-                                        data-id_product="{{ $product->product_id }}">Thêm giỏ hàng</button>
-                                    <input type="button" data-toggle="modal" data-target="#quickview" value="Xem Nhanh"
+                                        data-id_product="{{ $product->product_id }}">@lang('lang.add_to_cart')</button>
+                                    <input type="button" data-toggle="modal" data-target="#quickview" value="@lang('lang.quick_view')"
                                         class="btn btn-default quickview" data-id_product="{{ $product->product_id }}"
                                         name="add-to-cart">
                                 </form>
@@ -52,11 +52,11 @@
                                     <a><i class="fa fa-plus-square"></i>
                                         <button class="button_wishlist" id="{{ $product->product_id }}"
                                             onclick="add_wishlist(this.id);">
-                                            <span>Yêu thích</span>
+                                            <span>@lang('lang.wishlist')</span>
                                         </button>
                                     </a>
                                 </li>
-                                <li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
+                                <li><a href="#"><i class="fa fa-plus-square"></i>@lang('lang.compare')</a></li>
                             </ul>
                         </div>
                     </div>
@@ -139,7 +139,7 @@
         <!--/category-tab-->
         <div class="recommended_items">
             <!--recommended_items-->
-            <h2 class="title text-center">đề suất sản phẩm</h2>
+            <h2 class="title text-center">@lang('lang.product_recommendation')</h2>
             <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                     <?php $i = 0; ?>
@@ -173,7 +173,7 @@
                                                         <input type="hidden" value="1"
                                                             class="cart_product_qty_{{ $lienquan->product_id }}">
 
-                                                        <input type="button" value="Thêm giỏ hàng"
+                                                        <input type="button" value="@lang('lang.add_to_cart')"
                                                             class="btn btn-primary btn-sm add-to-cart"
                                                             data-id_product="{{ $lienquan->product_id }}"
                                                             name="add-to-cart">
