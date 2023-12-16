@@ -21,10 +21,12 @@
                                     <input type="checkbox"><i></i>
                                 </label>
                             </th>
+                            <th>SKU</th>
                             <th>Tên Sản Phẩm</th>
                             <th>Slug</th>
                             <th>Tag</th>
                             <th>Giá bán</th>
+                            <th>Giá giảm giá</th>
                             <th>Giá gốc</th>
                             <th>Title</th>
                             <th>Tài liệu</th>
@@ -45,10 +47,12 @@
                             <tr>
                                 <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label>
                                 </td>
+                                <td>{{ $product->product_sku }}</td>
                                 <td>{{ $product->product_name }}</td>
                                 <td>{{ substr($product->slug, 0, 5) }}</td>
                                 <td>{{ substr($product->product_tag, 0, 5) }}</td>
                                 <td>{{ $product->product_price }}</td>
+                                <td>{{ $product->product_sale }}</td>
                                 <td>{{ $product->product_cost }}</td>
                                 <td>{{ $product->product_title }}</td>
                                 <td><a target="_blank" href="{{ asset('uploads/file/' . $product->product_file) }}">{{ $product->product_file }}</a>

@@ -130,29 +130,6 @@ class DeliveryController extends Controller
         $feeship->save();
     }
 
-
-    // public function select_delivery_home(Request $request){
-
-    //     $data = $request->all();
-    //     if ($data['action']) {
-    //         $output = '';
-    //         if ($data['action'] == 'city') {
-    //             $province = Province::where('matp', $data['matp'])->orderBy('maqh', 'asc')->get();
-    //             $output .= '<option value="">--------Chọn quận huyện---------</option>';
-    //             foreach ($province as $key => $prov) {
-    //                 $output .= '<option value="' . $prov->maqh . '">' . $prov->name_qh . '</option>';
-    //             }
-    //         } else if ($data['action'] == 'province') {
-    //             $wards = Wards::where('maqh', $data['matp'])->orderBy('xaid', 'ASC')->get();
-    //             $output .= '<option value="">--------Chọn xã phường---------</option>';
-    //             foreach ($wards as $key => $ward) {
-    //                 $output .= '<option value="' . $ward->xaid . '">' . $ward->name . '</option>';
-    //             }
-    //         }
-    //         echo $output;
-    //     }
-    // }
-
     public function calculate_fee(Request $request)
     {
         $data = $request->all();

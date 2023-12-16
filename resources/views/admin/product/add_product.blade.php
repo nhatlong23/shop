@@ -28,6 +28,11 @@
                             enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
+                                <label for="exampleInputEmail1">SKU: </label>
+                                <input type="text" data-validation="length" data-validation="min10" name="product_sku" class="form-control money"
+                                    placeholder="Nhập SKU: " required autocomplete="off">
+                            </div>
+                            <div class="form-group">
                                 <label for="exampleInputEmail1">Tên Sản Phẩm</label>
                                 <input type="text" name="product_name" class="form-control"id="slug"
                                     onkeyup="ChangeToSlug()" placeholder="Tên sản phẩm" required autocomplete="off">
@@ -46,6 +51,11 @@
                                 <label for="exampleInputEmail1">Giá gốc</label>
                                 <input type="text" data-validation="length" name="product_cost" class="form-control money1"
                                     placeholder="Giá gốc" required autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Giá giảm giá</label>
+                                <input type="text" data-validation="length" name="product_sale" class="form-control money1"
+                                    placeholder="Giá giảm giá" required autocomplete="off">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Số lượng sản phẩm</label>

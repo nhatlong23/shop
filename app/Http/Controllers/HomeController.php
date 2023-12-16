@@ -158,7 +158,8 @@ class HomeController extends Controller
             'category_slug',
             'comment',
             'rating',
-            'reviews'
+            'reviews',
+            'product'
         ));
     }
 
@@ -166,6 +167,7 @@ class HomeController extends Controller
     {
         $data = $request->all();
         $product_id = $data['product_id'];
+        $comment = Comment::where('product_id', $product_id)->where('status', 1)->count();
         $product = Product::find($product_id);
         $gallery = Gallery::where('product_id', $product_id)->get();
         $output['product_gallery'] = '';
@@ -181,10 +183,14 @@ class HomeController extends Controller
         $output['product_desc'] = $product->product_desc;
         $output['product_content'] = $product->product_content;
         $output['product_id'] = $product->product_id;
+        $output['product_sku'] = $product->product_sku;
+        $output['product_comment'] = $comment;
+        $output['category_name'] = $product->category->category_name;
+        $output['brand_name'] = $product->brand->brand_name;
         $output['product_image'] = '<p><img style="width: 100%;" src="' . asset('uploads/product/' . $product->product_image) . '" alt=""></p> ';
-        $output['product_button'] = '<input type="button" name="add-to-cart" id="buy_quickview" class="btn btn-secondary btn-sm add-to-cart-quickview" value="Mua Ngay"
+        $output['product_button'] = '<input type="button" name="add-to-cart" id="buy_quickview" class="btn button-cart rounded add-to-cart-quickview" value="Mua Ngay"
         data-id_product="' . $product->product_id . '">';
-        $output['product_qty'] = '<input name="qty" type="number" min="1" class="cart_product_qty_' . $product->product_id . '" value="1" />';
+        $output['product_qty'] = '<input name="qty" type="number" min="1" class="product-form__input qty cart_product_qty_' . $product->product_id . '" value="1" />';
         $output['product_quickview_value'] = ' 
         <input type="hidden" value=" ' . $product->product_id . ' " class="cart_product_id_' . $product->product_id . ' ">
         <input type="hidden" value=" ' . $product->product_name . ' " class="cart_product_name_' . $product->product_id . ' ">

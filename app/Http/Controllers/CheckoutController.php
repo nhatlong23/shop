@@ -160,7 +160,7 @@ class CheckoutController extends Controller
             $coupon_number = null;
             $coupon_condition = 'Không có mã giảm giá';
         }
-        // Tạo một bản ghi vận chuyển mới
+        
         $shipping = new Shipping();
         $shipping->shipping_name = $data['shipping_name'];
         $shipping->shipping_phone = $data['shipping_phone'];

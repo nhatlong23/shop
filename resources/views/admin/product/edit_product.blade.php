@@ -28,6 +28,11 @@
                             method="post" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <div class="form-group">
+                                <label for="exampleInputEmail1">SKU</label>
+                                <input type="text" name="product_sku" class="form-control"
+                                    value="{{ $edit_product->product_sku }}">
+                            </div>
+                            <div class="form-group">
                                 <label for="exampleInputEmail1">Tên Sản Phẩm</label>
                                 <input type="text" name="product_name" class="form-control"id="slug"
                                     value="{{ $edit_product->product_name }}" onkeyup="ChangeToSlug()"
@@ -42,6 +47,11 @@
                                 <label for="exampleInputEmail1">Giá sản phẩm</label>
                                 <input type="text" name="product_price" class="form-control"
                                     value="{{ $edit_product->product_price }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Giá giảm giá</label>
+                                <input type="text" name="product_sale" class="form-control"
+                                    value="{{ $edit_product->product_sale }}">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Giá gốc</label>

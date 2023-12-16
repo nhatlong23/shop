@@ -61,10 +61,12 @@ class ProductController extends Controller
         $this->AuthLogin();
         $data = $request->validate(
             [
+                'product_sku' => 'required|unique:tbl_sku|max:10',
                 'product_name' => 'required|unique:tbl_product|max:100',
                 'slug' => 'required|unique:tbl_product|max:100',
                 'product_price' => 'required',
                 'product_cost' => 'required',
+                'product_sale' => 'required',
                 'product_quantity' => 'required',
                 'product_title' => 'required|max:255',
                 'product_tag' => 'required',
@@ -77,13 +79,17 @@ class ProductController extends Controller
                 'product_status' => 'required',
             ],
             [
+                'product_sku.required' => 'Mã SKU không được để trống',
+                'product_sku.unique' => 'Mã SKU đã có, vui lòng nhập tên khác',
+                'product_sku.max' => 'Mã SKU không được vượt quá 10 ký tự',
                 'product_name.required' => 'Tên sản phẩm không được để trống',
                 'product_name.unique' => 'Tên sản phẩm đã có, vui lòng nhập tên khác',
                 'product_name.max' => 'Tên sản phẩm không được vượt quá 100 ký tự',
                 'slug.required' => 'Slug sản phẩm không được để trống',
                 'slug.unique' => 'Slug sản phẩm đã có, vui lòng nhập slug khác',
                 'slug.max' => 'Slug sản phẩm không được vượt quá 100 ký tự',
-                'product_price.required' => 'Giá sản bán không được để trống',
+                'product_price.required' => 'Giá sản phẩm bán không được để trống',
+                'product_sale.required' => 'Giá giảm giá không được để trống',
                 'product_cost.required' => 'Giá gốc sản phẩm không được để trống',
                 'product_tag.required' => 'Tag sản phẩm không được để trống',
                 'product_quantity.required' => 'Số lượng sản phẩm không được để trống',
@@ -100,11 +106,14 @@ class ProductController extends Controller
         $product = new Product();
         $product_price = filter_var($data['product_price'], FILTER_SANITIZE_NUMBER_INT);
         $product_cost = filter_var($data['product_cost'], FILTER_SANITIZE_NUMBER_INT);
+        $product_sale = filter_var($data['product_sale'], FILTER_SANITIZE_NUMBER_INT);
         $product_quantity = filter_var($data['product_quantity'], FILTER_SANITIZE_NUMBER_INT);
 
+        $product->product_sku = $data['product_sku'];
         $product->product_name = $data['product_name'];
         $product->product_price = $product_price;
         $product->product_cost = $product_cost;
+        $product->product_sale = $product_sale;
         $product->product_title = $data['product_title'];
         $product->product_tag = $data['product_tag'];
         $product->product_desc = $data['product_desc'];
@@ -187,9 +196,11 @@ class ProductController extends Controller
     
         $data = $request->validate(
             [
+                'product_sku' => 'required|max:10|unique:tbl_product,product_sku,' . $product_id . ',product_id',
                 'product_name' => 'required|max:100|unique:tbl_product,product_name,' . $product_id . ',product_id',
                 'slug' => 'required|max:255|unique:tbl_product,slug,' . $product_id . ',product_id',
                 'product_price' => 'required',
+                'product_sale' => 'required',
                 'product_cost' => 'required',
                 'product_quantity' => 'required',
                 'product_title' => 'required',
@@ -202,6 +213,9 @@ class ProductController extends Controller
                 'product_status' => 'required',
             ],
             [
+                'product_sku.required' => 'Mã SKU không được để trống',
+                'product_sku.unique' => 'Mã SKU đã có, vui lòng nhập tên khác',
+                'product_sku.max' => 'Mã SKU không được vượt quá 100 ký tự',
                 'product_name.required' => 'Tên sản phẩm không được để trống',
                 'product_name.unique' => 'Tên sản phẩm đã có, vui lòng nhập tên khác',
                 'product_name.max' => 'Tên sản phẩm không được vượt quá 100 ký tự',
@@ -225,9 +239,11 @@ class ProductController extends Controller
     
         $product = Product::find($product_id);
     
+        $product->product_sku = $data['product_sku'];
         $product->product_name = $data['product_name'];
         $product->product_price = $data['product_price'];
         $product->product_cost = $data['product_cost'];
+        $product->product_sale = $data['product_sale'];
         $product->product_quantity = $data['product_quantity'];
         $product->product_title = $data['product_title'];
         $product->product_tag = $data['product_tag'];
