@@ -110,33 +110,33 @@ class OrderController extends Controller
             border-collapse: collapse;
             width: 700px;
           }
-          
+
           th,
           td {
             text-align: left;
             padding: 8px;
           }
-          
+
           th {
             background-color: #4caf50;
             color: white;
           }
-          
+
           tr:nth-child(even) {
             background-color: #f2f2f2;
           }
-          
+
           .container {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
           }
-          
+
           .left,
           .right {
             width: 48%;
           }
-          
+
         </style>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <h1>
@@ -207,7 +207,7 @@ class OrderController extends Controller
             </tr>
           </thead>
           <tbody>
-          
+
           ';
 
     $total = 0;
@@ -246,8 +246,8 @@ class OrderController extends Controller
             </tr>
             <tr>
               <td colspan="3">Phí Ship:</td>
-              <td> 
-                ' . number_format($product->product_feeship, 0, ',', '.') . ' VNĐ 
+              <td>
+                ' . number_format($product->product_feeship, 0, ',', '.') . ' VNĐ
               </td>
             </tr>
             <tr>
@@ -443,7 +443,7 @@ class OrderController extends Controller
           foreach ($order_details as $key => $order_item) {
               $product_coupon = $order_item->product_coupon;
           }
-  
+
           if ($product_coupon != '0') {
               $coupon = Coupon::where('coupon_code', $product_coupon)->first();
               $coupon_condition = $coupon->coupon_condition;
@@ -453,7 +453,7 @@ class OrderController extends Controller
               $coupon_number = 0;
           }
       }
-      
+
       return view('pages.history.view_history_order', compact('order_details', 'customer', 'shipping', 'coupon_condition', 'coupon_number', 'get_order', 'order_status'));
   }
 

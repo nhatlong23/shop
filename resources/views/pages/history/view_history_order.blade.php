@@ -127,16 +127,6 @@
                 Liêt kê chi tiết đơn hàng
             </div>
             <div class="row w3-res-tb">
-                <div class="col-sm-5 m-b-xs">
-                    <select class="input-sm form-control w-sm inline v-middle">
-                        <option value="0">Bulk action</option>
-                        <option value="1">Delete selected</option>
-                        <option value="2">Bulk edit</option>
-                        <option value="3">Export</option>
-                    </select>
-                    <button class="btn btn-sm btn-default">Apply</button>
-                </div>
-                <div class="col-sm-4">
                 </div>
                 <div class="col-sm-3">
                     <div class="input-group">
@@ -164,8 +154,8 @@
                                 </label>
                             </th>
                             <th>Tên Sản Phẩm</th>
-                            <th>Số lượng kho</th>
-                            <th>Số lượng</th>
+                            <th>Số lượng đặt</th>
+                            {{-- <th>Số lượng</th> --}}
                             <th>Mã giảm giá</th>
                             <th>Phí Ship</th>
                             <th>Giá sản phẩm</th>
@@ -187,8 +177,7 @@
                                 </td>
                                 <td>{{ $details->product_name }}</td>
                                 <td>
-                                    <input type="number" class="order_qty_{{ $details->product_id }}" min="1"
-                                        {{ $order_status == 2 ? 'disabled' : '' }}
+                                    <input disabled type="number" class="order_qty_{{ $details->product_id }}" min="1"
                                         value="{{ $details->product_sales_quantity }}" name="product_sales_quantity">
                                     <input type="hidden" name="order_qty_storage"
                                         class="order_qty_storage_{{ $details->product_id }}"
@@ -198,9 +187,9 @@
                                     <input type="hidden" name="order_product_id" class="order_product_id"
                                         value="{{ $details->product_id }}">
                                 </td>
-                                <td>
+                                {{-- <td>
                                     {{ $details->product->product_quantity }}
-                                </td>
+                                </td> --}}
                                 <td>
                                     @if ($details->product_coupon != '0')
                                         {{ $details->product_coupon }}

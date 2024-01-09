@@ -39,88 +39,15 @@ class CheckoutController extends Controller
         return view('pages.checkout.login_checkout');
     }
 
-    public function add_customer(Request $request)
-    {
-        $data = $request->validate(
-            [
-                'customer_name' => 'required|max:25',
-                'customer_phone' => 'required|unique:tbl_customers,customer_phone|max:25',
-                'customer_email' => 'required|unique:tbl_customers,customer_email|max:25',
-                'customer_password' => 'required|min:6|confirmed',
-
-            ],
-            [
-                'customer_name.required' => 'Tên không được để trống',
-                'customer_name.max' => 'Tên không được vượt quá 25 ký tự',
-                'customer_phone.required' => 'Số điện thoại không được để trống',
-                'customer_phone.unique' => 'Số điện thoại đã tồn tại',
-                'customer_phone.max' => 'Số điện thoại không được vượt quá 25 ký tự',
-                'customer_email.required' => 'Email không được để trống',
-                'customer_email.unique' => 'Email đã tồn tại',
-                'customer_email.max' => 'Email không được vượt quá 25 ký tự',
-                'customer_password.required' => 'Mật khẩu không được để trống',
-                'customer_password.min' => 'Mật khẩu phải có ít nhất 6 ký tự',
-                'customer_password.confirmed' => 'Mật khẩu không trùng khớp',
-            ]
-        );
-        $customer = new Customer();
-        $customer->customer_name = $data['customer_name'];
-        $customer->customer_phone = $data['customer_phone'];
-        $customer->customer_email = $data['customer_email'];
-        $customer->customer_password = bcrypt($data['customer_password']);
-        $customer->created_at = Carbon::now();
-        $customer->save();
-        $customer_id = $customer->customer_id;
-
-        // Send confirmation email
-        $to_email = $customer->customer_email;
-        $confirm_date = Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
-        $title_mail = "Xác nhận email ngày: " . $confirm_date;
-        $link_confirm_email = url('confirm-email?email='.$to_email);
-
-        // Store session data
-        Session::put('customer_id', $customer_id);
-        Session::put('customer_name', $data['customer_name']);
-
-        $data = array("name" => $title_mail, "body" => $link_confirm_email, "email" => $to_email);
-        Mail::send('admin.mail.send_confirm', ['data'=>$data], function ($message) use ($title_mail, $data) {
-            $message->to($data['email'])->subject($title_mail);
-            $message->from($data['email'], $title_mail);
-        });
-
-        return redirect()->back()->with('message', 'Vui lòng kiểm tra email để xác nhận đăng nhập');
-    }
-
     public function checkout()
     {
         return view('pages.checkout.show_checkout');
     }
 
-
     public function logout_checkout()
     {
         Session::flush();
         return Redirect::to('/');
-    }
-
-    public function login_customer(Request $request)
-    {
-        $data = $request->all();
-        $email = $data['email_account'];
-        $password = $data['password_account'];
-        $result = Customer::where('customer_email', $email)->first();
-
-        if ($result && password_verify($password, $result->customer_password)) {
-            if ($result->customer_status == 1) {
-                Session::put('customer_id', $result->customer_id);
-                Session::put('customer_name', $result->customer_name);
-                return redirect('/checkout');
-            } else {
-                return redirect()->back()->with('message', 'Không thể đăng nhập. Tài khoản của bạn chưa được xác nhận hoặc đã bị vô hiệu hóa.');
-            }
-        } else {
-            return redirect('/login-checkout')->with('message', 'Tài khoản hoặc mật khẩu không chính xác.');
-        }
     }
 
     public function login_customer_google(){
@@ -131,7 +58,7 @@ class CheckoutController extends Controller
     }
 
     public function callback_customer_google(){
-        
+
     }
 
     public function confirm_order(Request $request)
@@ -141,7 +68,7 @@ class CheckoutController extends Controller
         // Giảm số lượng phiếu giảm giá
         if (!empty($data['order_coupon'])) {
             $coupon = Coupon::where('coupon_code', $data['order_coupon'])->first();
-        
+
             if ($coupon) {
                 $coupon->decrement('coupon_time');
                 $coupon_mail = $coupon->coupon_code;
@@ -169,14 +96,13 @@ class CheckoutController extends Controller
         $shipping->shipping_notes = $data['shipping_notes'];
         $shipping->shipping_method = $data['shipping_method'];
         $shipping->created_at = Carbon::now('Asia/Ho_Chi_Minh');
-        $shipping->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
         $shipping->save();
-        
+
         $shipping_id = $shipping->shipping_id;
-        
+
         // Tạo mã thanh toán
         $checkout_code = substr(md5(microtime()), rand(0, 26), 5);
-        
+
         // Tạo đơn hàng mới
         $order = new Order();
         $order->customer_id = Session::get('customer_id');
@@ -187,7 +113,7 @@ class CheckoutController extends Controller
         $order->created_at = Carbon::now('Asia/Ho_Chi_Minh');
         $order->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
         $order->save();
-        
+
         // Xử lý chi tiết đơn hàng cho từng mặt hàng trong giỏ hàng
         if (Session::get('cart')) {
             foreach (Session::get('cart') as $key => $cart) {
@@ -215,7 +141,7 @@ class CheckoutController extends Controller
                 $cart_array[] = [
                     "product_image" => $cart_mail['product_image'],
                     "product_name" => $cart_mail['product_name'],
-                    "product_price" => $cart_mail['product_price'], 
+                    "product_price" => $cart_mail['product_price'],
                     "product_qty" => $cart_mail['product_qty'],
                 ];
             }
@@ -249,7 +175,7 @@ class CheckoutController extends Controller
         Session::forget('fee');
         Session::forget('coupon');
     }
-    
+
     public function success_order()
     {
         return view('pages.checkout.success');

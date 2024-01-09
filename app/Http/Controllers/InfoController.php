@@ -88,7 +88,7 @@ class InfoController extends Controller
         $data = $request->validate(
             [
                 'info_title' => 'required|max:255',
-                'info_desc' => 'required|max:255',
+                'info_desc' => 'required',
                 'info_phone' => 'required|max:20',
                 'info_email' => 'required|max:50',
                 'info_map' => 'required',
@@ -98,7 +98,6 @@ class InfoController extends Controller
                 'info_title.required' => 'Tiêu đề không được để trống',
                 'info_title.max' => 'Tiêu đề không được quá 255 ký tự',
                 'info_desc.required' => 'Mô tả không được để trống',
-                'info_desc.max' => 'Mô tả không được quá 255 ký tự',
                 'info_phone.required' => 'Số điện thoại không được để trống',
                 'info_phone.max' => 'Số điện thoại không được quá 20 ký tự',
                 'info_email.required' => 'Email không được để trống',

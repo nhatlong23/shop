@@ -43,9 +43,6 @@ class ProductController extends Controller
     public function all_product()
     {
         $this->AuthLogin();
-        // $all_product = Product::with('category', 'brand')->orderby('product_id', 'desc')->get();
-        // $category = Category::pluck ('category_name', 'category_id');
-        // $brand = Brand::pluck ('brand_name', 'brand_id');
         $all_product = Product::with('category', 'brand')->orderby('product_id', 'desc')->get();
 
         $path = public_path() . "/json/";
@@ -75,6 +72,7 @@ class ProductController extends Controller
                 'product_cate' => 'required',
                 'product_brand' => 'required',
                 'product_status' => 'required',
+                'product_file' => 'nullable',
             ],
             [
                 'product_name.required' => 'Tên sản phẩm không được để trống',
@@ -105,6 +103,8 @@ class ProductController extends Controller
         $product->product_name = $data['product_name'];
         $product->product_price = $product_price;
         $product->product_cost = $product_cost;
+        $product->product_sold = 0;
+        $product->product_views = 0;
         $product->product_title = $data['product_title'];
         $product->product_tag = $data['product_tag'];
         $product->product_desc = $data['product_desc'];
@@ -184,7 +184,7 @@ class ProductController extends Controller
     public function update_product(Request $request, $product_id)
     {
         // $this->AuthLogin();
-    
+
         $data = $request->validate(
             [
                 'product_name' => 'required|max:100|unique:tbl_product,product_name,' . $product_id . ',product_id',
@@ -222,9 +222,9 @@ class ProductController extends Controller
                 'product_status.required' => 'Trạng thái sản phẩm không được để trống',
             ]
         );
-    
+
         $product = Product::find($product_id);
-    
+
         $product->product_name = $data['product_name'];
         $product->product_price = $data['product_price'];
         $product->product_cost = $data['product_cost'];
@@ -239,7 +239,7 @@ class ProductController extends Controller
         $product->product_status = $data['product_status'];
         $product->created_at = Carbon::now();
         $product->updated_at = Carbon::now();
-    
+
         $part_product = 'uploads/product/';
         $part_file = 'uploads/file/';
         $get_image = $request->file('product_image');
@@ -255,14 +255,14 @@ class ProductController extends Controller
                 $product->product_image = $new_image;
             }
         }
-        if ($get_file) {            
+        if ($get_file) {
             $get_name_file = $get_file->getClientOriginalName();
             $name_file = current(explode('.', $get_name_file));
             $new_file = $name_file . rand(0, 99) . '.' . $get_file->getClientOriginalExtension();
             $get_file->move($part_file, $new_file);
             $product->product_file = $new_file;
         }
-    
+
         $product->save();
         Session::put('message', 'Cập nhật sản phẩm thành công');
         return Redirect::to('all-product');

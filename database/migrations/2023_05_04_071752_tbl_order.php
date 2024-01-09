@@ -14,11 +14,13 @@ class TblOrder extends Migration
     public function up()
     {
         Schema::create('tbl_order', function (Blueprint $table) {
-            $table->integer('order_id');
+            $table->id('order_id');
             $table->integer('customer_id');
             $table->integer('shipping_id');
             $table->string('order_total');
             $table->string('order_status');
+            $table->string('order_code');
+            $table->string('order_date');
             $table->timestamps();
         });
     }

@@ -140,11 +140,11 @@ class AdminController extends Controller
         $one_years = Carbon::now('Asia/Ho_Chi_Minh')->subDays(365)->toDateString();
         $now = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
         //total last month
-        $total_last_month = Visitors::whereBetween('date_visitor', [$early_last_month, $end_of_last_month])->count();
+        $total_last_month = Visitors::whereBetween('created_at', [$early_last_month, $end_of_last_month])->count();
         //total this month
-        $total_this_month = Visitors::whereBetween('date_visitor', [$early_this_month, $now])->count();
+        $total_this_month = Visitors::whereBetween('created_at', [$early_this_month, $now])->count();
         //total 1 years
-        $total_one_years = Visitors::whereBetween('date_visitor', [$one_years, $now])->count();
+        $total_one_years = Visitors::whereBetween('created_at', [$one_years, $now])->count();
         $product_view = Product::orderBy('product_views', 'desc')->orderBy('product_sold', 'desc')->take(10)->get();
 
 

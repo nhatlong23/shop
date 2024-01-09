@@ -7,6 +7,7 @@ use App\Models\Admin;
 use App\Models\Roles;
 use Illuminate\Support\Facades\DB;
 use SebastianBergmann\FileIterator\Factory;
+use Carbon\Carbon;
 
 class UserTableSeeder extends Seeder
 {
@@ -29,21 +30,21 @@ class UserTableSeeder extends Seeder
             'admin_password' => md5('123456'),
             'admin_name' => 'longAdmin',
             'admin_phone' => '12345789',
-            // 'roles_id' => $adminRoles->id,
+            'created_at' => Carbon::now('Asia/Ho_Chi_Minh'),
         ]);
         $author = Admin::create([
             'admin_email' => 'longauthor@gmail.com',
             'admin_password' => md5('123456'),
             'admin_name' => 'longAuthor',
             'admin_phone' => '123457891',
-            // 'roles_id' => $adminRoles->id,
+            'created_at' => Carbon::now('Asia/Ho_Chi_Minh'),
         ]);
         $user = Admin::create([
             'admin_email' => 'longuser@gmail.com',
             'admin_password' => md5('123456'),
             'admin_name' => 'longUser',
             'admin_phone' => '123415789',
-            // 'roles_id' => $adminRoles->id,
+            'created_at' => Carbon::now('Asia/Ho_Chi_Minh'),
         ]);
 
         $admin->roles()->attach($adminRoles);

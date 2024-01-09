@@ -20,9 +20,13 @@ class TblCoupon extends Migration
             $table->integer('coupon_time');
             $table->integer('coupon_number');
             $table->integer('coupon_condition');
+            $table->string('coupon_start');
+            $table->string('coupon_end');
+            $table->integer('coupon_used');
+            $table->integer('coupon_status');
             $table->timestamps();
         });
-        
+
     }
 
     /**

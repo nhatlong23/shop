@@ -27,6 +27,7 @@
                             <th>Email khách hàng</th>
                             <th>SĐT</th>
                             <th>Ngày tạo</th>
+                            <th>Xác thực email</th>
                             <th>Tình trạng</th>
                             <th>Quản lý</th>
                             <th></th>
@@ -47,24 +48,35 @@
                                             <span class="text-ellipsis">Không</span>
                                         @endif
                                     </td>
-                                   
+
                                     <td>{{ $customer->customer_email }}</td>
                                     <td>{{ $customer->customer_phone }}</td>
                                     <td>{{ date('d-m-Y', strtotime($customer->created_at)) }}</td>
                                     <td>
                                         <span class="text-ellipsis">
-                                            @if($customer->customer_status == 0)
-                                                <span class="text-ellipsis">Chưa kích hoạt email</span>
-                                            @elseif($customer->customer_status == 1)
-                                                <span style="color: red" class="text-ellipsis">Đã kích hoạt email</span>
+                                            @if($customer->verified_email== false)
+                                                <span class="text-ellipsis">Chưa xác thực email</span>
+                                            @elseif($customer->verified_email == true)
+                                                <span style="color: rgb(188, 55, 55)" class="text-ellipsis">Đã sát thực email</span>
                                             @endif
                                         </span>
                                     </td>
                                     <td>
-                                        @if ($customer->customer_status == 1)
-                                            <a onclick="return confirm('Bạn có chắc chắn khóa tài khoản người dùng không?')" href="{{ route('customer.destroy' , $customer->customer_id) }}" class="btn btn-danger">Khóa tài khoản</a>
-                                        @elseif ($customer->customer_status == 0)
-                                            <a onclick="return confirm('Bạn có chắc chắn mở tài khoản người dùng không?')" href="{{  route('customer.edit' , $customer->customer_id) }}" class="btn btn-success">Mở khóa tài khoản</a>
+                                        <span class="text-ellipsis">
+                                            @if($customer->customer_status == false)
+                                                <span style="color: rgb(0, 0, 0)" class="text-ellipsis">Khoá tài khoản</span>
+                                            @elseif($customer->customer_status == true)
+                                                <span style="color: red" class="text-ellipsis">Tài khoản hoặt động</span>
+                                            @endif
+                                        </span>
+                                    </td>
+                                    <td>
+                                        @if ($customer->customer_status == true)
+                                            <a onclick="return confirm('Bạn có chắc chắn khóa tài khoản người dùng không?')"
+                                            href="{{ route('customer.lock', $customer->customer_id) }}" class="btn btn-danger">Khóa tài khoản</a>
+                                        @elseif ($customer->customer_status == false)
+                                            <a onclick="return confirm('Bạn có chắc chắn mở tài khoản người dùng không?')"
+                                            href="{{ route('customer.unlock' , $customer->customer_id) }}" class="btn btn-success">Mở khóa tài khoản</a>
                                         @endif
                                     </td>
                                     <td></td>

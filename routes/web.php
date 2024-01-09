@@ -61,9 +61,7 @@ Route::get('/delete-all-cart', [CartController::class, 'delete_all_cart']);
 Route::get('/login-checkout', [CheckoutController::class, 'login_checkout']);
 Route::get('/logout-checkout', [CheckoutController::class, 'logout_checkout']);
 Route::get('/success-order', [CheckoutController::class, 'success_order']);
-Route::post('/add-customer', [CheckoutController::class, 'add_customer']);
 Route::post('/order-place', [CheckoutController::class, 'order_place']);
-Route::post('/login-customer', [CheckoutController::class, 'login_customer']);
 Route::get('/login-customer-google', [CheckoutController::class, 'login_customer_google']);
 Route::get('/customer/callback', [CheckoutController::class, 'callback_customer_google']);
 Route::get('/checkout', [CheckoutController::class, 'checkout']);
@@ -143,6 +141,8 @@ Route::post('/save-brand-product', [BrandProduct::class, 'save_brand_product']);
 Route::post('/update-brand-product/{brand_product_id}', [BrandProduct::class, 'update_brand_product']);
 //backend Products
 Route::group(['middleware' => 'roles'], function () {
+
+});
     Route::get('/add-product', [ProductController::class, 'add_product']);
     Route::get('/edit-product/{product_id}', [ProductController::class, 'edit_product']);
     Route::get('/delete-product/{product_id}', [ProductController::class, 'delete_product']);
@@ -152,7 +152,6 @@ Route::group(['middleware' => 'roles'], function () {
     Route::post('/save-product', [ProductController::class, 'save_product']);
     Route::post('/update-product/{product_id}', [ProductController::class, 'update_product']);
     Route::post('/delete-file', [ProductController::class, 'delete_file']);
-});
 //backend order
 Route::get('/manage-order', [CheckoutController::class, 'manage_order']);
 // Route::get('/view-order/{order_id}', [CheckoutController::class, 'view_order']);
@@ -169,8 +168,13 @@ Route::get('/view-history-order/{order_code}', [OrderController::class, 'view_hi
 Route::resource('comment', CommentController::class);
 Route::post('/comment-status', [CommentController::class, 'comment_status']);
 Route::post('/reply-comment', [CommentController::class, 'reply_comment']);
-//backend comment
+
+//backend customer
 Route::resource('customer', CustomerController::class);
+Route::post('/add-customer', [CustomerController::class, 'add_customer']);
+Route::post('/login-customer', [CustomerController::class, 'login_customer']);
+Route::get('/lock-customer/{customer_id}', [CustomerController::class, 'lock_customer'])->name('customer.lock');
+Route::get('/unlock-customer/{customer_id}', [CustomerController::class, 'unlock_customer'])->name('customer.unlock');
 
 //backend info
 Route::resource('info', InfoController::class);

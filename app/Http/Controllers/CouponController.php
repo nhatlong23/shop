@@ -61,6 +61,7 @@ class CouponController extends Controller
         $coupon->coupon_start  = $request->coupon_start;
         $coupon->coupon_end = $request->coupon_end;
         $coupon->coupon_condition = $request->coupon_condition;
+        $coupon->coupon_status = $request->coupon_status;
         $coupon->created_at = Carbon::now('Asia/Ho_Chi_Minh');
         $coupon->save();
         Session::put('message', 'Thêm mã giảm giá thành công');

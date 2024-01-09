@@ -16,8 +16,11 @@ class TblInfo extends Migration
         Schema::create('tbl_info', function (Blueprint $table) {
             $table->increments('info_id');
             $table->string('info_title', 100);
-            $table->string('info_desc');
+            $table->text('info_desc');
             $table->string('info_logo');
+            $table->string('info_phone');
+            $table->string('info_email');
+            $table->text('info_map');
             $table->timestamps();
         });
     }

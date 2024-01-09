@@ -11,7 +11,6 @@ class Visitors extends Model
     use HasFactory;
     protected $fillable = [
         'ip_address',
-        'date_visitor',
     ];
     protected $primaryKey = 'id';
     protected $table = 'tbl_visitors';

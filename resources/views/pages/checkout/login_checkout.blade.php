@@ -52,7 +52,7 @@
                             @csrf
                             <input type="text" name="customer_name" placeholder="Họ và Tên" />
                             <input type="email" name="customer_email" placeholder="Nhập địa chỉ email" />
-                            <input type="text" name="customer_phone" placeholder="Nhập SĐT" />
+                            <input type="phone" name="customer_phone" placeholder="Nhập SĐT" />
                             <input class=" @error('customer_password') is-invalid @enderror" type="password"
                                 id="customer_password" name="customer_password" placeholder="Password"
                                 autocomplete="current-password"/>

@@ -49,7 +49,7 @@ class CategoryProduct extends Controller
             [
                 'category_name' => 'required|unique:tbl_category_product|max:100',
                 'slug' => 'required|unique:tbl_category_product|max:100',
-                'category_desc' => 'required|max:255',
+                'category_desc' => 'required',
                 'category_parent' => 'required',
                 'category_status' => 'required',
             ],
@@ -61,7 +61,6 @@ class CategoryProduct extends Controller
                 'slug.unique' => 'Slug danh mục đã có, vui lòng nhập slug khác',
                 'slug.max' => 'Slug danh mục không được vượt quá 100 ký tự',
                 'category_desc.required' => 'Mô tả danh mục không được để trống',
-                'category_desc.max' => 'Mô tả danh mục không được vượt quá 100 ký tự',
                 'category_parent.required' => 'Danh mục cha không được để trống',
                 'category_status.required' => 'Trạng thái danh mục không được để trống',
             ]
@@ -160,10 +159,12 @@ class CategoryProduct extends Controller
 
     public function export_csv()
     {
+        //
     }
 
     public function import_csv()
     {
+        //
     }
     public function tabs_product(Request $request)
     {
@@ -177,7 +178,7 @@ class CategoryProduct extends Controller
                     <div class="col-sm-3">
                         <div class="product-image-wrapper">
                             <div class="single-products">
-                                <div class="productinfo text-center"> 
+                                <div class="productinfo text-center">
                                     <img src="' . asset('uploads/product/' . $product->product_image) . '" alt="" />
                                     <h2>' . number_format($product->product_price, 0, ',', '.') . ' VNĐ</h2>
                                     <p>' . $product->product_name . '</p>
@@ -193,6 +194,6 @@ class CategoryProduct extends Controller
         }
         return $output;
     }
-    
-    
+
+
 }

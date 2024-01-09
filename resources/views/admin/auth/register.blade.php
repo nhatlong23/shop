@@ -33,7 +33,7 @@
                 ?>
                 <input type="text" class="ggg" name="admin_name" placeholder="Nhập tên" value="{{old('admin_name')}}" required="">
                 <input type="email" class="ggg" name="admin_email" placeholder="Nhập email" required="">
-                <input type="text" class="ggg" name="admin_phone" placeholder="Nhập phone" value="{{old('admon_phone')}}" required="">
+                <input type="number" class="ggg" name="admin_phone" placeholder="Nhập phone" value="{{old('admon_phone')}}" required="">
                 <input type="password" class="ggg" name="admin_password" placeholder="Nhập password" required="">
                 <span><input type="checkbox" />Remember Me</span>
                 <h6><a href="#">Forgot Password?</a></h6>

@@ -17,6 +17,7 @@ class CreateTblCategoryProduct extends Migration
             $table->increments('category_id');
             $table->string('category_name', 100);
             $table->text('category_desc');
+            $table->integer('category_parent');
             $table->text('slug');
             $table->integer('category_status')->default(0);
             $table->timestamps();

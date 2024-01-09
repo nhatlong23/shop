@@ -341,7 +341,7 @@
 
                         <li class="sub-menu" {{ $segment == 'customer' ? 'active' : '' }}>
                             <a href="javascript:;">
-                                <i class="fa fa-font-user"></i>
+                                <i class="fa fa-user"></i>
                                 <span>Khách hàng</span>
                             </a>
                             <ul class="sub">

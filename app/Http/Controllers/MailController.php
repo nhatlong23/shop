@@ -191,7 +191,7 @@ class MailController extends Controller
                 });
                 return redirect()->back()->with('message', 'Vui lòng check mail để lấy lại mật khẩu');
             }
-        }        
+        }
     }
 
     public function reset_new_password(Request $request){
@@ -216,25 +216,19 @@ class MailController extends Controller
     public function confirm_email(Request $request)
     {
         $data = $request->all();
-        $customer = Customer::where('customer_email', '=', $data['email'])->first();
+        $customer = Customer::where('customer_email', $data['email'])->first();
 
         if ($customer) {
-            if ($customer->customer_status == 1) {
-                // Customer email is already verified
-                $customer_id = $customer->customer_id;
+            $customer->verified_email = true;
+            $customer->save();
 
-                // Update session data
-                Session::put('customer_id', $customer_id);
-                Session::put('customer_name', $customer->customer_name);
+            // Set session data
+            Session::put('customer_id', $customer->customer_id);
+            Session::put('customer_name', $customer->customer_name);
 
-                return redirect('checkout');
-            } else {
-                // Customer email is not verified
-                return redirect()->back()->with('message', 'Vui lòng xác nhận email để đăng nhập');
-            }
+            return redirect('checkout')->with('message', 'Xác nhận email thành công');
         }
 
-        // Handle the case where the customer is not found
         return redirect()->back()->with('message', 'Không tìm thấy khách hàng');
     }
 

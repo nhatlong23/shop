@@ -14,12 +14,14 @@ class TblOrderDetails extends Migration
     public function up()
     {
         Schema::create('tbl_order_details', function (Blueprint $table) {
-            $table->bigIncrements('order_details_id');
-            $table->integer('order_id');
+            $table->bigIncrements('order_id');
             $table->integer('product_id');
             $table->string('product_name');
             $table->string('product_price');
             $table->string('product_sales_quantity');
+            $table->string('product_coupon');
+            $table->string('product_feeship');
+            $table->string('order_code');
             $table->timestamps();
         });
     }

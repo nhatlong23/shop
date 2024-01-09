@@ -55,7 +55,7 @@
                             <div class="form-group">
                                 <label>Tính năng mã</label>
                                 <select name="coupon_condition" class="form-control input-sm m-bot15">
-                                    <option value="0">-----Chọn-----</option>
+                                    <option>-----Chọn-----</option>
                                     <option value="1">Giảm theo %</option>
                                     <option value="2">Giảm theo tiền</option>
                                 </select>
@@ -65,7 +65,13 @@
                                 <input type="text" name="coupon_number" class="form-control"
                                     placeholder="Nhập số % hoặc tiền giảm" autocomplete="off">
                             </div>
-                            
+                            <div class="form-group">
+                                <label>Tình trạng mã</label>
+                                <select name="coupon_status" class="form-control input-sm m-bot15">
+                                    <option value="1">Mở khoá</option>
+                                    <option value="0">Đã khoá</option>
+                                </select>
+                            </div>
                             <button type="submit" name="add_coupon" class="btn btn-info">Thêm mã</button>
                         </form>
                     </div>

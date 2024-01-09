@@ -41,14 +41,14 @@ class AuthController extends Controller
         $admin->save();
 
         return redirect('login-auth')->with('message', 'Đăng ký thành công');
-    }   
+    }
 
     public function login_auth(){
         return view('admin.auth.login');
     }
 
     public function login(Request $request){
-        $data = $request->validate  ([
+        $data = $request->validate([
             'admin_email' => 'required|email',
             'admin_password' => 'required|min:4|max:20',
         ], [
@@ -58,9 +58,10 @@ class AuthController extends Controller
             'admin_password.min' => 'Mật khẩu ít nhất 4 ký tự',
             'admin_password.max' => 'Mật khẩu nhiều nhất 20 ký tự',
         ]);
-        if(Auth::attempt(['admin_email' => $request->admin_email, 'admin_password' => $request->admin_password])){
+
+        if(Auth::attempt(['admin_email' => $request->admin_email, 'password' => $request->admin_password])){
             return redirect('dashboard');
-        }else{
+        } else {
             return redirect()->back()->with('message', 'Đăng nhập thất bại');
         }
     }

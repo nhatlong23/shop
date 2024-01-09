@@ -18,7 +18,7 @@ class Coupon extends Model
         'coupon_start',
         'coupon_end',
         'coupon_used',
-        'counpon_status',
+        'coupon_status',
     ];
     protected $primaryKey = 'coupon_id';
     protected $table = 'tbl_coupon';

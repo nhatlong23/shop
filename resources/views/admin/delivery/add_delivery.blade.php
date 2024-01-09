@@ -22,7 +22,7 @@
                                 <select name="city" id="city" class="form-control input-sm m-bot15 choose city">
                                     <option value="">--------Chọn tỉnh thành phố---------</option>
                                     @foreach ($city as $key =>$city)
-                                        <option value="{{$city->matp}}">{{$city->name_tp}}</option>                                        
+                                        <option value="{{$city->matp}}">{{$city->name_tp}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -41,7 +41,7 @@
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Phí vận chuyển</label>
                                 <input type="text" name="feeship"
-                                    class="form-control feeship" placeholder="Nhập phí vận chuyển">
+                                    class="form-control feeship money" placeholder="Nhập phí vận chuyển">
                             </div>
                             <button type="button" name="add_delivery" class="btn btn-info add_delivery">Thêm vận chuyển</button>
                         </form>

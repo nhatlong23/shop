@@ -21,6 +21,7 @@ class Product extends Model
         'product_view',
         'slug',
         'product_price',
+        'product_sold',
         'product_cost',
         'product_image',
         'product_file',

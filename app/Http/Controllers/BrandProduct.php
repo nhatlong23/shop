@@ -45,7 +45,7 @@ class BrandProduct extends Controller
             [
                 'brand_product_name' => 'required|unique:tbl_brand_product,brand_name|max:255',
                 'brand_slug' => 'required|unique:tbl_brand_product,slug|max:255',
-                'brand_product_desc' => 'required|max:255',
+                'brand_product_desc' => 'required',
                 'brand_product_status' => 'required',
             ],
             [
@@ -56,7 +56,6 @@ class BrandProduct extends Controller
                 'brand_slug.unique' => 'Slug đã tồn tại',
                 'brand_slug.max' => 'Slug không được vượt quá 255 ký tự',
                 'brand_product_desc.required' => 'Mô tả thương hiệu không được để trống',
-                'brand_product_desc.max' => 'Mô tả thương hiệu không được vượt quá 255 ký tự',
                 'brand_product_status.required' => 'Trạng thái thương hiệu không được để trống',
             ]
         );
